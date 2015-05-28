@@ -124,8 +124,14 @@ func (w *Writer) Print(format string, a ...interface{}) {
 	fmt.Fprintf(w, format+"\n", a...)
 }
 
-func (w *Writer) Source() ([]byte, error) {
-	return format.Source(w.Bytes())
+func (w *Writer) Source() []byte {
+	src, err := format.Source(w.Bytes())
+	if err != nil {
+		log.Printf("gofmt failed: %s", err)
+		log.Printf("using unformatted source to enable debugging")
+		return w.Bytes()
+	}
+	return src
 }
 
 func cNameToGo(name string) string {
@@ -505,7 +511,7 @@ import "unsafe"
 */
 import "C"
 
-// Error implements the Error interface.
+// Error implements the error interface.
 func (s Status) Error() string {
 	return C.GoString(C.cairo_status_to_string(C.cairo_status_t(s)))
 }
@@ -608,13 +614,7 @@ func main() {
 		}
 	}
 
-	src, err := w.Source()
-	if err != nil {
-		log.Printf("gofmt failed: %s", err)
-		log.Printf("writing unformatted source for debugging")
-		src = w.Bytes()
-	}
-	_, err = outf.Write(src)
+	_, err = outf.Write(w.Source())
 	if err != nil {
 		panic(err)
 	}

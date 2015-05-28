@@ -25,7 +25,7 @@ import "unsafe"
 */
 import "C"
 
-// Error implements the Error interface.
+// Error implements the error interface.
 func (s Status) Error() string {
 	return C.GoString(C.cairo_status_to_string(C.cairo_status_t(s)))
 }
