@@ -12,8 +12,8 @@ example: cairo example/*/*
 cairo.h:
 	gcc -E /usr/include/cairo/cairo.h > $@
 
-cairo/cairo.go: $(GOPATH)/bin/gen cairo.h
-	$(GOPATH)/bin/gen cairo.h $@
+cairo/cairo.go: gen/gen cairo.h
+	gen/gen cairo.h $@
 
-$(GOPATH)/bin/gen: gen/*
-	go install github.com/martine/gocairo/gen
+gen/gen: gen/gen.go
+	cd gen && go build
