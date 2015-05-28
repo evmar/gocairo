@@ -292,17 +292,13 @@ Ptr *C.%s
 	case cc.Enum:
 		w.Print("type %s int", goName)
 		w.Print("const (")
-		for i, d := range d.Type.Decls {
+		for _, d := range d.Type.Decls {
 			constName := d.Name
 			if strings.HasPrefix(constName, "CAIRO_") {
 				constName = constName[len("CAIRO_"):]
 			}
 			constName = cNameToGo(strings.ToLower(d.Name))
-			if i == 0 {
-				w.Print("%s %s = C.%s", constName, goName, d.Name)
-			} else {
-				w.Print("%s = C.%s", constName, d.Name)
-			}
+			w.Print("%s %s = C.%s", constName, goName, d.Name)
 		}
 		w.Print(")")
 	default:

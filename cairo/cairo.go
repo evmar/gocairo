@@ -110,45 +110,45 @@ type Status int
 
 const (
 	StatusSuccess                 Status = C.CAIRO_STATUS_SUCCESS
-	StatusNoMemory                       = C.CAIRO_STATUS_NO_MEMORY
-	StatusInvalidRestore                 = C.CAIRO_STATUS_INVALID_RESTORE
-	StatusInvalidPopGroup                = C.CAIRO_STATUS_INVALID_POP_GROUP
-	StatusNoCurrentPoint                 = C.CAIRO_STATUS_NO_CURRENT_POINT
-	StatusInvalidMatrix                  = C.CAIRO_STATUS_INVALID_MATRIX
-	StatusInvalidStatus                  = C.CAIRO_STATUS_INVALID_STATUS
-	StatusNullPointer                    = C.CAIRO_STATUS_NULL_POINTER
-	StatusInvalidString                  = C.CAIRO_STATUS_INVALID_STRING
-	StatusInvalidPathData                = C.CAIRO_STATUS_INVALID_PATH_DATA
-	StatusReadError                      = C.CAIRO_STATUS_READ_ERROR
-	StatusWriteError                     = C.CAIRO_STATUS_WRITE_ERROR
-	StatusSurfaceFinished                = C.CAIRO_STATUS_SURFACE_FINISHED
-	StatusSurfaceTypeMismatch            = C.CAIRO_STATUS_SURFACE_TYPE_MISMATCH
-	StatusPatternTypeMismatch            = C.CAIRO_STATUS_PATTERN_TYPE_MISMATCH
-	StatusInvalidContent                 = C.CAIRO_STATUS_INVALID_CONTENT
-	StatusInvalidFormat                  = C.CAIRO_STATUS_INVALID_FORMAT
-	StatusInvalidVisual                  = C.CAIRO_STATUS_INVALID_VISUAL
-	StatusFileNotFound                   = C.CAIRO_STATUS_FILE_NOT_FOUND
-	StatusInvalidDash                    = C.CAIRO_STATUS_INVALID_DASH
-	StatusInvalidDscComment              = C.CAIRO_STATUS_INVALID_DSC_COMMENT
-	StatusInvalidIndex                   = C.CAIRO_STATUS_INVALID_INDEX
-	StatusClipNotRepresentable           = C.CAIRO_STATUS_CLIP_NOT_REPRESENTABLE
-	StatusTempFileError                  = C.CAIRO_STATUS_TEMP_FILE_ERROR
-	StatusInvalidStride                  = C.CAIRO_STATUS_INVALID_STRIDE
-	StatusFontTypeMismatch               = C.CAIRO_STATUS_FONT_TYPE_MISMATCH
-	StatusUserFontImmutable              = C.CAIRO_STATUS_USER_FONT_IMMUTABLE
-	StatusUserFontError                  = C.CAIRO_STATUS_USER_FONT_ERROR
-	StatusNegativeCount                  = C.CAIRO_STATUS_NEGATIVE_COUNT
-	StatusInvalidClusters                = C.CAIRO_STATUS_INVALID_CLUSTERS
-	StatusInvalidSlant                   = C.CAIRO_STATUS_INVALID_SLANT
-	StatusInvalidWeight                  = C.CAIRO_STATUS_INVALID_WEIGHT
-	StatusInvalidSize                    = C.CAIRO_STATUS_INVALID_SIZE
-	StatusUserFontNotImplemented         = C.CAIRO_STATUS_USER_FONT_NOT_IMPLEMENTED
-	StatusDeviceTypeMismatch             = C.CAIRO_STATUS_DEVICE_TYPE_MISMATCH
-	StatusDeviceError                    = C.CAIRO_STATUS_DEVICE_ERROR
-	StatusInvalidMeshConstruction        = C.CAIRO_STATUS_INVALID_MESH_CONSTRUCTION
-	StatusDeviceFinished                 = C.CAIRO_STATUS_DEVICE_FINISHED
-	StatusJbig2GlobalMissing             = C.CAIRO_STATUS_JBIG2_GLOBAL_MISSING
-	StatusLastStatus                     = C.CAIRO_STATUS_LAST_STATUS
+	StatusNoMemory                Status = C.CAIRO_STATUS_NO_MEMORY
+	StatusInvalidRestore          Status = C.CAIRO_STATUS_INVALID_RESTORE
+	StatusInvalidPopGroup         Status = C.CAIRO_STATUS_INVALID_POP_GROUP
+	StatusNoCurrentPoint          Status = C.CAIRO_STATUS_NO_CURRENT_POINT
+	StatusInvalidMatrix           Status = C.CAIRO_STATUS_INVALID_MATRIX
+	StatusInvalidStatus           Status = C.CAIRO_STATUS_INVALID_STATUS
+	StatusNullPointer             Status = C.CAIRO_STATUS_NULL_POINTER
+	StatusInvalidString           Status = C.CAIRO_STATUS_INVALID_STRING
+	StatusInvalidPathData         Status = C.CAIRO_STATUS_INVALID_PATH_DATA
+	StatusReadError               Status = C.CAIRO_STATUS_READ_ERROR
+	StatusWriteError              Status = C.CAIRO_STATUS_WRITE_ERROR
+	StatusSurfaceFinished         Status = C.CAIRO_STATUS_SURFACE_FINISHED
+	StatusSurfaceTypeMismatch     Status = C.CAIRO_STATUS_SURFACE_TYPE_MISMATCH
+	StatusPatternTypeMismatch     Status = C.CAIRO_STATUS_PATTERN_TYPE_MISMATCH
+	StatusInvalidContent          Status = C.CAIRO_STATUS_INVALID_CONTENT
+	StatusInvalidFormat           Status = C.CAIRO_STATUS_INVALID_FORMAT
+	StatusInvalidVisual           Status = C.CAIRO_STATUS_INVALID_VISUAL
+	StatusFileNotFound            Status = C.CAIRO_STATUS_FILE_NOT_FOUND
+	StatusInvalidDash             Status = C.CAIRO_STATUS_INVALID_DASH
+	StatusInvalidDscComment       Status = C.CAIRO_STATUS_INVALID_DSC_COMMENT
+	StatusInvalidIndex            Status = C.CAIRO_STATUS_INVALID_INDEX
+	StatusClipNotRepresentable    Status = C.CAIRO_STATUS_CLIP_NOT_REPRESENTABLE
+	StatusTempFileError           Status = C.CAIRO_STATUS_TEMP_FILE_ERROR
+	StatusInvalidStride           Status = C.CAIRO_STATUS_INVALID_STRIDE
+	StatusFontTypeMismatch        Status = C.CAIRO_STATUS_FONT_TYPE_MISMATCH
+	StatusUserFontImmutable       Status = C.CAIRO_STATUS_USER_FONT_IMMUTABLE
+	StatusUserFontError           Status = C.CAIRO_STATUS_USER_FONT_ERROR
+	StatusNegativeCount           Status = C.CAIRO_STATUS_NEGATIVE_COUNT
+	StatusInvalidClusters         Status = C.CAIRO_STATUS_INVALID_CLUSTERS
+	StatusInvalidSlant            Status = C.CAIRO_STATUS_INVALID_SLANT
+	StatusInvalidWeight           Status = C.CAIRO_STATUS_INVALID_WEIGHT
+	StatusInvalidSize             Status = C.CAIRO_STATUS_INVALID_SIZE
+	StatusUserFontNotImplemented  Status = C.CAIRO_STATUS_USER_FONT_NOT_IMPLEMENTED
+	StatusDeviceTypeMismatch      Status = C.CAIRO_STATUS_DEVICE_TYPE_MISMATCH
+	StatusDeviceError             Status = C.CAIRO_STATUS_DEVICE_ERROR
+	StatusInvalidMeshConstruction Status = C.CAIRO_STATUS_INVALID_MESH_CONSTRUCTION
+	StatusDeviceFinished          Status = C.CAIRO_STATUS_DEVICE_FINISHED
+	StatusJbig2GlobalMissing      Status = C.CAIRO_STATUS_JBIG2_GLOBAL_MISSING
+	StatusLastStatus              Status = C.CAIRO_STATUS_LAST_STATUS
 )
 
 // See cairo_content_t.
@@ -156,8 +156,8 @@ type Content int
 
 const (
 	ContentColor      Content = C.CAIRO_CONTENT_COLOR
-	ContentAlpha              = C.CAIRO_CONTENT_ALPHA
-	ContentColorAlpha         = C.CAIRO_CONTENT_COLOR_ALPHA
+	ContentAlpha      Content = C.CAIRO_CONTENT_ALPHA
+	ContentColorAlpha Content = C.CAIRO_CONTENT_COLOR_ALPHA
 )
 
 // See cairo_format_t.
@@ -165,12 +165,12 @@ type Format int
 
 const (
 	FormatInvalid  Format = C.CAIRO_FORMAT_INVALID
-	FormatArgb32          = C.CAIRO_FORMAT_ARGB32
-	FormatRgb24           = C.CAIRO_FORMAT_RGB24
-	FormatA8              = C.CAIRO_FORMAT_A8
-	FormatA1              = C.CAIRO_FORMAT_A1
-	FormatRgb16565        = C.CAIRO_FORMAT_RGB16_565
-	FormatRgb30           = C.CAIRO_FORMAT_RGB30
+	FormatArgb32   Format = C.CAIRO_FORMAT_ARGB32
+	FormatRgb24    Format = C.CAIRO_FORMAT_RGB24
+	FormatA8       Format = C.CAIRO_FORMAT_A8
+	FormatA1       Format = C.CAIRO_FORMAT_A1
+	FormatRgb16565 Format = C.CAIRO_FORMAT_RGB16_565
+	FormatRgb30    Format = C.CAIRO_FORMAT_RGB30
 )
 
 // See cairo_create().
@@ -236,34 +236,34 @@ type Operator int
 
 const (
 	OperatorClear         Operator = C.CAIRO_OPERATOR_CLEAR
-	OperatorSource                 = C.CAIRO_OPERATOR_SOURCE
-	OperatorOver                   = C.CAIRO_OPERATOR_OVER
-	OperatorIn                     = C.CAIRO_OPERATOR_IN
-	OperatorOut                    = C.CAIRO_OPERATOR_OUT
-	OperatorAtop                   = C.CAIRO_OPERATOR_ATOP
-	OperatorDest                   = C.CAIRO_OPERATOR_DEST
-	OperatorDestOver               = C.CAIRO_OPERATOR_DEST_OVER
-	OperatorDestIn                 = C.CAIRO_OPERATOR_DEST_IN
-	OperatorDestOut                = C.CAIRO_OPERATOR_DEST_OUT
-	OperatorDestAtop               = C.CAIRO_OPERATOR_DEST_ATOP
-	OperatorXor                    = C.CAIRO_OPERATOR_XOR
-	OperatorAdd                    = C.CAIRO_OPERATOR_ADD
-	OperatorSaturate               = C.CAIRO_OPERATOR_SATURATE
-	OperatorMultiply               = C.CAIRO_OPERATOR_MULTIPLY
-	OperatorScreen                 = C.CAIRO_OPERATOR_SCREEN
-	OperatorOverlay                = C.CAIRO_OPERATOR_OVERLAY
-	OperatorDarken                 = C.CAIRO_OPERATOR_DARKEN
-	OperatorLighten                = C.CAIRO_OPERATOR_LIGHTEN
-	OperatorColorDodge             = C.CAIRO_OPERATOR_COLOR_DODGE
-	OperatorColorBurn              = C.CAIRO_OPERATOR_COLOR_BURN
-	OperatorHardLight              = C.CAIRO_OPERATOR_HARD_LIGHT
-	OperatorSoftLight              = C.CAIRO_OPERATOR_SOFT_LIGHT
-	OperatorDifference             = C.CAIRO_OPERATOR_DIFFERENCE
-	OperatorExclusion              = C.CAIRO_OPERATOR_EXCLUSION
-	OperatorHslHue                 = C.CAIRO_OPERATOR_HSL_HUE
-	OperatorHslSaturation          = C.CAIRO_OPERATOR_HSL_SATURATION
-	OperatorHslColor               = C.CAIRO_OPERATOR_HSL_COLOR
-	OperatorHslLuminosity          = C.CAIRO_OPERATOR_HSL_LUMINOSITY
+	OperatorSource        Operator = C.CAIRO_OPERATOR_SOURCE
+	OperatorOver          Operator = C.CAIRO_OPERATOR_OVER
+	OperatorIn            Operator = C.CAIRO_OPERATOR_IN
+	OperatorOut           Operator = C.CAIRO_OPERATOR_OUT
+	OperatorAtop          Operator = C.CAIRO_OPERATOR_ATOP
+	OperatorDest          Operator = C.CAIRO_OPERATOR_DEST
+	OperatorDestOver      Operator = C.CAIRO_OPERATOR_DEST_OVER
+	OperatorDestIn        Operator = C.CAIRO_OPERATOR_DEST_IN
+	OperatorDestOut       Operator = C.CAIRO_OPERATOR_DEST_OUT
+	OperatorDestAtop      Operator = C.CAIRO_OPERATOR_DEST_ATOP
+	OperatorXor           Operator = C.CAIRO_OPERATOR_XOR
+	OperatorAdd           Operator = C.CAIRO_OPERATOR_ADD
+	OperatorSaturate      Operator = C.CAIRO_OPERATOR_SATURATE
+	OperatorMultiply      Operator = C.CAIRO_OPERATOR_MULTIPLY
+	OperatorScreen        Operator = C.CAIRO_OPERATOR_SCREEN
+	OperatorOverlay       Operator = C.CAIRO_OPERATOR_OVERLAY
+	OperatorDarken        Operator = C.CAIRO_OPERATOR_DARKEN
+	OperatorLighten       Operator = C.CAIRO_OPERATOR_LIGHTEN
+	OperatorColorDodge    Operator = C.CAIRO_OPERATOR_COLOR_DODGE
+	OperatorColorBurn     Operator = C.CAIRO_OPERATOR_COLOR_BURN
+	OperatorHardLight     Operator = C.CAIRO_OPERATOR_HARD_LIGHT
+	OperatorSoftLight     Operator = C.CAIRO_OPERATOR_SOFT_LIGHT
+	OperatorDifference    Operator = C.CAIRO_OPERATOR_DIFFERENCE
+	OperatorExclusion     Operator = C.CAIRO_OPERATOR_EXCLUSION
+	OperatorHslHue        Operator = C.CAIRO_OPERATOR_HSL_HUE
+	OperatorHslSaturation Operator = C.CAIRO_OPERATOR_HSL_SATURATION
+	OperatorHslColor      Operator = C.CAIRO_OPERATOR_HSL_COLOR
+	OperatorHslLuminosity Operator = C.CAIRO_OPERATOR_HSL_LUMINOSITY
 )
 
 // See cairo_set_operator().
@@ -319,12 +319,12 @@ type Antialias int
 
 const (
 	AntialiasDefault  Antialias = C.CAIRO_ANTIALIAS_DEFAULT
-	AntialiasNone               = C.CAIRO_ANTIALIAS_NONE
-	AntialiasGray               = C.CAIRO_ANTIALIAS_GRAY
-	AntialiasSubpixel           = C.CAIRO_ANTIALIAS_SUBPIXEL
-	AntialiasFast               = C.CAIRO_ANTIALIAS_FAST
-	AntialiasGood               = C.CAIRO_ANTIALIAS_GOOD
-	AntialiasBest               = C.CAIRO_ANTIALIAS_BEST
+	AntialiasNone     Antialias = C.CAIRO_ANTIALIAS_NONE
+	AntialiasGray     Antialias = C.CAIRO_ANTIALIAS_GRAY
+	AntialiasSubpixel Antialias = C.CAIRO_ANTIALIAS_SUBPIXEL
+	AntialiasFast     Antialias = C.CAIRO_ANTIALIAS_FAST
+	AntialiasGood     Antialias = C.CAIRO_ANTIALIAS_GOOD
+	AntialiasBest     Antialias = C.CAIRO_ANTIALIAS_BEST
 )
 
 // See cairo_set_antialias().
@@ -340,7 +340,7 @@ type FillRule int
 
 const (
 	FillRuleWinding FillRule = C.CAIRO_FILL_RULE_WINDING
-	FillRuleEvenOdd          = C.CAIRO_FILL_RULE_EVEN_ODD
+	FillRuleEvenOdd FillRule = C.CAIRO_FILL_RULE_EVEN_ODD
 )
 
 // See cairo_set_fill_rule().
@@ -364,8 +364,8 @@ type LineCap int
 
 const (
 	LineCapButt   LineCap = C.CAIRO_LINE_CAP_BUTT
-	LineCapRound          = C.CAIRO_LINE_CAP_ROUND
-	LineCapSquare         = C.CAIRO_LINE_CAP_SQUARE
+	LineCapRound  LineCap = C.CAIRO_LINE_CAP_ROUND
+	LineCapSquare LineCap = C.CAIRO_LINE_CAP_SQUARE
 )
 
 // See cairo_set_line_cap().
@@ -381,8 +381,8 @@ type LineJoin int
 
 const (
 	LineJoinMiter LineJoin = C.CAIRO_LINE_JOIN_MITER
-	LineJoinRound          = C.CAIRO_LINE_JOIN_ROUND
-	LineJoinBevel          = C.CAIRO_LINE_JOIN_BEVEL
+	LineJoinRound LineJoin = C.CAIRO_LINE_JOIN_ROUND
+	LineJoinBevel LineJoin = C.CAIRO_LINE_JOIN_BEVEL
 )
 
 // See cairo_set_line_join().
@@ -828,8 +828,8 @@ type FontSlant int
 
 const (
 	FontSlantNormal  FontSlant = C.CAIRO_FONT_SLANT_NORMAL
-	FontSlantItalic            = C.CAIRO_FONT_SLANT_ITALIC
-	FontSlantOblique           = C.CAIRO_FONT_SLANT_OBLIQUE
+	FontSlantItalic  FontSlant = C.CAIRO_FONT_SLANT_ITALIC
+	FontSlantOblique FontSlant = C.CAIRO_FONT_SLANT_OBLIQUE
 )
 
 // See cairo_font_weight_t.
@@ -837,7 +837,7 @@ type FontWeight int
 
 const (
 	FontWeightNormal FontWeight = C.CAIRO_FONT_WEIGHT_NORMAL
-	FontWeightBold              = C.CAIRO_FONT_WEIGHT_BOLD
+	FontWeightBold   FontWeight = C.CAIRO_FONT_WEIGHT_BOLD
 )
 
 // See cairo_subpixel_order_t.
@@ -845,10 +845,10 @@ type SubpixelOrder int
 
 const (
 	SubpixelOrderDefault SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_DEFAULT
-	SubpixelOrderRgb                   = C.CAIRO_SUBPIXEL_ORDER_RGB
-	SubpixelOrderBgr                   = C.CAIRO_SUBPIXEL_ORDER_BGR
-	SubpixelOrderVrgb                  = C.CAIRO_SUBPIXEL_ORDER_VRGB
-	SubpixelOrderVbgr                  = C.CAIRO_SUBPIXEL_ORDER_VBGR
+	SubpixelOrderRgb     SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_RGB
+	SubpixelOrderBgr     SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_BGR
+	SubpixelOrderVrgb    SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_VRGB
+	SubpixelOrderVbgr    SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_VBGR
 )
 
 // See cairo_hint_style_t.
@@ -856,10 +856,10 @@ type HintStyle int
 
 const (
 	HintStyleDefault HintStyle = C.CAIRO_HINT_STYLE_DEFAULT
-	HintStyleNone              = C.CAIRO_HINT_STYLE_NONE
-	HintStyleSlight            = C.CAIRO_HINT_STYLE_SLIGHT
-	HintStyleMedium            = C.CAIRO_HINT_STYLE_MEDIUM
-	HintStyleFull              = C.CAIRO_HINT_STYLE_FULL
+	HintStyleNone    HintStyle = C.CAIRO_HINT_STYLE_NONE
+	HintStyleSlight  HintStyle = C.CAIRO_HINT_STYLE_SLIGHT
+	HintStyleMedium  HintStyle = C.CAIRO_HINT_STYLE_MEDIUM
+	HintStyleFull    HintStyle = C.CAIRO_HINT_STYLE_FULL
 )
 
 // See cairo_hint_metrics_t.
@@ -867,8 +867,8 @@ type HintMetrics int
 
 const (
 	HintMetricsDefault HintMetrics = C.CAIRO_HINT_METRICS_DEFAULT
-	HintMetricsOff                 = C.CAIRO_HINT_METRICS_OFF
-	HintMetricsOn                  = C.CAIRO_HINT_METRICS_ON
+	HintMetricsOff     HintMetrics = C.CAIRO_HINT_METRICS_OFF
+	HintMetricsOn      HintMetrics = C.CAIRO_HINT_METRICS_ON
 )
 
 // See cairo_font_options_t.
@@ -1132,10 +1132,10 @@ type FontType int
 
 const (
 	FontTypeToy    FontType = C.CAIRO_FONT_TYPE_TOY
-	FontTypeFt              = C.CAIRO_FONT_TYPE_FT
-	FontTypeWin32           = C.CAIRO_FONT_TYPE_WIN32
-	FontTypeQuartz          = C.CAIRO_FONT_TYPE_QUARTZ
-	FontTypeUser            = C.CAIRO_FONT_TYPE_USER
+	FontTypeFt     FontType = C.CAIRO_FONT_TYPE_FT
+	FontTypeWin32  FontType = C.CAIRO_FONT_TYPE_WIN32
+	FontTypeQuartz FontType = C.CAIRO_FONT_TYPE_QUARTZ
+	FontTypeUser   FontType = C.CAIRO_FONT_TYPE_USER
 )
 
 // See cairo_font_face_get_type().
@@ -1424,9 +1424,9 @@ type PathDataType int
 
 const (
 	PathMoveTo    PathDataType = C.CAIRO_PATH_MOVE_TO
-	PathLineTo                 = C.CAIRO_PATH_LINE_TO
-	PathCurveTo                = C.CAIRO_PATH_CURVE_TO
-	PathClosePath              = C.CAIRO_PATH_CLOSE_PATH
+	PathLineTo    PathDataType = C.CAIRO_PATH_LINE_TO
+	PathCurveTo   PathDataType = C.CAIRO_PATH_CURVE_TO
+	PathClosePath PathDataType = C.CAIRO_PATH_CLOSE_PATH
 )
 
 // See cairo_status().
@@ -1440,14 +1440,14 @@ type DeviceType int
 
 const (
 	DeviceTypeDrm     DeviceType = C.CAIRO_DEVICE_TYPE_DRM
-	DeviceTypeGl                 = C.CAIRO_DEVICE_TYPE_GL
-	DeviceTypeScript             = C.CAIRO_DEVICE_TYPE_SCRIPT
-	DeviceTypeXcb                = C.CAIRO_DEVICE_TYPE_XCB
-	DeviceTypeXlib               = C.CAIRO_DEVICE_TYPE_XLIB
-	DeviceTypeXml                = C.CAIRO_DEVICE_TYPE_XML
-	DeviceTypeCogl               = C.CAIRO_DEVICE_TYPE_COGL
-	DeviceTypeWin32              = C.CAIRO_DEVICE_TYPE_WIN32
-	DeviceTypeInvalid            = C.CAIRO_DEVICE_TYPE_INVALID
+	DeviceTypeGl      DeviceType = C.CAIRO_DEVICE_TYPE_GL
+	DeviceTypeScript  DeviceType = C.CAIRO_DEVICE_TYPE_SCRIPT
+	DeviceTypeXcb     DeviceType = C.CAIRO_DEVICE_TYPE_XCB
+	DeviceTypeXlib    DeviceType = C.CAIRO_DEVICE_TYPE_XLIB
+	DeviceTypeXml     DeviceType = C.CAIRO_DEVICE_TYPE_XML
+	DeviceTypeCogl    DeviceType = C.CAIRO_DEVICE_TYPE_COGL
+	DeviceTypeWin32   DeviceType = C.CAIRO_DEVICE_TYPE_WIN32
+	DeviceTypeInvalid DeviceType = C.CAIRO_DEVICE_TYPE_INVALID
 )
 
 // See cairo_device_get_type().
@@ -1538,7 +1538,7 @@ type SurfaceObserverMode int
 
 const (
 	SurfaceObserverNormal           SurfaceObserverMode = C.CAIRO_SURFACE_OBSERVER_NORMAL
-	SurfaceObserverRecordOperations                     = C.CAIRO_SURFACE_OBSERVER_RECORD_OPERATIONS
+	SurfaceObserverRecordOperations SurfaceObserverMode = C.CAIRO_SURFACE_OBSERVER_RECORD_OPERATIONS
 )
 
 // See cairo_surface_create_observer().
@@ -1641,30 +1641,30 @@ type SurfaceType int
 
 const (
 	SurfaceTypeImage         SurfaceType = C.CAIRO_SURFACE_TYPE_IMAGE
-	SurfaceTypePdf                       = C.CAIRO_SURFACE_TYPE_PDF
-	SurfaceTypePs                        = C.CAIRO_SURFACE_TYPE_PS
-	SurfaceTypeXlib                      = C.CAIRO_SURFACE_TYPE_XLIB
-	SurfaceTypeXcb                       = C.CAIRO_SURFACE_TYPE_XCB
-	SurfaceTypeGlitz                     = C.CAIRO_SURFACE_TYPE_GLITZ
-	SurfaceTypeQuartz                    = C.CAIRO_SURFACE_TYPE_QUARTZ
-	SurfaceTypeWin32                     = C.CAIRO_SURFACE_TYPE_WIN32
-	SurfaceTypeBeos                      = C.CAIRO_SURFACE_TYPE_BEOS
-	SurfaceTypeDirectfb                  = C.CAIRO_SURFACE_TYPE_DIRECTFB
-	SurfaceTypeSvg                       = C.CAIRO_SURFACE_TYPE_SVG
-	SurfaceTypeOs2                       = C.CAIRO_SURFACE_TYPE_OS2
-	SurfaceTypeWin32Printing             = C.CAIRO_SURFACE_TYPE_WIN32_PRINTING
-	SurfaceTypeQuartzImage               = C.CAIRO_SURFACE_TYPE_QUARTZ_IMAGE
-	SurfaceTypeScript                    = C.CAIRO_SURFACE_TYPE_SCRIPT
-	SurfaceTypeQt                        = C.CAIRO_SURFACE_TYPE_QT
-	SurfaceTypeRecording                 = C.CAIRO_SURFACE_TYPE_RECORDING
-	SurfaceTypeVg                        = C.CAIRO_SURFACE_TYPE_VG
-	SurfaceTypeGl                        = C.CAIRO_SURFACE_TYPE_GL
-	SurfaceTypeDrm                       = C.CAIRO_SURFACE_TYPE_DRM
-	SurfaceTypeTee                       = C.CAIRO_SURFACE_TYPE_TEE
-	SurfaceTypeXml                       = C.CAIRO_SURFACE_TYPE_XML
-	SurfaceTypeSkia                      = C.CAIRO_SURFACE_TYPE_SKIA
-	SurfaceTypeSubsurface                = C.CAIRO_SURFACE_TYPE_SUBSURFACE
-	SurfaceTypeCogl                      = C.CAIRO_SURFACE_TYPE_COGL
+	SurfaceTypePdf           SurfaceType = C.CAIRO_SURFACE_TYPE_PDF
+	SurfaceTypePs            SurfaceType = C.CAIRO_SURFACE_TYPE_PS
+	SurfaceTypeXlib          SurfaceType = C.CAIRO_SURFACE_TYPE_XLIB
+	SurfaceTypeXcb           SurfaceType = C.CAIRO_SURFACE_TYPE_XCB
+	SurfaceTypeGlitz         SurfaceType = C.CAIRO_SURFACE_TYPE_GLITZ
+	SurfaceTypeQuartz        SurfaceType = C.CAIRO_SURFACE_TYPE_QUARTZ
+	SurfaceTypeWin32         SurfaceType = C.CAIRO_SURFACE_TYPE_WIN32
+	SurfaceTypeBeos          SurfaceType = C.CAIRO_SURFACE_TYPE_BEOS
+	SurfaceTypeDirectfb      SurfaceType = C.CAIRO_SURFACE_TYPE_DIRECTFB
+	SurfaceTypeSvg           SurfaceType = C.CAIRO_SURFACE_TYPE_SVG
+	SurfaceTypeOs2           SurfaceType = C.CAIRO_SURFACE_TYPE_OS2
+	SurfaceTypeWin32Printing SurfaceType = C.CAIRO_SURFACE_TYPE_WIN32_PRINTING
+	SurfaceTypeQuartzImage   SurfaceType = C.CAIRO_SURFACE_TYPE_QUARTZ_IMAGE
+	SurfaceTypeScript        SurfaceType = C.CAIRO_SURFACE_TYPE_SCRIPT
+	SurfaceTypeQt            SurfaceType = C.CAIRO_SURFACE_TYPE_QT
+	SurfaceTypeRecording     SurfaceType = C.CAIRO_SURFACE_TYPE_RECORDING
+	SurfaceTypeVg            SurfaceType = C.CAIRO_SURFACE_TYPE_VG
+	SurfaceTypeGl            SurfaceType = C.CAIRO_SURFACE_TYPE_GL
+	SurfaceTypeDrm           SurfaceType = C.CAIRO_SURFACE_TYPE_DRM
+	SurfaceTypeTee           SurfaceType = C.CAIRO_SURFACE_TYPE_TEE
+	SurfaceTypeXml           SurfaceType = C.CAIRO_SURFACE_TYPE_XML
+	SurfaceTypeSkia          SurfaceType = C.CAIRO_SURFACE_TYPE_SKIA
+	SurfaceTypeSubsurface    SurfaceType = C.CAIRO_SURFACE_TYPE_SUBSURFACE
+	SurfaceTypeCogl          SurfaceType = C.CAIRO_SURFACE_TYPE_COGL
 )
 
 // See cairo_surface_get_type().
@@ -1974,11 +1974,11 @@ type PatternType int
 
 const (
 	PatternTypeSolid        PatternType = C.CAIRO_PATTERN_TYPE_SOLID
-	PatternTypeSurface                  = C.CAIRO_PATTERN_TYPE_SURFACE
-	PatternTypeLinear                   = C.CAIRO_PATTERN_TYPE_LINEAR
-	PatternTypeRadial                   = C.CAIRO_PATTERN_TYPE_RADIAL
-	PatternTypeMesh                     = C.CAIRO_PATTERN_TYPE_MESH
-	PatternTypeRasterSource             = C.CAIRO_PATTERN_TYPE_RASTER_SOURCE
+	PatternTypeSurface      PatternType = C.CAIRO_PATTERN_TYPE_SURFACE
+	PatternTypeLinear       PatternType = C.CAIRO_PATTERN_TYPE_LINEAR
+	PatternTypeRadial       PatternType = C.CAIRO_PATTERN_TYPE_RADIAL
+	PatternTypeMesh         PatternType = C.CAIRO_PATTERN_TYPE_MESH
+	PatternTypeRasterSource PatternType = C.CAIRO_PATTERN_TYPE_RASTER_SOURCE
 )
 
 // See cairo_pattern_get_type().
@@ -2091,9 +2091,9 @@ type Extend int
 
 const (
 	ExtendNone    Extend = C.CAIRO_EXTEND_NONE
-	ExtendRepeat         = C.CAIRO_EXTEND_REPEAT
-	ExtendReflect        = C.CAIRO_EXTEND_REFLECT
-	ExtendPad            = C.CAIRO_EXTEND_PAD
+	ExtendRepeat  Extend = C.CAIRO_EXTEND_REPEAT
+	ExtendReflect Extend = C.CAIRO_EXTEND_REFLECT
+	ExtendPad     Extend = C.CAIRO_EXTEND_PAD
 )
 
 // See cairo_pattern_set_extend().
@@ -2118,11 +2118,11 @@ type Filter int
 
 const (
 	FilterFast     Filter = C.CAIRO_FILTER_FAST
-	FilterGood            = C.CAIRO_FILTER_GOOD
-	FilterBest            = C.CAIRO_FILTER_BEST
-	FilterNearest         = C.CAIRO_FILTER_NEAREST
-	FilterBilinear        = C.CAIRO_FILTER_BILINEAR
-	FilterGaussian        = C.CAIRO_FILTER_GAUSSIAN
+	FilterGood     Filter = C.CAIRO_FILTER_GOOD
+	FilterBest     Filter = C.CAIRO_FILTER_BEST
+	FilterNearest  Filter = C.CAIRO_FILTER_NEAREST
+	FilterBilinear Filter = C.CAIRO_FILTER_BILINEAR
+	FilterGaussian Filter = C.CAIRO_FILTER_GAUSSIAN
 )
 
 // See cairo_pattern_set_filter().
@@ -2213,8 +2213,8 @@ type RegionOverlap int
 
 const (
 	RegionOverlapIn   RegionOverlap = C.CAIRO_REGION_OVERLAP_IN
-	RegionOverlapOut                = C.CAIRO_REGION_OVERLAP_OUT
-	RegionOverlapPart               = C.CAIRO_REGION_OVERLAP_PART
+	RegionOverlapOut  RegionOverlap = C.CAIRO_REGION_OVERLAP_OUT
+	RegionOverlapPart RegionOverlap = C.CAIRO_REGION_OVERLAP_PART
 )
 
 // See cairo_region_create().
