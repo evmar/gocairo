@@ -393,7 +393,7 @@ func (cr *Context) SetLineJoin(lineJoin LineJoin) {
 	}
 }
 
-// cairo_set_dash
+// See cairo_set_dash().
 func (cr *Context) SetDash(dashes []float64, offset float64) {
 	C.cairo_set_dash(cr.Ptr, (*C.double)(sliceBytes(unsafe.Pointer(&dashes))), C.int(len(dashes)), C.double(offset))
 }

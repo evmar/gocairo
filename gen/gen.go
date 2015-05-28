@@ -564,7 +564,7 @@ func (s Status) Error() string {
 		}
 
 		if impl, ok := manualImpl[d.Name]; ok {
-			w.Print("// %s", d.Name) // TODO: docstring
+			w.Print("// See %s().", d.Name)
 			w.Print("%s", impl)
 		} else if d.Storage == cc.Typedef {
 			w.genTypeDef(d)
