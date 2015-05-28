@@ -29,14 +29,14 @@ import (
 // intentionalSkip maps C names to true when we intentionally don't generate
 // bindings for them.  See the comments for reasoning.
 var intentionalSkip = map[string]bool{
+	// Mapped to bool.
+	"cairo_bool_t": true,
+
 	// Type only used as a placeholder in C.
 	"cairo_user_data_key_t": true,
 
 	// Just the same thing as creating the struct yourself.
 	"cairo_matrix_init": true,
-
-	// Fancy clip rectangle business -- TODO.
-	"cairo_copy_clip_rectangle_list": true,
 
 	// Fancy font APIs -- TODO.
 	"cairo_glyph_allocate":             true,
@@ -50,19 +50,6 @@ var intentionalSkip = map[string]bool{
 	"cairo_scaled_font_glyph_extents":  true,
 	"cairo_scaled_font_text_to_glyphs": true,
 
-	// Data structure with a hard-to-wrap API -- TODO.
-	"cairo_path_t":      true,
-	"cairo_path_data_t": true,
-
-	"cairo_rectangle_int_t":  true,
-	"cairo_rectangle_list_t": true,
-
-	// Raster sources -- TODO.
-	"cairo_raster_source_acquire_func_t":  true,
-	"cairo_raster_source_snapshot_func_t": true,
-	"cairo_raster_source_copy_func_t":     true,
-	"cairo_raster_source_finish_func_t":   true,
-
 	// Mime functions -- TODO.
 	"cairo_surface_get_mime_data": true,
 	"cairo_surface_set_mime_data": true,
@@ -72,6 +59,20 @@ var intentionalSkip = map[string]bool{
 
 	// Use status.String() instead.
 	"cairo_status_to_string": true,
+}
+
+var typeBlacklist = map[string]bool{
+	// Data structures with a hard-to-wrap API -- TODO.
+	"cairo_path_t":           true,
+	"cairo_path_data_t":      true,
+	"cairo_rectangle_int_t":  true,
+	"cairo_rectangle_list_t": true,
+
+	// Raster sources -- TODO.
+	"cairo_raster_source_acquire_func_t":  true,
+	"cairo_raster_source_snapshot_func_t": true,
+	"cairo_raster_source_copy_func_t":     true,
+	"cairo_raster_source_finish_func_t":   true,
 }
 
 var manualImpl = map[string]string{
@@ -205,7 +206,7 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 			}
 		}
 		goName := cNameToGo(str)
-		if intentionalSkip[str] {
+		if typeBlacklist[str] {
 			return nil
 		}
 		return &typeMap{
@@ -224,56 +225,52 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 			cToGo:  nil,
 			goToC:  nil,
 		}
-	default:
-		cName := typ.String()
-		goName := cNameToGo(cName)
-		if intentionalSkip[cName] {
-			return nil
-		}
-		switch cName {
-		case "cairo_bool_t":
-			return &typeMap{
-				goType: "bool",
-				cToGo: func(in string) string {
-					return fmt.Sprintf("%s != 0", in)
-				},
-				goToC: func(in string) (string, string) {
-					return fmt.Sprintf("C.%s(%s)", cName, in), ""
-				},
-			}
-		case "cairo_status_t":
-			return &typeMap{
-				goType: "error",
-				cToGo: func(in string) string {
-					return fmt.Sprintf("Status(%s).toError()", in)
-				},
-				goToC: nil,
-			}
-		}
+	}
 
-		m := &typeMap{
-			goType: goName,
+	// Otherwise, it's a basic non-pointer type.
+	cName := typ.String()
+	if typeBlacklist[cName] {
+		return nil
+	}
+	switch cName {
+	case "cairo_bool_t":
+		return &typeMap{
+			goType: "bool",
 			cToGo: func(in string) string {
-				return fmt.Sprintf("%s(%s)", goName, in)
+				return fmt.Sprintf("%s != 0", in)
 			},
 			goToC: func(in string) (string, string) {
 				return fmt.Sprintf("C.%s(%s)", cName, in), ""
 			},
 		}
-		if goName == "Format" {
-			// Attempt to put methods on our "Format" type.
-			m.method = goName
+	case "cairo_status_t":
+		return &typeMap{
+			goType: "error",
+			cToGo: func(in string) string {
+				return fmt.Sprintf("Status(%s).toError()", in)
+			},
+			goToC: nil,
 		}
-		return m
 	}
+
+	goName := cNameToGo(cName)
+	m := &typeMap{
+		goType: goName,
+		cToGo: func(in string) string {
+			return fmt.Sprintf("%s(%s)", goName, in)
+		},
+		goToC: func(in string) (string, string) {
+			return fmt.Sprintf("C.%s(%s)", cName, in), ""
+		},
+	}
+	if goName == "Format" {
+		// Attempt to put methods on our "Format" type.
+		m.method = goName
+	}
+	return m
 }
 
 func (w *Writer) genTypeDef(d *cc.Decl) {
-	switch d.Name {
-	case "cairo_bool_t":
-		return
-	}
-
 	w.Print("// See %s.", d.Name)
 	goName := cNameToGo(d.Name)
 
@@ -526,7 +523,7 @@ func (s Status) Error() string {
 	intentionalSkips := 0
 	todoSkips := 0
 	for _, d := range decls {
-		if intentionalSkip[d.Name] {
+		if intentionalSkip[d.Name] || typeBlacklist[d.Name] {
 			intentionalSkips++
 			continue
 		}
