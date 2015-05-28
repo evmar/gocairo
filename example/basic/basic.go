@@ -26,10 +26,10 @@ func main() {
 	surf := cairo.ImageSurfaceCreate(cairo.FormatRgb24, 640, 480)
 	cr := cairo.Create(surf.Surface)
 
-	cr.SetSourceRgb(0, 0, 0)
+	cr.SetSourceRGB(0, 0, 0)
 	cr.Paint()
 
-	cr.SetSourceRgb(1, 0, 0)
+	cr.SetSourceRGB(1, 0, 0)
 	cr.SelectFontFace("monospace", cairo.FontSlantNormal, cairo.FontWeightNormal)
 	cr.SetFontSize(50)
 	cr.MoveTo(640/10, 480/2)

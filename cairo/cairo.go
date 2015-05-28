@@ -283,7 +283,7 @@ func (cr *Context) SetSource(source *Pattern) {
 }
 
 // See cairo_set_source_rgb().
-func (cr *Context) SetSourceRgb(red float64, green float64, blue float64) {
+func (cr *Context) SetSourceRGB(red float64, green float64, blue float64) {
 	C.cairo_set_source_rgb(cr.Ptr, C.double(red), C.double(green), C.double(blue))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -291,7 +291,7 @@ func (cr *Context) SetSourceRgb(red float64, green float64, blue float64) {
 }
 
 // See cairo_set_source_rgba().
-func (cr *Context) SetSourceRgba(red float64, green float64, blue float64, alpha float64) {
+func (cr *Context) SetSourceRGBA(red float64, green float64, blue float64, alpha float64) {
 	C.cairo_set_source_rgba(cr.Ptr, C.double(red), C.double(green), C.double(blue), C.double(alpha))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -845,10 +845,10 @@ type SubpixelOrder int
 
 const (
 	SubpixelOrderDefault SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_DEFAULT
-	SubpixelOrderRgb     SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_RGB
-	SubpixelOrderBgr     SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_BGR
-	SubpixelOrderVrgb    SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_VRGB
-	SubpixelOrderVbgr    SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_VBGR
+	SubpixelOrderRGB     SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_RGB
+	SubpixelOrderBGR     SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_BGR
+	SubpixelOrderVRGB    SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_VRGB
+	SubpixelOrderVBGR    SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_VBGR
 )
 
 // See cairo_hint_style_t.
@@ -1148,8 +1148,8 @@ func (fontFace *FontFace) GetType() FontType {
 }
 
 // See cairo_scaled_font_create().
-func ScaledFontCreate(fontFace *FontFace, fontMatrix *Matrix, ctm *Matrix, options *FontOptions) *ScaledFont {
-	ret := wrapScaledFont(C.cairo_scaled_font_create(fontFace.Ptr, (*C.cairo_matrix_t)(unsafe.Pointer(fontMatrix)), (*C.cairo_matrix_t)(unsafe.Pointer(ctm)), options.Ptr))
+func ScaledFontCreate(fontFace *FontFace, fontMatrix *Matrix, cTM *Matrix, options *FontOptions) *ScaledFont {
+	ret := wrapScaledFont(C.cairo_scaled_font_create(fontFace.Ptr, (*C.cairo_matrix_t)(unsafe.Pointer(fontMatrix)), (*C.cairo_matrix_t)(unsafe.Pointer(cTM)), options.Ptr))
 	if err := ret.status(); err != nil {
 		panic(err)
 	}
@@ -1207,8 +1207,8 @@ func (scaledFont *ScaledFont) GetFontMatrix(fontMatrix *Matrix) {
 }
 
 // See cairo_scaled_font_get_ctm().
-func (scaledFont *ScaledFont) GetCtm(ctm *Matrix) {
-	C.cairo_scaled_font_get_ctm(scaledFont.Ptr, (*C.cairo_matrix_t)(unsafe.Pointer(ctm)))
+func (scaledFont *ScaledFont) GetCTM(cTM *Matrix) {
+	C.cairo_scaled_font_get_ctm(scaledFont.Ptr, (*C.cairo_matrix_t)(unsafe.Pointer(cTM)))
 	if err := scaledFont.status(); err != nil {
 		panic(err)
 	}
@@ -1910,7 +1910,7 @@ func (surface *RecordingSurface) GetExtents(extents *Rectangle) bool {
 }
 
 // See cairo_pattern_create_rgb().
-func PatternCreateRgb(red float64, green float64, blue float64) *Pattern {
+func PatternCreateRGB(red float64, green float64, blue float64) *Pattern {
 	ret := wrapPattern(C.cairo_pattern_create_rgb(C.double(red), C.double(green), C.double(blue)))
 	if err := ret.status(); err != nil {
 		panic(err)
@@ -1919,7 +1919,7 @@ func PatternCreateRgb(red float64, green float64, blue float64) *Pattern {
 }
 
 // See cairo_pattern_create_rgba().
-func PatternCreateRgba(red float64, green float64, blue float64, alpha float64) *Pattern {
+func PatternCreateRGBA(red float64, green float64, blue float64, alpha float64) *Pattern {
 	ret := wrapPattern(C.cairo_pattern_create_rgba(C.double(red), C.double(green), C.double(blue), C.double(alpha)))
 	if err := ret.status(); err != nil {
 		panic(err)
@@ -1991,7 +1991,7 @@ func (pattern *Pattern) GetType() PatternType {
 }
 
 // See cairo_pattern_add_color_stop_rgb().
-func (pattern *Pattern) AddColorStopRgb(offset float64, red float64, green float64, blue float64) {
+func (pattern *Pattern) AddColorStopRGB(offset float64, red float64, green float64, blue float64) {
 	C.cairo_pattern_add_color_stop_rgb(pattern.Ptr, C.double(offset), C.double(red), C.double(green), C.double(blue))
 	if err := pattern.status(); err != nil {
 		panic(err)
@@ -1999,7 +1999,7 @@ func (pattern *Pattern) AddColorStopRgb(offset float64, red float64, green float
 }
 
 // See cairo_pattern_add_color_stop_rgba().
-func (pattern *Pattern) AddColorStopRgba(offset float64, red float64, green float64, blue float64, alpha float64) {
+func (pattern *Pattern) AddColorStopRGBA(offset float64, red float64, green float64, blue float64, alpha float64) {
 	C.cairo_pattern_add_color_stop_rgba(pattern.Ptr, C.double(offset), C.double(red), C.double(green), C.double(blue), C.double(alpha))
 	if err := pattern.status(); err != nil {
 		panic(err)
@@ -2055,7 +2055,7 @@ func (pattern *MeshPattern) SetControlPoint(pointNum int, x float64, y float64) 
 }
 
 // See cairo_mesh_pattern_set_corner_color_rgb().
-func (pattern *MeshPattern) SetCornerColorRgb(cornerNum int, red float64, green float64, blue float64) {
+func (pattern *MeshPattern) SetCornerColorRGB(cornerNum int, red float64, green float64, blue float64) {
 	C.cairo_mesh_pattern_set_corner_color_rgb(pattern.Ptr, C.uint(cornerNum), C.double(red), C.double(green), C.double(blue))
 	if err := pattern.status(); err != nil {
 		panic(err)
@@ -2063,7 +2063,7 @@ func (pattern *MeshPattern) SetCornerColorRgb(cornerNum int, red float64, green 
 }
 
 // See cairo_mesh_pattern_set_corner_color_rgba().
-func (pattern *MeshPattern) SetCornerColorRgba(cornerNum int, red float64, green float64, blue float64, alpha float64) {
+func (pattern *MeshPattern) SetCornerColorRGBA(cornerNum int, red float64, green float64, blue float64, alpha float64) {
 	C.cairo_mesh_pattern_set_corner_color_rgba(pattern.Ptr, C.uint(cornerNum), C.double(red), C.double(green), C.double(blue), C.double(alpha))
 	if err := pattern.status(); err != nil {
 		panic(err)

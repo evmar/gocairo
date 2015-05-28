@@ -147,10 +147,15 @@ func cNameToGo(name string) string {
 
 	parts := strings.Split(name, "_")
 	for i, p := range parts {
-		if p == "cairo" || p == "t" {
+		switch p {
+		case "cairo", "t":
 			p = ""
+		case "rgb", "rgba", "bgr", "vrgb", "vbgr", "ctm":
+			p = strings.ToUpper(p)
+		default:
+			p = strings.Title(p)
 		}
-		parts[i] = strings.Title(p)
+		parts[i] = p
 	}
 	return strings.Join(parts, "")
 }

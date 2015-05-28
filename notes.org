@@ -6,9 +6,6 @@ should instead just be
 named return params
 ** func (matrix *Matrix) InitIdentity()
 should be (m *Matrix)
-** func (scaledFont *ScaledFont) GetCtm(ctm *Matrix)
-Ctm -> CTM
-similarly for Rgba -> RGBA
 ** func (scaledFont *ScaledFont) GetFontOptions(options *FontOptions)
 options -> opts
 ** func (fontFace *ToyFontFace) GetWeight() FontWeight
