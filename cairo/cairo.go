@@ -1148,8 +1148,8 @@ func (fontFace *FontFace) GetType() FontType {
 }
 
 // See cairo_scaled_font_create().
-func ScaledFontCreate(fontFace *FontFace, fontMatrix *Matrix, cTM *Matrix, options *FontOptions) *ScaledFont {
-	ret := wrapScaledFont(C.cairo_scaled_font_create(fontFace.Ptr, (*C.cairo_matrix_t)(unsafe.Pointer(fontMatrix)), (*C.cairo_matrix_t)(unsafe.Pointer(cTM)), options.Ptr))
+func ScaledFontCreate(fontFace *FontFace, fontMatrix *Matrix, ctm *Matrix, options *FontOptions) *ScaledFont {
+	ret := wrapScaledFont(C.cairo_scaled_font_create(fontFace.Ptr, (*C.cairo_matrix_t)(unsafe.Pointer(fontMatrix)), (*C.cairo_matrix_t)(unsafe.Pointer(ctm)), options.Ptr))
 	if err := ret.status(); err != nil {
 		panic(err)
 	}
@@ -1207,8 +1207,8 @@ func (scaledFont *ScaledFont) GetFontMatrix(fontMatrix *Matrix) {
 }
 
 // See cairo_scaled_font_get_ctm().
-func (scaledFont *ScaledFont) GetCTM(cTM *Matrix) {
-	C.cairo_scaled_font_get_ctm(scaledFont.Ptr, (*C.cairo_matrix_t)(unsafe.Pointer(cTM)))
+func (scaledFont *ScaledFont) GetCTM(ctm *Matrix) {
+	C.cairo_scaled_font_get_ctm(scaledFont.Ptr, (*C.cairo_matrix_t)(unsafe.Pointer(ctm)))
 	if err := scaledFont.status(); err != nil {
 		panic(err)
 	}

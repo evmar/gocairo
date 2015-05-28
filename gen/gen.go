@@ -130,7 +130,7 @@ func (w *Writer) Source() []byte {
 	return src
 }
 
-func cNameToGo(name string) string {
+func cNameToGo(name string, upper bool) string {
 	switch name {
 	case "int":
 		return name
@@ -146,23 +146,34 @@ func cNameToGo(name string) string {
 	}
 
 	parts := strings.Split(name, "_")
-	for i, p := range parts {
+	out := ""
+	for _, p := range parts {
 		switch p {
 		case "cairo", "t":
-			p = ""
+			// skip
 		case "rgb", "rgba", "bgr", "vrgb", "vbgr", "ctm":
-			p = strings.ToUpper(p)
+			if upper || out != "" {
+				out += strings.ToUpper(p)
+			} else {
+				out += p
+			}
 		default:
-			p = strings.Title(p)
+			if upper || out != "" {
+				out += strings.Title(p)
+			} else {
+				out += p
+			}
 		}
-		parts[i] = p
 	}
-	return strings.Join(parts, "")
+	return out
 }
 
-func cNameToGoPrivate(name string) string {
-	name = cNameToGo(name)
-	return strings.ToLower(name[:1]) + name[1:]
+func cNameToGoUpper(name string) string {
+	return cNameToGo(name, true)
+}
+
+func cNameToGoLower(name string) string {
+	return cNameToGo(name, false)
 }
 
 type typeMap struct {
@@ -205,7 +216,7 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 				method: goType,
 			}
 		}
-		goName := cNameToGo(str)
+		goName := cNameToGoUpper(str)
 		if typeBlacklist[str] {
 			return nil
 		}
@@ -253,7 +264,7 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 		}
 	}
 
-	goName := cNameToGo(cName)
+	goName := cNameToGoUpper(cName)
 	m := &typeMap{
 		goType: goName,
 		cToGo: func(in string) string {
@@ -272,7 +283,7 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 
 func (w *Writer) genTypeDef(d *cc.Decl) {
 	w.Print("// See %s.", d.Name)
-	goName := cNameToGo(d.Name)
+	goName := cNameToGoUpper(d.Name)
 
 	switch d.Type.Kind {
 	case cc.Struct:
@@ -290,7 +301,7 @@ Ptr *C.%s
 			w.Print("type %s struct {", goName)
 			for _, d := range d.Type.Decls {
 				typ := cTypeToMap(d.Type)
-				w.Print("%s %s", cNameToGo(d.Name), typ.goType)
+				w.Print("%s %s", cNameToGoUpper(d.Name), typ.goType)
 			}
 			w.Print("}")
 		}
@@ -302,7 +313,7 @@ Ptr *C.%s
 			if strings.HasPrefix(constName, "CAIRO_") {
 				constName = constName[len("CAIRO_"):]
 			}
-			constName = cNameToGo(strings.ToLower(d.Name))
+			constName = cNameToGoUpper(strings.ToLower(d.Name))
 			w.Print("%s %s = C.%s", constName, goName, d.Name)
 		}
 		w.Print(")")
@@ -327,7 +338,7 @@ func shouldBeMethod(goName string, goType string) (string, string) {
 }
 
 func (w *Writer) genFunc(f *cc.Decl) bool {
-	name := cNameToGo(f.Name)
+	name := cNameToGoUpper(f.Name)
 
 	retType := cTypeToMap(f.Type.Base)
 	if retType == nil {
@@ -382,7 +393,7 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 
 		outParam := outs != nil && outs[i]
 
-		argName := cNameToGoPrivate(d.Name)
+		argName := cNameToGoLower(d.Name)
 		argType := cTypeToMap(d.Type)
 		if argType == nil {
 			log.Printf("skipped %s due to %s", f.Name, d.Type)
@@ -418,7 +429,7 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 			}
 			preCall += fmt.Sprintf("var %s C.%s\n", argName, d.Type.Base)
 			retTypeSigs = append(retTypeSigs, fmt.Sprintf(argType.goType))
-			retVals = append(retVals, argType.cToGo(cNameToGoPrivate(d.Name)))
+			retVals = append(retVals, argType.cToGo(cNameToGoLower(d.Name)))
 		} else {
 			inArgs = append(inArgs, fmt.Sprintf("%s %s", argName, argType.goType))
 		}
