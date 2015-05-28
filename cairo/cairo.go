@@ -797,19 +797,6 @@ func wrapFontFace(p *C.cairo_font_face_t) *FontFace {
 	return &FontFace{p}
 }
 
-// See cairo_glyph_t.
-type Glyph struct {
-	Index uint32
-	X     float64
-	Y     float64
-}
-
-// See cairo_text_cluster_t.
-type TextCluster struct {
-	NumBytes  int
-	NumGlyphs int
-}
-
 // See cairo_text_cluster_flags_t.
 type TextClusterFlags int
 

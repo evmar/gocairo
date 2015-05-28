@@ -39,15 +39,6 @@ var intentionalSkip = map[string]bool{
 	"cairo_matrix_init": true,
 
 	// Fancy font APIs -- TODO.
-	"cairo_glyph_allocate":             true,
-	"cairo_glyph_free":                 true,
-	"cairo_glyph_path":                 true,
-	"cairo_glyph_extents":              true,
-	"cairo_show_glyphs":                true,
-	"cairo_show_text_glyphs":           true,
-	"cairo_text_cluster_allocate":      true,
-	"cairo_text_cluster_free":          true,
-	"cairo_scaled_font_glyph_extents":  true,
 	"cairo_scaled_font_text_to_glyphs": true,
 
 	// Mime functions -- TODO.
@@ -67,6 +58,10 @@ var typeBlacklist = map[string]bool{
 	"cairo_path_data_t":      true,
 	"cairo_rectangle_int_t":  true,
 	"cairo_rectangle_list_t": true,
+
+	// Fancy font APIs -- TODO.
+	"cairo_glyph_t":        true,
+	"cairo_text_cluster_t": true,
 
 	// Raster sources -- TODO.
 	"cairo_raster_source_acquire_func_t":  true,
