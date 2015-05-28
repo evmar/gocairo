@@ -585,20 +585,22 @@ func (s Status) Error() string {
 
 func main() {
 	if len(os.Args) < 3 {
-		log.Printf("need two paths\n")
-		return
+		log.Printf("need two paths")
+		os.Exit(1)
 	}
 	inpath := os.Args[1]
 	outpath := os.Args[2]
 
 	f, err := os.Open(inpath)
 	if err != nil {
-		panic(err)
+		log.Printf("open %q: %s", inpath, err)
+		os.Exit(1)
 	}
 
 	prog, err := cc.Read(inpath, f)
 	if err != nil {
-		panic(err)
+		log.Printf("read %q: %s", inpath, err)
+		os.Exit(1)
 	}
 
 	w := &Writer{}
@@ -607,15 +609,18 @@ func main() {
 	var outf io.Writer
 	if outpath == "-" {
 		outf = os.Stdout
+		outpath = "<stdout>"
 	} else {
 		outf, err = os.Create(outpath)
 		if err != nil {
-			panic(err)
+			log.Printf("open %q: %s", outpath, err)
+			os.Exit(1)
 		}
 	}
 
 	_, err = outf.Write(w.Source())
 	if err != nil {
-		panic(err)
+		log.Printf("write %q: %s", outpath, err)
+		os.Exit(1)
 	}
 }
