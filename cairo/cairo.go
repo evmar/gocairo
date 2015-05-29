@@ -21,6 +21,7 @@ import "unsafe"
 /*
 #cgo pkg-config: cairo
 #include <cairo.h>
+#include <cairo-xlib.h>
 #include <stdlib.h>
 */
 import "C"
@@ -41,6 +42,12 @@ type ToyFontFace struct {
 }
 type MeshPattern struct {
 	*Pattern
+}
+type XlibSurface struct {
+	*Surface
+}
+type XlibDevice struct {
+	*Device
 }
 
 // See cairo_version().
@@ -2324,4 +2331,120 @@ func (dst *Region) Xor(other *Region) error {
 // See cairo_debug_reset_static_data().
 func DebugResetStaticData() {
 	C.cairo_debug_reset_static_data()
+}
+
+// See cairo_xlib_surface_create().
+func XlibSurfaceCreate(dpy *C.Display, drawable C.Drawable, visual *C.Visual, width int, height int) *XlibSurface {
+	ret := &XlibSurface{wrapSurface(C.cairo_xlib_surface_create(dpy, drawable, visual, C.int(width), C.int(height)))}
+	return ret
+}
+
+// See cairo_xlib_surface_create_for_bitmap().
+func XlibSurfaceCreateForBitmap(dpy *C.Display, bitmap C.Pixmap, screen *C.Screen, width int, height int) *XlibSurface {
+	ret := &XlibSurface{wrapSurface(C.cairo_xlib_surface_create_for_bitmap(dpy, bitmap, screen, C.int(width), C.int(height)))}
+	return ret
+}
+
+// See cairo_xlib_surface_set_size().
+func (surface *XlibSurface) SetSize(width int, height int) {
+	C.cairo_xlib_surface_set_size(surface.Ptr, C.int(width), C.int(height))
+	if err := surface.status(); err != nil {
+		panic(err)
+	}
+}
+
+// See cairo_xlib_surface_set_drawable().
+func (surface *XlibSurface) SetDrawable(drawable C.Drawable, width int, height int) {
+	C.cairo_xlib_surface_set_drawable(surface.Ptr, drawable, C.int(width), C.int(height))
+	if err := surface.status(); err != nil {
+		panic(err)
+	}
+}
+
+// See cairo_xlib_surface_get_display().
+func (surface *XlibSurface) GetDisplay() *C.Display {
+	ret := C.cairo_xlib_surface_get_display(surface.Ptr)
+	if err := surface.status(); err != nil {
+		panic(err)
+	}
+	return ret
+}
+
+// See cairo_xlib_surface_get_drawable().
+func (surface *XlibSurface) GetDrawable() C.Drawable {
+	ret := C.cairo_xlib_surface_get_drawable(surface.Ptr)
+	if err := surface.status(); err != nil {
+		panic(err)
+	}
+	return ret
+}
+
+// See cairo_xlib_surface_get_screen().
+func (surface *XlibSurface) GetScreen() *C.Screen {
+	ret := C.cairo_xlib_surface_get_screen(surface.Ptr)
+	if err := surface.status(); err != nil {
+		panic(err)
+	}
+	return ret
+}
+
+// See cairo_xlib_surface_get_visual().
+func (surface *XlibSurface) GetVisual() *C.Visual {
+	ret := C.cairo_xlib_surface_get_visual(surface.Ptr)
+	if err := surface.status(); err != nil {
+		panic(err)
+	}
+	return ret
+}
+
+// See cairo_xlib_surface_get_depth().
+func (surface *XlibSurface) GetDepth() int {
+	ret := int(C.cairo_xlib_surface_get_depth(surface.Ptr))
+	if err := surface.status(); err != nil {
+		panic(err)
+	}
+	return ret
+}
+
+// See cairo_xlib_surface_get_width().
+func (surface *XlibSurface) GetWidth() int {
+	ret := int(C.cairo_xlib_surface_get_width(surface.Ptr))
+	if err := surface.status(); err != nil {
+		panic(err)
+	}
+	return ret
+}
+
+// See cairo_xlib_surface_get_height().
+func (surface *XlibSurface) GetHeight() int {
+	ret := int(C.cairo_xlib_surface_get_height(surface.Ptr))
+	if err := surface.status(); err != nil {
+		panic(err)
+	}
+	return ret
+}
+
+// See cairo_xlib_device_debug_cap_xrender_version().
+func (device *XlibDevice) DebugCapXrenderVersion(majorVersion int, minorVersion int) {
+	C.cairo_xlib_device_debug_cap_xrender_version(device.Ptr, C.int(majorVersion), C.int(minorVersion))
+	if err := device.status(); err != nil {
+		panic(err)
+	}
+}
+
+// See cairo_xlib_device_debug_set_precision().
+func (device *XlibDevice) DebugSetPrecision(precision int) {
+	C.cairo_xlib_device_debug_set_precision(device.Ptr, C.int(precision))
+	if err := device.status(); err != nil {
+		panic(err)
+	}
+}
+
+// See cairo_xlib_device_debug_get_precision().
+func (device *XlibDevice) DebugGetPrecision() int {
+	ret := int(C.cairo_xlib_device_debug_get_precision(device.Ptr))
+	if err := device.status(); err != nil {
+		panic(err)
+	}
+	return ret
 }

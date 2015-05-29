@@ -50,6 +50,13 @@ var intentionalSkip = map[string]bool{
 
 	// Use status.String() instead.
 	"cairo_status_to_string": true,
+
+	// These are fake types defined in fake-xlib.h.
+	"Drawable": true,
+	"Pixmap":   true,
+	"Display":  true,
+	"Visual":   true,
+	"Screen":   true,
 }
 
 var typeBlacklist = map[string]bool{
@@ -110,6 +117,17 @@ var subTypes = []struct {
 	{"RecordingSurface", "Surface"},
 	{"ToyFontFace", "FontFace"},
 	{"MeshPattern", "Pattern"},
+
+	{"XlibSurface", "Surface"},
+	{"XlibDevice", "Device"},
+}
+
+var rawCTypes = map[string]bool{
+	"Display":  true,
+	"Drawable": true,
+	"Visual":   true,
+	"Pixmap":   true,
+	"Screen":   true,
 }
 
 type Writer struct {
@@ -216,6 +234,19 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 				method: goType,
 			}
 		}
+
+		if rawCTypes[str] {
+			return &typeMap{
+				goType: fmt.Sprintf("*C.%s", str),
+				cToGo: func(in string) string {
+					return in
+				},
+				goToC: func(in string) (string, string) {
+					return in, ""
+				},
+			}
+		}
+
 		goName := cNameToGoUpper(str)
 		if typeBlacklist[str] {
 			return nil
@@ -243,6 +274,19 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 	if typeBlacklist[cName] {
 		return nil
 	}
+
+	if rawCTypes[cName] {
+		return &typeMap{
+			goType: fmt.Sprintf("C.%s", cName),
+			cToGo: func(in string) string {
+				return in
+			},
+			goToC: func(in string) (string, string) {
+				return in, ""
+			},
+		}
+	}
+
 	switch cName {
 	case "cairo_bool_t":
 		return &typeMap{
@@ -511,6 +555,7 @@ import "unsafe"
 /*
 #cgo pkg-config: cairo
 #include <cairo.h>
+#include <cairo-xlib.h>
 #include <stdlib.h>
 */
 import "C"
