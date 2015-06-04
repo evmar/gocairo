@@ -130,6 +130,20 @@ var rawCTypes = map[string]bool{
 	"Screen":   true,
 }
 
+var acronyms = map[string]bool{
+	"argb":   true,
+	"argb32": true,
+	"bgr":    true,
+	"ctm":    true,
+	"rgb":    true,
+	"rgb16":  true,
+	"rgb24":  true,
+	"rgb30":  true,
+	"rgba":   true,
+	"vbgr":   true,
+	"vrgb":   true,
+}
+
 type Writer struct {
 	bytes.Buffer
 }
@@ -169,15 +183,13 @@ func cNameToGo(name string, upper bool) string {
 		switch p {
 		case "cairo", "t":
 			// skip
-		case "rgb", "rgba", "bgr", "vrgb", "vbgr", "ctm":
-			if upper || out != "" {
-				out += strings.ToUpper(p)
-			} else {
-				out += p
-			}
 		default:
 			if upper || out != "" {
-				out += strings.Title(p)
+				if acronyms[p] {
+					out += strings.ToUpper(p)
+				} else {
+					out += strings.Title(p)
+				}
 			} else {
 				out += p
 			}

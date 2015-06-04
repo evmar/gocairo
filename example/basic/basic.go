@@ -23,7 +23,7 @@ import (
 func main() {
 	log.Printf("cairo version %d/%s", cairo.Version(), cairo.VersionString())
 
-	surf := cairo.ImageSurfaceCreate(cairo.FormatRgb24, 640, 480)
+	surf := cairo.ImageSurfaceCreate(cairo.FormatRGB24, 640, 480)
 	cr := cairo.Create(surf.Surface)
 
 	cr.SetSourceRGB(0, 0, 0)

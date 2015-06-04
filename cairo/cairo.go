@@ -172,11 +172,11 @@ type Format int
 
 const (
 	FormatInvalid  Format = C.CAIRO_FORMAT_INVALID
-	FormatArgb32   Format = C.CAIRO_FORMAT_ARGB32
-	FormatRgb24    Format = C.CAIRO_FORMAT_RGB24
+	FormatARGB32   Format = C.CAIRO_FORMAT_ARGB32
+	FormatRGB24    Format = C.CAIRO_FORMAT_RGB24
 	FormatA8       Format = C.CAIRO_FORMAT_A8
 	FormatA1       Format = C.CAIRO_FORMAT_A1
-	FormatRgb16565 Format = C.CAIRO_FORMAT_RGB16_565
+	FormatRGB16565 Format = C.CAIRO_FORMAT_RGB16_565
 	FormatRgb30    Format = C.CAIRO_FORMAT_RGB30
 )
 

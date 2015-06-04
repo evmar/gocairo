@@ -27,7 +27,7 @@ func main() {
 	innerSize := size - (margin * 2)
 	step := 15
 
-	surf := cairo.ImageSurfaceCreate(cairo.FormatArgb32, size, size)
+	surf := cairo.ImageSurfaceCreate(cairo.FormatARGB32, size, size)
 	cr := cairo.Create(surf.Surface)
 
 	cr.SetSourceRGB(1, 1, 1)
