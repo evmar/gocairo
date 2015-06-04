@@ -177,7 +177,7 @@ const (
 	FormatA8       Format = C.CAIRO_FORMAT_A8
 	FormatA1       Format = C.CAIRO_FORMAT_A1
 	FormatRGB16565 Format = C.CAIRO_FORMAT_RGB16_565
-	FormatRgb30    Format = C.CAIRO_FORMAT_RGB30
+	FormatRGB30    Format = C.CAIRO_FORMAT_RGB30
 )
 
 // See cairo_create().
