@@ -1242,6 +1242,9 @@ func ToyFontFaceCreate(family string, slant FontSlant, weight FontWeight) *ToyFo
 	c_family := C.CString(family)
 	defer C.free(unsafe.Pointer(c_family))
 	ret := &ToyFontFace{wrapFontFace(C.cairo_toy_font_face_create(c_family, C.cairo_font_slant_t(slant), C.cairo_font_weight_t(weight)))}
+	if err := ret.status(); err != nil {
+		panic(err)
+	}
 	return ret
 }
 
@@ -1834,6 +1837,9 @@ func (surface *Surface) HasShowTextGlyphs() bool {
 // See cairo_image_surface_create().
 func ImageSurfaceCreate(format Format, width int, height int) *ImageSurface {
 	ret := &ImageSurface{wrapSurface(C.cairo_image_surface_create(C.cairo_format_t(format), C.int(width), C.int(height)))}
+	if err := ret.status(); err != nil {
+		panic(err)
+	}
 	return ret
 }
 
@@ -1884,12 +1890,18 @@ func ImageSurfaceCreateFromPng(filename string) *ImageSurface {
 	c_filename := C.CString(filename)
 	defer C.free(unsafe.Pointer(c_filename))
 	ret := &ImageSurface{wrapSurface(C.cairo_image_surface_create_from_png(c_filename))}
+	if err := ret.status(); err != nil {
+		panic(err)
+	}
 	return ret
 }
 
 // See cairo_recording_surface_create().
 func RecordingSurfaceCreate(content Content, extents *Rectangle) *RecordingSurface {
 	ret := &RecordingSurface{wrapSurface(C.cairo_recording_surface_create(C.cairo_content_t(content), (*C.cairo_rectangle_t)(unsafe.Pointer(extents))))}
+	if err := ret.status(); err != nil {
+		panic(err)
+	}
 	return ret
 }
 
@@ -2336,12 +2348,18 @@ func DebugResetStaticData() {
 // See cairo_xlib_surface_create().
 func XlibSurfaceCreate(dpy *C.Display, drawable C.Drawable, visual *C.Visual, width int, height int) *XlibSurface {
 	ret := &XlibSurface{wrapSurface(C.cairo_xlib_surface_create(dpy, drawable, visual, C.int(width), C.int(height)))}
+	if err := ret.status(); err != nil {
+		panic(err)
+	}
 	return ret
 }
 
 // See cairo_xlib_surface_create_for_bitmap().
 func XlibSurfaceCreateForBitmap(dpy *C.Display, bitmap C.Pixmap, screen *C.Screen, width int, height int) *XlibSurface {
 	ret := &XlibSurface{wrapSurface(C.cairo_xlib_surface_create_for_bitmap(dpy, bitmap, screen, C.int(width), C.int(height)))}
+	if err := ret.status(); err != nil {
+		panic(err)
+	}
 	return ret
 }
 

@@ -413,11 +413,12 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 		for _, t := range subTypes {
 			if strings.HasPrefix(name, t.sub) && retType.goType == "*"+t.super {
 				goType = "*" + t.sub
-				inner := retType.cToGo
+				inner := retType
 				retType = &typeMap{
 					cToGo: func(in string) string {
-						return fmt.Sprintf("&%s{%s}", t.sub, inner(in))
+						return fmt.Sprintf("&%s{%s}", t.sub, inner.cToGo(in))
 					},
+					method: inner.method,
 				}
 				break
 			}

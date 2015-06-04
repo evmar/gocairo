@@ -15,11 +15,32 @@
 package main
 
 import (
+	"log"
+	"os"
+
 	"github.com/martine/gocairo/cairo"
 )
 
-func main() {
+func demo() (success bool) {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Println("recovered error:", err)
+			success = true
+		}
+	}()
+
 	// Normally you should use one of the cairo.FormatXXX constants, but
 	// this program is demonstrating a panic.
 	cairo.ImageSurfaceCreate(cairo.Format(1000), 640, 480)
+	return
+}
+
+func main() {
+	success := demo()
+	if success {
+		log.Println("successfully caught panic")
+	} else {
+		log.Println("FAIL: should have paniced")
+		os.Exit(1)
+	}
 }
