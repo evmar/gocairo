@@ -35,6 +35,5 @@ func main() {
 	cr.MoveTo(640/10, 480/2)
 	cr.ShowText("hello, world")
 
-	surf.WriteToPng("foobar.png")
-	log.Printf("wrote foobar.png")
+	surf.WriteToPng("example.png")
 }

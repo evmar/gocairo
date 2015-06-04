@@ -15,11 +15,7 @@
 // Draws a figure with some lines, demonstrating paths and lines.
 package main
 
-import (
-	"log"
-
-	"github.com/martine/gocairo/cairo"
-)
+import "github.com/martine/gocairo/cairo"
 
 func main() {
 	size := 320
@@ -49,6 +45,5 @@ func main() {
 	}
 	surf.Flush()
 
-	surf.WriteToPng("foobar.png")
-	log.Printf("wrote foobar.png")
+	surf.WriteToPng("example.png")
 }
