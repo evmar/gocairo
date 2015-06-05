@@ -14,5 +14,5 @@ cairo-preprocessed.h:
 	sed -e 's/<X11\/Xlib\.h>/"fake-xlib.h"/' /usr/include/cairo/cairo-xlib.h | \
 	gcc -E `pkg-config --cflags cairo cairo-xlib` - > $@
 
-cairo/cairo.go: gen/gen.go cairo-preprocessed.h
-	go run gen/gen.go cairo-preprocessed.h $@
+cairo/cairo.go: gen.go cairo-preprocessed.h
+	go run gen.go cairo-preprocessed.h $@
