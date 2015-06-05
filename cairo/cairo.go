@@ -2346,8 +2346,8 @@ func DebugResetStaticData() {
 }
 
 // See cairo_xlib_surface_create().
-func XlibSurfaceCreate(dpy *C.Display, drawable C.Drawable, visual *C.Visual, width int, height int) *XlibSurface {
-	ret := &XlibSurface{wrapSurface(C.cairo_xlib_surface_create(dpy, drawable, visual, C.int(width), C.int(height)))}
+func XlibSurfaceCreate(dpy unsafe.Pointer, drawable uint64, visual unsafe.Pointer, width int, height int) *XlibSurface {
+	ret := &XlibSurface{wrapSurface(C.cairo_xlib_surface_create((*C.Display)(dpy), C.Drawable(drawable), (*C.Visual)(visual), C.int(width), C.int(height)))}
 	if err := ret.status(); err != nil {
 		panic(err)
 	}
@@ -2355,8 +2355,8 @@ func XlibSurfaceCreate(dpy *C.Display, drawable C.Drawable, visual *C.Visual, wi
 }
 
 // See cairo_xlib_surface_create_for_bitmap().
-func XlibSurfaceCreateForBitmap(dpy *C.Display, bitmap C.Pixmap, screen *C.Screen, width int, height int) *XlibSurface {
-	ret := &XlibSurface{wrapSurface(C.cairo_xlib_surface_create_for_bitmap(dpy, bitmap, screen, C.int(width), C.int(height)))}
+func XlibSurfaceCreateForBitmap(dpy unsafe.Pointer, bitmap uint64, screen unsafe.Pointer, width int, height int) *XlibSurface {
+	ret := &XlibSurface{wrapSurface(C.cairo_xlib_surface_create_for_bitmap((*C.Display)(dpy), C.Pixmap(bitmap), (*C.Screen)(screen), C.int(width), C.int(height)))}
 	if err := ret.status(); err != nil {
 		panic(err)
 	}
@@ -2372,16 +2372,16 @@ func (surface *XlibSurface) SetSize(width int, height int) {
 }
 
 // See cairo_xlib_surface_set_drawable().
-func (surface *XlibSurface) SetDrawable(drawable C.Drawable, width int, height int) {
-	C.cairo_xlib_surface_set_drawable(surface.Ptr, drawable, C.int(width), C.int(height))
+func (surface *XlibSurface) SetDrawable(drawable uint64, width int, height int) {
+	C.cairo_xlib_surface_set_drawable(surface.Ptr, C.Drawable(drawable), C.int(width), C.int(height))
 	if err := surface.status(); err != nil {
 		panic(err)
 	}
 }
 
 // See cairo_xlib_surface_get_display().
-func (surface *XlibSurface) GetDisplay() *C.Display {
-	ret := C.cairo_xlib_surface_get_display(surface.Ptr)
+func (surface *XlibSurface) GetDisplay() unsafe.Pointer {
+	ret := unsafe.Pointer(C.cairo_xlib_surface_get_display(surface.Ptr))
 	if err := surface.status(); err != nil {
 		panic(err)
 	}
@@ -2389,8 +2389,8 @@ func (surface *XlibSurface) GetDisplay() *C.Display {
 }
 
 // See cairo_xlib_surface_get_drawable().
-func (surface *XlibSurface) GetDrawable() C.Drawable {
-	ret := C.cairo_xlib_surface_get_drawable(surface.Ptr)
+func (surface *XlibSurface) GetDrawable() uint64 {
+	ret := uint64(C.cairo_xlib_surface_get_drawable(surface.Ptr))
 	if err := surface.status(); err != nil {
 		panic(err)
 	}
@@ -2398,8 +2398,8 @@ func (surface *XlibSurface) GetDrawable() C.Drawable {
 }
 
 // See cairo_xlib_surface_get_screen().
-func (surface *XlibSurface) GetScreen() *C.Screen {
-	ret := C.cairo_xlib_surface_get_screen(surface.Ptr)
+func (surface *XlibSurface) GetScreen() unsafe.Pointer {
+	ret := unsafe.Pointer(C.cairo_xlib_surface_get_screen(surface.Ptr))
 	if err := surface.status(); err != nil {
 		panic(err)
 	}
@@ -2407,8 +2407,8 @@ func (surface *XlibSurface) GetScreen() *C.Screen {
 }
 
 // See cairo_xlib_surface_get_visual().
-func (surface *XlibSurface) GetVisual() *C.Visual {
-	ret := C.cairo_xlib_surface_get_visual(surface.Ptr)
+func (surface *XlibSurface) GetVisual() unsafe.Pointer {
+	ret := unsafe.Pointer(C.cairo_xlib_surface_get_visual(surface.Ptr))
 	if err := surface.status(); err != nil {
 		panic(err)
 	}

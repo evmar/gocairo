@@ -249,12 +249,12 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 
 		if rawCTypes[str] {
 			return &typeMap{
-				goType: fmt.Sprintf("*C.%s", str),
+				goType: "unsafe.Pointer",
 				cToGo: func(in string) string {
-					return in
+					return fmt.Sprintf("unsafe.Pointer(%s)", in)
 				},
 				goToC: func(in string) (string, string) {
-					return in, ""
+					return fmt.Sprintf("(*C.%s)(%s)", str, in), ""
 				},
 			}
 		}
@@ -287,18 +287,6 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 		return nil
 	}
 
-	if rawCTypes[cName] {
-		return &typeMap{
-			goType: fmt.Sprintf("C.%s", cName),
-			cToGo: func(in string) string {
-				return in
-			},
-			goToC: func(in string) (string, string) {
-				return in, ""
-			},
-		}
-	}
-
 	switch cName {
 	case "cairo_bool_t":
 		return &typeMap{
@@ -317,6 +305,16 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 				return fmt.Sprintf("Status(%s).toError()", in)
 			},
 			goToC: nil,
+		}
+	case "Drawable", "Pixmap":
+		return &typeMap{
+			goType: "uint64",
+			cToGo: func(in string) string {
+				return fmt.Sprintf("uint64(%s)", in)
+			},
+			goToC: func(in string) (string, string) {
+				return fmt.Sprintf("C.%s(%s)", cName, in), ""
+			},
 		}
 	}
 
