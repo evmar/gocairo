@@ -1,12 +1,12 @@
-* todo list from bradfitz review
-** func (cr *Context) Arc(xc float64, yc float64, radius float64, angle1 float64, angle2 float64)
+** todo list from bradfitz review
+*** func (cr *Context) Arc(xc float64, yc float64, radius float64, angle1 float64, angle2 float64)
 should instead just be
 (a, b, c, d float64)
-** func (cr *Context) ClipExtents() (float64, float64, float64, float64)
+*** func (cr *Context) ClipExtents() (float64, float64, float64, float64)
 named return params
-** func (matrix *Matrix) InitIdentity()
+*** func (matrix *Matrix) InitIdentity()
 should be (m *Matrix)
-** func (scaledFont *ScaledFont) GetFontOptions(options *FontOptions)
+*** func (scaledFont *ScaledFont) GetFontOptions(options *FontOptions)
 options -> opts
-** func (fontFace *ToyFontFace) GetWeight() FontWeight
+*** func (fontFace *ToyFontFace) GetWeight() FontWeight
 GetWeight -> Weight
