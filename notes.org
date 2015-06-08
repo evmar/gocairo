@@ -8,5 +8,12 @@ named return params
 should be (m *Matrix)
 *** func (scaledFont *ScaledFont) GetFontOptions(options *FontOptions)
 options -> opts
-*** func (fontFace *ToyFontFace) GetWeight() FontWeight
-GetWeight -> Weight
+*** GetFoo() -> Foo()
+e.g. func (fontFace *ToyFontFace) GetWeight() FontWeight
+** other things to fix
+*** WriteToPng(filename string) and related
+eliminate, and instead provide an interface that works with io.Writer
+*** link to C documentation
+hard because URLs for C docs include a section name; might be able to
+extract this from the devhelp format docs (?).
+*** Xor() -> XOR()
