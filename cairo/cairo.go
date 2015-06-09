@@ -37,6 +37,9 @@ type ImageSurface struct {
 type RecordingSurface struct {
 	*Surface
 }
+type SurfaceObserver struct {
+	*Surface
+}
 type ToyFontFace struct {
 	*FontFace
 }
@@ -1552,8 +1555,8 @@ const (
 )
 
 // See cairo_surface_create_observer().
-func (target *Surface) CreateObserver(mode SurfaceObserverMode) *Surface {
-	ret := wrapSurface(C.cairo_surface_create_observer(target.Ptr, C.cairo_surface_observer_mode_t(mode)))
+func (target *Surface) CreateObserver(mode SurfaceObserverMode) *SurfaceObserver {
+	ret := &SurfaceObserver{wrapSurface(C.cairo_surface_create_observer(target.Ptr, C.cairo_surface_observer_mode_t(mode)))}
 	if err := target.status(); err != nil {
 		panic(err)
 	}
@@ -1561,7 +1564,7 @@ func (target *Surface) CreateObserver(mode SurfaceObserverMode) *Surface {
 }
 
 // See cairo_surface_observer_elapsed().
-func (surface *Surface) ObserverElapsed() float64 {
+func (surface *SurfaceObserver) Elapsed() float64 {
 	ret := float64(C.cairo_surface_observer_elapsed(surface.Ptr))
 	if err := surface.status(); err != nil {
 		panic(err)

@@ -115,6 +115,7 @@ var subTypes = []struct {
 }{
 	{"ImageSurface", "Surface"},
 	{"RecordingSurface", "Surface"},
+	{"SurfaceObserver", "Surface"},
 	{"ToyFontFace", "FontFace"},
 	{"MeshPattern", "Pattern"},
 
@@ -380,13 +381,13 @@ func shouldBeMethod(goName string, goType string) (string, string) {
 	if goType == "Context" {
 		return goName, ""
 	}
-	if goType != "" && strings.HasPrefix(goName, goType) {
-		return goName[len(goType):], ""
-	}
 	for _, t := range subTypes {
 		if strings.HasPrefix(goName, t.sub) && goType == t.super {
 			return goName[len(t.sub):], "*" + t.sub
 		}
+	}
+	if goType != "" && strings.HasPrefix(goName, goType) {
+		return goName[len(goType):], ""
 	}
 	return "", ""
 }
@@ -409,7 +410,9 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 		// If the function looks like one that returns a subtype
 		// (e.g. ImageSurfaceCreate), adjust the return type code.
 		for _, t := range subTypes {
-			if strings.HasPrefix(name, t.sub) && retType.goType == "*"+t.super {
+			if retType.goType == "*"+t.super &&
+				(strings.HasPrefix(name, t.sub) ||
+					(name == "SurfaceCreateObserver" && t.sub == "SurfaceObserver")) {
 				goType = "*" + t.sub
 				inner := retType
 				retType = &typeMap{
