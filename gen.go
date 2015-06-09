@@ -135,7 +135,9 @@ var acronyms = map[string]bool{
 	"argb":   true,
 	"argb32": true,
 	"bgr":    true,
+	"cogl":   true,
 	"ctm":    true,
+	"drm":    true,
 	"rgb":    true,
 	"rgb16":  true,
 	"rgb24":  true,
@@ -143,6 +145,9 @@ var acronyms = map[string]bool{
 	"rgba":   true,
 	"vbgr":   true,
 	"vrgb":   true,
+	"xcb":    true,
+	"xml":    true,
+	"xor":    true,
 }
 
 type Writer struct {

@@ -256,7 +256,7 @@ const (
 	OperatorDestIn        Operator = C.CAIRO_OPERATOR_DEST_IN
 	OperatorDestOut       Operator = C.CAIRO_OPERATOR_DEST_OUT
 	OperatorDestAtop      Operator = C.CAIRO_OPERATOR_DEST_ATOP
-	OperatorXor           Operator = C.CAIRO_OPERATOR_XOR
+	OperatorXOR           Operator = C.CAIRO_OPERATOR_XOR
 	OperatorAdd           Operator = C.CAIRO_OPERATOR_ADD
 	OperatorSaturate      Operator = C.CAIRO_OPERATOR_SATURATE
 	OperatorMultiply      Operator = C.CAIRO_OPERATOR_MULTIPLY
@@ -1452,13 +1452,13 @@ func (cr *Context) status() error {
 type DeviceType int
 
 const (
-	DeviceTypeDrm     DeviceType = C.CAIRO_DEVICE_TYPE_DRM
+	DeviceTypeDRM     DeviceType = C.CAIRO_DEVICE_TYPE_DRM
 	DeviceTypeGl      DeviceType = C.CAIRO_DEVICE_TYPE_GL
 	DeviceTypeScript  DeviceType = C.CAIRO_DEVICE_TYPE_SCRIPT
-	DeviceTypeXcb     DeviceType = C.CAIRO_DEVICE_TYPE_XCB
+	DeviceTypeXCB     DeviceType = C.CAIRO_DEVICE_TYPE_XCB
 	DeviceTypeXlib    DeviceType = C.CAIRO_DEVICE_TYPE_XLIB
-	DeviceTypeXml     DeviceType = C.CAIRO_DEVICE_TYPE_XML
-	DeviceTypeCogl    DeviceType = C.CAIRO_DEVICE_TYPE_COGL
+	DeviceTypeXML     DeviceType = C.CAIRO_DEVICE_TYPE_XML
+	DeviceTypeCOGL    DeviceType = C.CAIRO_DEVICE_TYPE_COGL
 	DeviceTypeWin32   DeviceType = C.CAIRO_DEVICE_TYPE_WIN32
 	DeviceTypeInvalid DeviceType = C.CAIRO_DEVICE_TYPE_INVALID
 )
@@ -1657,7 +1657,7 @@ const (
 	SurfaceTypePdf           SurfaceType = C.CAIRO_SURFACE_TYPE_PDF
 	SurfaceTypePs            SurfaceType = C.CAIRO_SURFACE_TYPE_PS
 	SurfaceTypeXlib          SurfaceType = C.CAIRO_SURFACE_TYPE_XLIB
-	SurfaceTypeXcb           SurfaceType = C.CAIRO_SURFACE_TYPE_XCB
+	SurfaceTypeXCB           SurfaceType = C.CAIRO_SURFACE_TYPE_XCB
 	SurfaceTypeGlitz         SurfaceType = C.CAIRO_SURFACE_TYPE_GLITZ
 	SurfaceTypeQuartz        SurfaceType = C.CAIRO_SURFACE_TYPE_QUARTZ
 	SurfaceTypeWin32         SurfaceType = C.CAIRO_SURFACE_TYPE_WIN32
@@ -1672,12 +1672,12 @@ const (
 	SurfaceTypeRecording     SurfaceType = C.CAIRO_SURFACE_TYPE_RECORDING
 	SurfaceTypeVg            SurfaceType = C.CAIRO_SURFACE_TYPE_VG
 	SurfaceTypeGl            SurfaceType = C.CAIRO_SURFACE_TYPE_GL
-	SurfaceTypeDrm           SurfaceType = C.CAIRO_SURFACE_TYPE_DRM
+	SurfaceTypeDRM           SurfaceType = C.CAIRO_SURFACE_TYPE_DRM
 	SurfaceTypeTee           SurfaceType = C.CAIRO_SURFACE_TYPE_TEE
-	SurfaceTypeXml           SurfaceType = C.CAIRO_SURFACE_TYPE_XML
+	SurfaceTypeXML           SurfaceType = C.CAIRO_SURFACE_TYPE_XML
 	SurfaceTypeSkia          SurfaceType = C.CAIRO_SURFACE_TYPE_SKIA
 	SurfaceTypeSubsurface    SurfaceType = C.CAIRO_SURFACE_TYPE_SUBSURFACE
-	SurfaceTypeCogl          SurfaceType = C.CAIRO_SURFACE_TYPE_COGL
+	SurfaceTypeCOGL          SurfaceType = C.CAIRO_SURFACE_TYPE_COGL
 )
 
 // See cairo_surface_get_type().
@@ -2335,7 +2335,7 @@ func (dst *Region) Union(other *Region) error {
 }
 
 // See cairo_region_xor().
-func (dst *Region) Xor(other *Region) error {
+func (dst *Region) XOR(other *Region) error {
 	ret := Status(C.cairo_region_xor(dst.Ptr, other.Ptr)).toError()
 	if err := dst.status(); err != nil {
 		panic(err)
