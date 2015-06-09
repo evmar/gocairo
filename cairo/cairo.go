@@ -290,7 +290,7 @@ func (cr *Context) SetSource(source *Pattern) {
 }
 
 // See cairo_set_source_rgb().
-func (cr *Context) SetSourceRGB(red float64, green float64, blue float64) {
+func (cr *Context) SetSourceRGB(red, green, blue float64) {
 	C.cairo_set_source_rgb(cr.Ptr, C.double(red), C.double(green), C.double(blue))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -298,7 +298,7 @@ func (cr *Context) SetSourceRGB(red float64, green float64, blue float64) {
 }
 
 // See cairo_set_source_rgba().
-func (cr *Context) SetSourceRGBA(red float64, green float64, blue float64, alpha float64) {
+func (cr *Context) SetSourceRGBA(red, green, blue, alpha float64) {
 	C.cairo_set_source_rgba(cr.Ptr, C.double(red), C.double(green), C.double(blue), C.double(alpha))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -306,7 +306,7 @@ func (cr *Context) SetSourceRGBA(red float64, green float64, blue float64, alpha
 }
 
 // See cairo_set_source_surface().
-func (cr *Context) SetSourceSurface(surface *Surface, x float64, y float64) {
+func (cr *Context) SetSourceSurface(surface *Surface, x, y float64) {
 	C.cairo_set_source_surface(cr.Ptr, surface.Ptr, C.double(x), C.double(y))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -414,7 +414,7 @@ func (cr *Context) SetMiterLimit(limit float64) {
 }
 
 // See cairo_translate().
-func (cr *Context) Translate(tx float64, ty float64) {
+func (cr *Context) Translate(tx, ty float64) {
 	C.cairo_translate(cr.Ptr, C.double(tx), C.double(ty))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -422,7 +422,7 @@ func (cr *Context) Translate(tx float64, ty float64) {
 }
 
 // See cairo_scale().
-func (cr *Context) Scale(sx float64, sy float64) {
+func (cr *Context) Scale(sx, sy float64) {
 	C.cairo_scale(cr.Ptr, C.double(sx), C.double(sy))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -462,7 +462,7 @@ func (cr *Context) IdentityMatrix() {
 }
 
 // See cairo_user_to_device().
-func (cr *Context) UserToDevice(x *float64, y *float64) {
+func (cr *Context) UserToDevice(x, y *float64) {
 	C.cairo_user_to_device(cr.Ptr, (*C.double)(unsafe.Pointer(x)), (*C.double)(unsafe.Pointer(y)))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -470,7 +470,7 @@ func (cr *Context) UserToDevice(x *float64, y *float64) {
 }
 
 // See cairo_user_to_device_distance().
-func (cr *Context) UserToDeviceDistance(dx *float64, dy *float64) {
+func (cr *Context) UserToDeviceDistance(dx, dy *float64) {
 	C.cairo_user_to_device_distance(cr.Ptr, (*C.double)(unsafe.Pointer(dx)), (*C.double)(unsafe.Pointer(dy)))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -478,7 +478,7 @@ func (cr *Context) UserToDeviceDistance(dx *float64, dy *float64) {
 }
 
 // See cairo_device_to_user().
-func (cr *Context) DeviceToUser(x *float64, y *float64) {
+func (cr *Context) DeviceToUser(x, y *float64) {
 	C.cairo_device_to_user(cr.Ptr, (*C.double)(unsafe.Pointer(x)), (*C.double)(unsafe.Pointer(y)))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -486,7 +486,7 @@ func (cr *Context) DeviceToUser(x *float64, y *float64) {
 }
 
 // See cairo_device_to_user_distance().
-func (cr *Context) DeviceToUserDistance(dx *float64, dy *float64) {
+func (cr *Context) DeviceToUserDistance(dx, dy *float64) {
 	C.cairo_device_to_user_distance(cr.Ptr, (*C.double)(unsafe.Pointer(dx)), (*C.double)(unsafe.Pointer(dy)))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -502,7 +502,7 @@ func (cr *Context) NewPath() {
 }
 
 // See cairo_move_to().
-func (cr *Context) MoveTo(x float64, y float64) {
+func (cr *Context) MoveTo(x, y float64) {
 	C.cairo_move_to(cr.Ptr, C.double(x), C.double(y))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -518,7 +518,7 @@ func (cr *Context) NewSubPath() {
 }
 
 // See cairo_line_to().
-func (cr *Context) LineTo(x float64, y float64) {
+func (cr *Context) LineTo(x, y float64) {
 	C.cairo_line_to(cr.Ptr, C.double(x), C.double(y))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -526,7 +526,7 @@ func (cr *Context) LineTo(x float64, y float64) {
 }
 
 // See cairo_curve_to().
-func (cr *Context) CurveTo(x1 float64, y1 float64, x2 float64, y2 float64, x3 float64, y3 float64) {
+func (cr *Context) CurveTo(x1, y1, x2, y2, x3, y3 float64) {
 	C.cairo_curve_to(cr.Ptr, C.double(x1), C.double(y1), C.double(x2), C.double(y2), C.double(x3), C.double(y3))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -534,7 +534,7 @@ func (cr *Context) CurveTo(x1 float64, y1 float64, x2 float64, y2 float64, x3 fl
 }
 
 // See cairo_arc().
-func (cr *Context) Arc(xc float64, yc float64, radius float64, angle1 float64, angle2 float64) {
+func (cr *Context) Arc(xc, yc, radius, angle1, angle2 float64) {
 	C.cairo_arc(cr.Ptr, C.double(xc), C.double(yc), C.double(radius), C.double(angle1), C.double(angle2))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -542,7 +542,7 @@ func (cr *Context) Arc(xc float64, yc float64, radius float64, angle1 float64, a
 }
 
 // See cairo_arc_negative().
-func (cr *Context) ArcNegative(xc float64, yc float64, radius float64, angle1 float64, angle2 float64) {
+func (cr *Context) ArcNegative(xc, yc, radius, angle1, angle2 float64) {
 	C.cairo_arc_negative(cr.Ptr, C.double(xc), C.double(yc), C.double(radius), C.double(angle1), C.double(angle2))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -550,7 +550,7 @@ func (cr *Context) ArcNegative(xc float64, yc float64, radius float64, angle1 fl
 }
 
 // See cairo_rel_move_to().
-func (cr *Context) RelMoveTo(dx float64, dy float64) {
+func (cr *Context) RelMoveTo(dx, dy float64) {
 	C.cairo_rel_move_to(cr.Ptr, C.double(dx), C.double(dy))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -558,7 +558,7 @@ func (cr *Context) RelMoveTo(dx float64, dy float64) {
 }
 
 // See cairo_rel_line_to().
-func (cr *Context) RelLineTo(dx float64, dy float64) {
+func (cr *Context) RelLineTo(dx, dy float64) {
 	C.cairo_rel_line_to(cr.Ptr, C.double(dx), C.double(dy))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -566,7 +566,7 @@ func (cr *Context) RelLineTo(dx float64, dy float64) {
 }
 
 // See cairo_rel_curve_to().
-func (cr *Context) RelCurveTo(dx1 float64, dy1 float64, dx2 float64, dy2 float64, dx3 float64, dy3 float64) {
+func (cr *Context) RelCurveTo(dx1, dy1, dx2, dy2, dx3, dy3 float64) {
 	C.cairo_rel_curve_to(cr.Ptr, C.double(dx1), C.double(dy1), C.double(dx2), C.double(dy2), C.double(dx3), C.double(dy3))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -574,7 +574,7 @@ func (cr *Context) RelCurveTo(dx1 float64, dy1 float64, dx2 float64, dy2 float64
 }
 
 // See cairo_rectangle().
-func (cr *Context) Rectangle(x float64, y float64, width float64, height float64) {
+func (cr *Context) Rectangle(x, y, width, height float64) {
 	C.cairo_rectangle(cr.Ptr, C.double(x), C.double(y), C.double(width), C.double(height))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -628,7 +628,7 @@ func (cr *Context) Mask(pattern *Pattern) {
 }
 
 // See cairo_mask_surface().
-func (cr *Context) MaskSurface(surface *Surface, surfaceX float64, surfaceY float64) {
+func (cr *Context) MaskSurface(surface *Surface, surfaceX, surfaceY float64) {
 	C.cairo_mask_surface(cr.Ptr, surface.Ptr, C.double(surfaceX), C.double(surfaceY))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -684,7 +684,7 @@ func (cr *Context) ShowPage() {
 }
 
 // See cairo_in_stroke().
-func (cr *Context) InStroke(x float64, y float64) bool {
+func (cr *Context) InStroke(x, y float64) bool {
 	ret := C.cairo_in_stroke(cr.Ptr, C.double(x), C.double(y)) != 0
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -693,7 +693,7 @@ func (cr *Context) InStroke(x float64, y float64) bool {
 }
 
 // See cairo_in_fill().
-func (cr *Context) InFill(x float64, y float64) bool {
+func (cr *Context) InFill(x, y float64) bool {
 	ret := C.cairo_in_fill(cr.Ptr, C.double(x), C.double(y)) != 0
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -702,7 +702,7 @@ func (cr *Context) InFill(x float64, y float64) bool {
 }
 
 // See cairo_in_clip().
-func (cr *Context) InClip(x float64, y float64) bool {
+func (cr *Context) InClip(x, y float64) bool {
 	ret := C.cairo_in_clip(cr.Ptr, C.double(x), C.double(y)) != 0
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -1155,7 +1155,7 @@ func (fontFace *FontFace) GetType() FontType {
 }
 
 // See cairo_scaled_font_create().
-func ScaledFontCreate(fontFace *FontFace, fontMatrix *Matrix, ctm *Matrix, options *FontOptions) *ScaledFont {
+func ScaledFontCreate(fontFace *FontFace, fontMatrix, ctm *Matrix, options *FontOptions) *ScaledFont {
 	ret := wrapScaledFont(C.cairo_scaled_font_create(fontFace.Ptr, (*C.cairo_matrix_t)(unsafe.Pointer(fontMatrix)), (*C.cairo_matrix_t)(unsafe.Pointer(ctm)), options.Ptr))
 	if err := ret.status(); err != nil {
 		panic(err)
@@ -1396,7 +1396,7 @@ func (cr *Context) GetDashCount() int {
 }
 
 // See cairo_get_dash().
-func (cr *Context) GetDash(dashes *float64, offset *float64) {
+func (cr *Context) GetDash(dashes, offset *float64) {
 	C.cairo_get_dash(cr.Ptr, (*C.double)(unsafe.Pointer(dashes)), (*C.double)(unsafe.Pointer(offset)))
 	if err := cr.status(); err != nil {
 		panic(err)
@@ -1509,7 +1509,7 @@ func (device *Device) Finish() {
 }
 
 // See cairo_surface_create_similar().
-func (other *Surface) CreateSimilar(content Content, width int, height int) *Surface {
+func (other *Surface) CreateSimilar(content Content, width, height int) *Surface {
 	ret := wrapSurface(C.cairo_surface_create_similar(other.Ptr, C.cairo_content_t(content), C.int(width), C.int(height)))
 	if err := other.status(); err != nil {
 		panic(err)
@@ -1518,7 +1518,7 @@ func (other *Surface) CreateSimilar(content Content, width int, height int) *Sur
 }
 
 // See cairo_surface_create_similar_image().
-func (other *Surface) CreateSimilarImage(format Format, width int, height int) *Surface {
+func (other *Surface) CreateSimilarImage(format Format, width, height int) *Surface {
 	ret := wrapSurface(C.cairo_surface_create_similar_image(other.Ptr, C.cairo_format_t(format), C.int(width), C.int(height)))
 	if err := other.status(); err != nil {
 		panic(err)
@@ -1535,7 +1535,7 @@ func (surface *Surface) UnmapImage(image *Surface) {
 }
 
 // See cairo_surface_create_for_rectangle().
-func (target *Surface) CreateForRectangle(x float64, y float64, width float64, height float64) *Surface {
+func (target *Surface) CreateForRectangle(x, y, width, height float64) *Surface {
 	ret := wrapSurface(C.cairo_surface_create_for_rectangle(target.Ptr, C.double(x), C.double(y), C.double(width), C.double(height)))
 	if err := target.status(); err != nil {
 		panic(err)
@@ -1742,7 +1742,7 @@ func (surface *Surface) MarkDirty() {
 }
 
 // See cairo_surface_mark_dirty_rectangle().
-func (surface *Surface) MarkDirtyRectangle(x int, y int, width int, height int) {
+func (surface *Surface) MarkDirtyRectangle(x, y, width, height int) {
 	C.cairo_surface_mark_dirty_rectangle(surface.Ptr, C.int(x), C.int(y), C.int(width), C.int(height))
 	if err := surface.status(); err != nil {
 		panic(err)
@@ -1750,7 +1750,7 @@ func (surface *Surface) MarkDirtyRectangle(x int, y int, width int, height int) 
 }
 
 // See cairo_surface_set_device_scale().
-func (surface *Surface) SetDeviceScale(xScale float64, yScale float64) {
+func (surface *Surface) SetDeviceScale(xScale, yScale float64) {
 	C.cairo_surface_set_device_scale(surface.Ptr, C.double(xScale), C.double(yScale))
 	if err := surface.status(); err != nil {
 		panic(err)
@@ -1770,7 +1770,7 @@ func (surface *Surface) GetDeviceScale() (float64, float64) {
 }
 
 // See cairo_surface_set_device_offset().
-func (surface *Surface) SetDeviceOffset(xOffset float64, yOffset float64) {
+func (surface *Surface) SetDeviceOffset(xOffset, yOffset float64) {
 	C.cairo_surface_set_device_offset(surface.Ptr, C.double(xOffset), C.double(yOffset))
 	if err := surface.status(); err != nil {
 		panic(err)
@@ -1790,7 +1790,7 @@ func (surface *Surface) GetDeviceOffset() (float64, float64) {
 }
 
 // See cairo_surface_set_fallback_resolution().
-func (surface *Surface) SetFallbackResolution(xPixelsPerInch float64, yPixelsPerInch float64) {
+func (surface *Surface) SetFallbackResolution(xPixelsPerInch, yPixelsPerInch float64) {
 	C.cairo_surface_set_fallback_resolution(surface.Ptr, C.double(xPixelsPerInch), C.double(yPixelsPerInch))
 	if err := surface.status(); err != nil {
 		panic(err)
@@ -1835,7 +1835,7 @@ func (surface *Surface) HasShowTextGlyphs() bool {
 }
 
 // See cairo_image_surface_create().
-func ImageSurfaceCreate(format Format, width int, height int) *ImageSurface {
+func ImageSurfaceCreate(format Format, width, height int) *ImageSurface {
 	ret := &ImageSurface{wrapSurface(C.cairo_image_surface_create(C.cairo_format_t(format), C.int(width), C.int(height)))}
 	if err := ret.status(); err != nil {
 		panic(err)
@@ -1929,7 +1929,7 @@ func (surface *RecordingSurface) GetExtents(extents *Rectangle) bool {
 }
 
 // See cairo_pattern_create_rgb().
-func PatternCreateRGB(red float64, green float64, blue float64) *Pattern {
+func PatternCreateRGB(red, green, blue float64) *Pattern {
 	ret := wrapPattern(C.cairo_pattern_create_rgb(C.double(red), C.double(green), C.double(blue)))
 	if err := ret.status(); err != nil {
 		panic(err)
@@ -1938,7 +1938,7 @@ func PatternCreateRGB(red float64, green float64, blue float64) *Pattern {
 }
 
 // See cairo_pattern_create_rgba().
-func PatternCreateRGBA(red float64, green float64, blue float64, alpha float64) *Pattern {
+func PatternCreateRGBA(red, green, blue, alpha float64) *Pattern {
 	ret := wrapPattern(C.cairo_pattern_create_rgba(C.double(red), C.double(green), C.double(blue), C.double(alpha)))
 	if err := ret.status(); err != nil {
 		panic(err)
@@ -1956,7 +1956,7 @@ func PatternCreateForSurface(surface *Surface) *Pattern {
 }
 
 // See cairo_pattern_create_linear().
-func PatternCreateLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Pattern {
+func PatternCreateLinear(x0, y0, x1, y1 float64) *Pattern {
 	ret := wrapPattern(C.cairo_pattern_create_linear(C.double(x0), C.double(y0), C.double(x1), C.double(y1)))
 	if err := ret.status(); err != nil {
 		panic(err)
@@ -1965,7 +1965,7 @@ func PatternCreateLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Patter
 }
 
 // See cairo_pattern_create_radial().
-func PatternCreateRadial(cx0 float64, cy0 float64, radius0 float64, cx1 float64, cy1 float64, radius1 float64) *Pattern {
+func PatternCreateRadial(cx0, cy0, radius0, cx1, cy1, radius1 float64) *Pattern {
 	ret := wrapPattern(C.cairo_pattern_create_radial(C.double(cx0), C.double(cy0), C.double(radius0), C.double(cx1), C.double(cy1), C.double(radius1)))
 	if err := ret.status(); err != nil {
 		panic(err)
@@ -2010,7 +2010,7 @@ func (pattern *Pattern) GetType() PatternType {
 }
 
 // See cairo_pattern_add_color_stop_rgb().
-func (pattern *Pattern) AddColorStopRGB(offset float64, red float64, green float64, blue float64) {
+func (pattern *Pattern) AddColorStopRGB(offset, red, green, blue float64) {
 	C.cairo_pattern_add_color_stop_rgb(pattern.Ptr, C.double(offset), C.double(red), C.double(green), C.double(blue))
 	if err := pattern.status(); err != nil {
 		panic(err)
@@ -2018,7 +2018,7 @@ func (pattern *Pattern) AddColorStopRGB(offset float64, red float64, green float
 }
 
 // See cairo_pattern_add_color_stop_rgba().
-func (pattern *Pattern) AddColorStopRGBA(offset float64, red float64, green float64, blue float64, alpha float64) {
+func (pattern *Pattern) AddColorStopRGBA(offset, red, green, blue, alpha float64) {
 	C.cairo_pattern_add_color_stop_rgba(pattern.Ptr, C.double(offset), C.double(red), C.double(green), C.double(blue), C.double(alpha))
 	if err := pattern.status(); err != nil {
 		panic(err)
@@ -2042,7 +2042,7 @@ func (pattern *MeshPattern) EndPatch() {
 }
 
 // See cairo_mesh_pattern_curve_to().
-func (pattern *MeshPattern) CurveTo(x1 float64, y1 float64, x2 float64, y2 float64, x3 float64, y3 float64) {
+func (pattern *MeshPattern) CurveTo(x1, y1, x2, y2, x3, y3 float64) {
 	C.cairo_mesh_pattern_curve_to(pattern.Ptr, C.double(x1), C.double(y1), C.double(x2), C.double(y2), C.double(x3), C.double(y3))
 	if err := pattern.status(); err != nil {
 		panic(err)
@@ -2050,7 +2050,7 @@ func (pattern *MeshPattern) CurveTo(x1 float64, y1 float64, x2 float64, y2 float
 }
 
 // See cairo_mesh_pattern_line_to().
-func (pattern *MeshPattern) LineTo(x float64, y float64) {
+func (pattern *MeshPattern) LineTo(x, y float64) {
 	C.cairo_mesh_pattern_line_to(pattern.Ptr, C.double(x), C.double(y))
 	if err := pattern.status(); err != nil {
 		panic(err)
@@ -2058,7 +2058,7 @@ func (pattern *MeshPattern) LineTo(x float64, y float64) {
 }
 
 // See cairo_mesh_pattern_move_to().
-func (pattern *MeshPattern) MoveTo(x float64, y float64) {
+func (pattern *MeshPattern) MoveTo(x, y float64) {
 	C.cairo_mesh_pattern_move_to(pattern.Ptr, C.double(x), C.double(y))
 	if err := pattern.status(); err != nil {
 		panic(err)
@@ -2066,7 +2066,7 @@ func (pattern *MeshPattern) MoveTo(x float64, y float64) {
 }
 
 // See cairo_mesh_pattern_set_control_point().
-func (pattern *MeshPattern) SetControlPoint(pointNum int, x float64, y float64) {
+func (pattern *MeshPattern) SetControlPoint(pointNum int, x, y float64) {
 	C.cairo_mesh_pattern_set_control_point(pattern.Ptr, C.uint(pointNum), C.double(x), C.double(y))
 	if err := pattern.status(); err != nil {
 		panic(err)
@@ -2074,7 +2074,7 @@ func (pattern *MeshPattern) SetControlPoint(pointNum int, x float64, y float64) 
 }
 
 // See cairo_mesh_pattern_set_corner_color_rgb().
-func (pattern *MeshPattern) SetCornerColorRGB(cornerNum int, red float64, green float64, blue float64) {
+func (pattern *MeshPattern) SetCornerColorRGB(cornerNum int, red, green, blue float64) {
 	C.cairo_mesh_pattern_set_corner_color_rgb(pattern.Ptr, C.uint(cornerNum), C.double(red), C.double(green), C.double(blue))
 	if err := pattern.status(); err != nil {
 		panic(err)
@@ -2082,7 +2082,7 @@ func (pattern *MeshPattern) SetCornerColorRGB(cornerNum int, red float64, green 
 }
 
 // See cairo_mesh_pattern_set_corner_color_rgba().
-func (pattern *MeshPattern) SetCornerColorRGBA(cornerNum int, red float64, green float64, blue float64, alpha float64) {
+func (pattern *MeshPattern) SetCornerColorRGBA(cornerNum int, red, green, blue, alpha float64) {
 	C.cairo_mesh_pattern_set_corner_color_rgba(pattern.Ptr, C.uint(cornerNum), C.double(red), C.double(green), C.double(blue), C.double(alpha))
 	if err := pattern.status(); err != nil {
 		panic(err)
@@ -2167,12 +2167,12 @@ func (matrix *Matrix) InitIdentity() {
 }
 
 // See cairo_matrix_init_translate().
-func (matrix *Matrix) InitTranslate(tx float64, ty float64) {
+func (matrix *Matrix) InitTranslate(tx, ty float64) {
 	C.cairo_matrix_init_translate((*C.cairo_matrix_t)(unsafe.Pointer(matrix)), C.double(tx), C.double(ty))
 }
 
 // See cairo_matrix_init_scale().
-func (matrix *Matrix) InitScale(sx float64, sy float64) {
+func (matrix *Matrix) InitScale(sx, sy float64) {
 	C.cairo_matrix_init_scale((*C.cairo_matrix_t)(unsafe.Pointer(matrix)), C.double(sx), C.double(sy))
 }
 
@@ -2182,12 +2182,12 @@ func (matrix *Matrix) InitRotate(radians float64) {
 }
 
 // See cairo_matrix_translate().
-func (matrix *Matrix) Translate(tx float64, ty float64) {
+func (matrix *Matrix) Translate(tx, ty float64) {
 	C.cairo_matrix_translate((*C.cairo_matrix_t)(unsafe.Pointer(matrix)), C.double(tx), C.double(ty))
 }
 
 // See cairo_matrix_scale().
-func (matrix *Matrix) Scale(sx float64, sy float64) {
+func (matrix *Matrix) Scale(sx, sy float64) {
 	C.cairo_matrix_scale((*C.cairo_matrix_t)(unsafe.Pointer(matrix)), C.double(sx), C.double(sy))
 }
 
@@ -2203,17 +2203,17 @@ func (matrix *Matrix) Invert() error {
 }
 
 // See cairo_matrix_multiply().
-func (result *Matrix) Multiply(a *Matrix, b *Matrix) {
+func (result *Matrix) Multiply(a, b *Matrix) {
 	C.cairo_matrix_multiply((*C.cairo_matrix_t)(unsafe.Pointer(result)), (*C.cairo_matrix_t)(unsafe.Pointer(a)), (*C.cairo_matrix_t)(unsafe.Pointer(b)))
 }
 
 // See cairo_matrix_transform_distance().
-func (matrix *Matrix) TransformDistance(dx *float64, dy *float64) {
+func (matrix *Matrix) TransformDistance(dx, dy *float64) {
 	C.cairo_matrix_transform_distance((*C.cairo_matrix_t)(unsafe.Pointer(matrix)), (*C.double)(unsafe.Pointer(dx)), (*C.double)(unsafe.Pointer(dy)))
 }
 
 // See cairo_matrix_transform_point().
-func (matrix *Matrix) TransformPoint(x *float64, y *float64) {
+func (matrix *Matrix) TransformPoint(x, y *float64) {
 	C.cairo_matrix_transform_point((*C.cairo_matrix_t)(unsafe.Pointer(matrix)), (*C.double)(unsafe.Pointer(x)), (*C.double)(unsafe.Pointer(y)))
 }
 
@@ -2288,7 +2288,7 @@ func (region *Region) IsEmpty() bool {
 }
 
 // See cairo_region_contains_point().
-func (region *Region) ContainsPoint(x int, y int) bool {
+func (region *Region) ContainsPoint(x, y int) bool {
 	ret := C.cairo_region_contains_point(region.Ptr, C.int(x), C.int(y)) != 0
 	if err := region.status(); err != nil {
 		panic(err)
@@ -2297,7 +2297,7 @@ func (region *Region) ContainsPoint(x int, y int) bool {
 }
 
 // See cairo_region_translate().
-func (region *Region) Translate(dx int, dy int) {
+func (region *Region) Translate(dx, dy int) {
 	C.cairo_region_translate(region.Ptr, C.int(dx), C.int(dy))
 	if err := region.status(); err != nil {
 		panic(err)
@@ -2346,7 +2346,7 @@ func DebugResetStaticData() {
 }
 
 // See cairo_xlib_surface_create().
-func XlibSurfaceCreate(dpy unsafe.Pointer, drawable uint64, visual unsafe.Pointer, width int, height int) *XlibSurface {
+func XlibSurfaceCreate(dpy unsafe.Pointer, drawable uint64, visual unsafe.Pointer, width, height int) *XlibSurface {
 	ret := &XlibSurface{wrapSurface(C.cairo_xlib_surface_create((*C.Display)(dpy), C.Drawable(drawable), (*C.Visual)(visual), C.int(width), C.int(height)))}
 	if err := ret.status(); err != nil {
 		panic(err)
@@ -2355,7 +2355,7 @@ func XlibSurfaceCreate(dpy unsafe.Pointer, drawable uint64, visual unsafe.Pointe
 }
 
 // See cairo_xlib_surface_create_for_bitmap().
-func XlibSurfaceCreateForBitmap(dpy unsafe.Pointer, bitmap uint64, screen unsafe.Pointer, width int, height int) *XlibSurface {
+func XlibSurfaceCreateForBitmap(dpy unsafe.Pointer, bitmap uint64, screen unsafe.Pointer, width, height int) *XlibSurface {
 	ret := &XlibSurface{wrapSurface(C.cairo_xlib_surface_create_for_bitmap((*C.Display)(dpy), C.Pixmap(bitmap), (*C.Screen)(screen), C.int(width), C.int(height)))}
 	if err := ret.status(); err != nil {
 		panic(err)
@@ -2364,7 +2364,7 @@ func XlibSurfaceCreateForBitmap(dpy unsafe.Pointer, bitmap uint64, screen unsafe
 }
 
 // See cairo_xlib_surface_set_size().
-func (surface *XlibSurface) SetSize(width int, height int) {
+func (surface *XlibSurface) SetSize(width, height int) {
 	C.cairo_xlib_surface_set_size(surface.Ptr, C.int(width), C.int(height))
 	if err := surface.status(); err != nil {
 		panic(err)
@@ -2372,7 +2372,7 @@ func (surface *XlibSurface) SetSize(width int, height int) {
 }
 
 // See cairo_xlib_surface_set_drawable().
-func (surface *XlibSurface) SetDrawable(drawable uint64, width int, height int) {
+func (surface *XlibSurface) SetDrawable(drawable uint64, width, height int) {
 	C.cairo_xlib_surface_set_drawable(surface.Ptr, C.Drawable(drawable), C.int(width), C.int(height))
 	if err := surface.status(); err != nil {
 		panic(err)
@@ -2443,7 +2443,7 @@ func (surface *XlibSurface) GetHeight() int {
 }
 
 // See cairo_xlib_device_debug_cap_xrender_version().
-func (device *XlibDevice) DebugCapXrenderVersion(majorVersion int, minorVersion int) {
+func (device *XlibDevice) DebugCapXrenderVersion(majorVersion, minorVersion int) {
 	C.cairo_xlib_device_debug_cap_xrender_version(device.Ptr, C.int(majorVersion), C.int(minorVersion))
 	if err := device.status(); err != nil {
 		panic(err)

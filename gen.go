@@ -435,6 +435,7 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 	}
 
 	var inArgs []string
+	var inArgTypes []string
 	var callArgs []string
 	var getErrorCall string
 	var methodSig string
@@ -486,7 +487,8 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 			retTypeSigs = append(retTypeSigs, fmt.Sprintf(argType.goType))
 			retVals = append(retVals, argType.cToGo(cNameToGoLower(d.Name)))
 		} else {
-			inArgs = append(inArgs, fmt.Sprintf("%s %s", argName, argType.goType))
+			inArgs = append(inArgs, argName)
+			inArgTypes = append(inArgTypes, argType.goType)
 		}
 		if argType.goToC == nil {
 			panic("in " + name + " need goToC for " + argName)
@@ -496,13 +498,24 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 		preCall += varExtra
 	}
 
+	argSig := ""
+	for i := range inArgs {
+		if i > 0 {
+			argSig += ", "
+		}
+		argSig += inArgs[i]
+		if i+1 >= len(inArgTypes) || inArgTypes[i] != inArgTypes[i+1] {
+			argSig += " " + inArgTypes[i]
+		}
+	}
+
 	retTypeSig := strings.Join(retTypeSigs, ", ")
 	if len(retTypeSigs) > 1 {
 		retTypeSig = "(" + retTypeSig + ")"
 	}
 
 	w.Print("// See %s().", f.Name)
-	w.Print("func %s %s(%s) %s {", methodSig, name, strings.Join(inArgs, ", "), retTypeSig)
+	w.Print("func %s %s(%s) %s {", methodSig, name, argSig, retTypeSig)
 	if preCall != "" {
 		w.Print("%s", preCall)
 	}
