@@ -51,6 +51,10 @@ var intentionalSkip = map[string]bool{
 	// Use status.String() instead.
 	"cairo_status_to_string": true,
 
+	// Manually implemented to use an io.Writer.
+	"cairo_surface_write_to_png":        true,
+	"cairo_surface_write_to_png_stream": true,
+
 	// These are fake types defined in fake-xlib.h.
 	"Drawable": true,
 	"Pixmap":   true,
@@ -582,19 +586,42 @@ func (w *Writer) process(decls []*cc.Decl) {
 
 package cairo
 
-import "unsafe"
+import (
+	"io"
+	"unsafe"
+)
 
 /*
 #cgo pkg-config: cairo
 #include <cairo.h>
 #include <cairo-xlib.h>
 #include <stdlib.h>
+
+// A cairo_write_func_t for use in cairo_surface_write_to_png.
+cairo_status_t gocairo_write_func(void *closure,
+                                  const unsigned char *data,
+                                  unsigned int length) {
+  return gocairoWriteFunc(closure, data, length)
+    ? CAIRO_STATUS_SUCCESS
+    : CAIRO_STATUS_WRITE_ERROR;
+}
 */
 import "C"
 
 // Error implements the error interface.
 func (s Status) Error() string {
 	return C.GoString(C.cairo_status_to_string(C.cairo_status_t(s)))
+}
+
+// WriteToPng encodes a Surface to an io.Writer as a PNG file.
+func (surface *Surface) WriteToPng(w io.Writer) error {
+	data := writeClosure{w: w}
+	status := C.cairo_surface_write_to_png_stream((*C.cairo_surface_t)(surface.Ptr),
+		(C.cairo_write_func_t)(unsafe.Pointer(C.gocairo_write_func)),
+		unsafe.Pointer(&data))
+    // TODO: which should we prefer between writeClosure.err and status?
+    // Perhaps test against CAIRO_STATUS_WRITE_ERROR?  Needs a test case.
+	return Status(status).toError()
 }
 
 `)

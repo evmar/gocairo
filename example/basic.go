@@ -16,6 +16,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/martine/gocairo/cairo"
 )
@@ -35,5 +36,13 @@ func main() {
 	cr.MoveTo(640/10, 480/2)
 	cr.ShowText("hello, world")
 
-	surf.WriteToPng("example.png")
+	f, err := os.Create("example.png")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+	err = surf.WriteToPng(f)
+	if err != nil {
+		panic(err)
+	}
 }

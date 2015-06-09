@@ -15,9 +15,12 @@
 package cairo
 
 import (
+	"io"
 	"reflect"
 	"unsafe"
 )
+
+import "C"
 
 // sliceBytes returns a pointer to the bytes of the data in a slice.
 func sliceBytes(p unsafe.Pointer) unsafe.Pointer {
@@ -31,4 +34,18 @@ func (s Status) toError() error {
 		return nil
 	}
 	return s
+}
+
+type writeClosure struct {
+	w   io.Writer
+	err error
+}
+
+//export gocairoWriteFunc
+func gocairoWriteFunc(closure unsafe.Pointer, data unsafe.Pointer, clength C.uint) bool {
+	writeClosure := (*writeClosure)(closure)
+	length := uint(clength)
+	slice := ((*[1 << 30]byte)(data))[:length:length]
+	_, writeClosure.err = writeClosure.w.Write(slice)
+	return writeClosure.err == nil
 }

@@ -16,19 +16,42 @@
 
 package cairo
 
-import "unsafe"
+import (
+	"io"
+	"unsafe"
+)
 
 /*
 #cgo pkg-config: cairo
 #include <cairo.h>
 #include <cairo-xlib.h>
 #include <stdlib.h>
+
+// A cairo_write_func_t for use in cairo_surface_write_to_png.
+cairo_status_t gocairo_write_func(void *closure,
+                                  const unsigned char *data,
+                                  unsigned int length) {
+  return gocairoWriteFunc(closure, data, length)
+    ? CAIRO_STATUS_SUCCESS
+    : CAIRO_STATUS_WRITE_ERROR;
+}
 */
 import "C"
 
 // Error implements the error interface.
 func (s Status) Error() string {
 	return C.GoString(C.cairo_status_to_string(C.cairo_status_t(s)))
+}
+
+// WriteToPng encodes a Surface to an io.Writer as a PNG file.
+func (surface *Surface) WriteToPng(w io.Writer) error {
+	data := writeClosure{w: w}
+	status := C.cairo_surface_write_to_png_stream((*C.cairo_surface_t)(surface.Ptr),
+		(C.cairo_write_func_t)(unsafe.Pointer(C.gocairo_write_func)),
+		unsafe.Pointer(&data))
+	// TODO: which should we prefer between writeClosure.err and status?
+	// Perhaps test against CAIRO_STATUS_WRITE_ERROR?  Needs a test case.
+	return Status(status).toError()
 }
 
 type ImageSurface struct {
@@ -1692,17 +1715,6 @@ func (surface *Surface) GetType() SurfaceType {
 // See cairo_surface_get_content().
 func (surface *Surface) GetContent() Content {
 	ret := Content(C.cairo_surface_get_content(surface.Ptr))
-	if err := surface.status(); err != nil {
-		panic(err)
-	}
-	return ret
-}
-
-// See cairo_surface_write_to_png().
-func (surface *Surface) WriteToPng(filename string) error {
-	c_filename := C.CString(filename)
-	defer C.free(unsafe.Pointer(c_filename))
-	ret := Status(C.cairo_surface_write_to_png(surface.Ptr, c_filename)).toError()
 	if err := surface.status(); err != nil {
 		panic(err)
 	}

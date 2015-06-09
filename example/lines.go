@@ -15,7 +15,11 @@
 // Draws a figure with some lines, demonstrating paths and lines.
 package main
 
-import "github.com/martine/gocairo/cairo"
+import (
+	"os"
+
+	"github.com/martine/gocairo/cairo"
+)
 
 func main() {
 	size := 320
@@ -45,5 +49,13 @@ func main() {
 	}
 	surf.Flush()
 
-	surf.WriteToPng("example.png")
+	f, err := os.Create("example.png")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+	err = surf.WriteToPng(f)
+	if err != nil {
+		panic(err)
+	}
 }
