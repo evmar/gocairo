@@ -43,8 +43,8 @@ func (s Status) Error() string {
 	return C.GoString(C.cairo_status_to_string(C.cairo_status_t(s)))
 }
 
-// WriteToPng encodes a Surface to an io.Writer as a PNG file.
-func (surface *Surface) WriteToPng(w io.Writer) error {
+// WriteToPNG encodes a Surface to an io.Writer as a PNG file.
+func (surface *Surface) WriteToPNG(w io.Writer) error {
 	data := writeClosure{w: w}
 	status := C.cairo_surface_write_to_png_stream((*C.cairo_surface_t)(surface.Ptr),
 		(C.cairo_write_func_t)(unsafe.Pointer(C.gocairo_write_func)),
@@ -1901,7 +1901,7 @@ func (surface *ImageSurface) GetStride() int {
 }
 
 // See cairo_image_surface_create_from_png().
-func ImageSurfaceCreateFromPng(filename string) *ImageSurface {
+func ImageSurfaceCreateFromPNG(filename string) *ImageSurface {
 	c_filename := C.CString(filename)
 	defer C.free(unsafe.Pointer(c_filename))
 	ret := &ImageSurface{wrapSurface(C.cairo_image_surface_create_from_png(c_filename))}

@@ -41,7 +41,7 @@ func main() {
 		panic(err)
 	}
 	defer f.Close()
-	err = surf.WriteToPng(f)
+	err = surf.WriteToPNG(f)
 	if err != nil {
 		panic(err)
 	}

@@ -142,6 +142,7 @@ var acronyms = map[string]bool{
 	"cogl":   true,
 	"ctm":    true,
 	"drm":    true,
+	"png":    true,
 	"rgb":    true,
 	"rgb16":  true,
 	"rgb24":  true,
@@ -613,8 +614,8 @@ func (s Status) Error() string {
 	return C.GoString(C.cairo_status_to_string(C.cairo_status_t(s)))
 }
 
-// WriteToPng encodes a Surface to an io.Writer as a PNG file.
-func (surface *Surface) WriteToPng(w io.Writer) error {
+// WriteToPNG encodes a Surface to an io.Writer as a PNG file.
+func (surface *Surface) WriteToPNG(w io.Writer) error {
 	data := writeClosure{w: w}
 	status := C.cairo_surface_write_to_png_stream((*C.cairo_surface_t)(surface.Ptr),
 		(C.cairo_write_func_t)(unsafe.Pointer(C.gocairo_write_func)),
