@@ -429,6 +429,9 @@ func (cr *Context) SetLineJoin(lineJoin LineJoin) {
 // See cairo_set_dash().
 func (cr *Context) SetDash(dashes []float64, offset float64) {
 	C.cairo_set_dash(cr.Ptr, (*C.double)(sliceBytes(unsafe.Pointer(&dashes))), C.int(len(dashes)), C.double(offset))
+	if err := cr.status(); err != nil {
+		panic(err)
+	}
 }
 
 // See cairo_set_miter_limit().
@@ -830,6 +833,13 @@ func wrapFontFace(p *C.cairo_font_face_t) *FontFace {
 	return &FontFace{p}
 }
 
+// See cairo_glyph_t.
+type Glyph struct {
+	Index uint32
+	X     float64
+	Y     float64
+}
+
 // See cairo_text_cluster_flags_t.
 type TextClusterFlags int
 
@@ -1126,6 +1136,14 @@ func (cr *Context) ShowText(utf8 string) {
 	}
 }
 
+// See cairo_show_glyphs().
+func (cr *Context) ShowGlyphs(glyphs []Glyph) {
+	C.cairo_show_glyphs(cr.Ptr, (*C.cairo_glyph_t)(sliceBytes(unsafe.Pointer(&glyphs))), C.int(len(glyphs)))
+	if err := cr.status(); err != nil {
+		panic(err)
+	}
+}
+
 // See cairo_text_path().
 func (cr *Context) TextPath(utf8 string) {
 	c_utf8 := C.CString(utf8)
@@ -1136,11 +1154,27 @@ func (cr *Context) TextPath(utf8 string) {
 	}
 }
 
+// See cairo_glyph_path().
+func (cr *Context) GlyphPath(glyphs []Glyph) {
+	C.cairo_glyph_path(cr.Ptr, (*C.cairo_glyph_t)(sliceBytes(unsafe.Pointer(&glyphs))), C.int(len(glyphs)))
+	if err := cr.status(); err != nil {
+		panic(err)
+	}
+}
+
 // See cairo_text_extents().
 func (cr *Context) TextExtents(utf8 string, extents *TextExtents) {
 	c_utf8 := C.CString(utf8)
 	defer C.free(unsafe.Pointer(c_utf8))
 	C.cairo_text_extents(cr.Ptr, c_utf8, (*C.cairo_text_extents_t)(unsafe.Pointer(extents)))
+	if err := cr.status(); err != nil {
+		panic(err)
+	}
+}
+
+// See cairo_glyph_extents().
+func (cr *Context) GlyphExtents(glyphs []Glyph, extents *TextExtents) {
+	C.cairo_glyph_extents(cr.Ptr, (*C.cairo_glyph_t)(sliceBytes(unsafe.Pointer(&glyphs))), C.int(len(glyphs)), (*C.cairo_text_extents_t)(unsafe.Pointer(extents)))
 	if err := cr.status(); err != nil {
 		panic(err)
 	}
@@ -1217,6 +1251,14 @@ func (scaledFont *ScaledFont) TextExtents(utf8 string, extents *TextExtents) {
 	c_utf8 := C.CString(utf8)
 	defer C.free(unsafe.Pointer(c_utf8))
 	C.cairo_scaled_font_text_extents(scaledFont.Ptr, c_utf8, (*C.cairo_text_extents_t)(unsafe.Pointer(extents)))
+	if err := scaledFont.status(); err != nil {
+		panic(err)
+	}
+}
+
+// See cairo_scaled_font_glyph_extents().
+func (scaledFont *ScaledFont) GlyphExtents(glyphs []Glyph, extents *TextExtents) {
+	C.cairo_scaled_font_glyph_extents(scaledFont.Ptr, (*C.cairo_glyph_t)(sliceBytes(unsafe.Pointer(&glyphs))), C.int(len(glyphs)), (*C.cairo_text_extents_t)(unsafe.Pointer(extents)))
 	if err := scaledFont.status(); err != nil {
 		panic(err)
 	}

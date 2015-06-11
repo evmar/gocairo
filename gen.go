@@ -36,6 +36,9 @@ var intentionalSkip = map[string]string{
 	"cairo_surface_write_to_png":        "specially implemented to work with io.Writer",
 	"cairo_surface_write_to_png_stream": "specially implemented to work with io.Writer",
 
+	"cairo_glyph_allocate": "manage memory on the Go side",
+	"cairo_glyph_free":     "manage memory on the Go side",
+
 	// These are fake types defined in fake-xlib.h.
 	"Drawable": "",
 	"Pixmap":   "",
@@ -68,7 +71,6 @@ var typeTodoList = map[string]string{
 	"cairo_rectangle_list_t": "hard to wrap API",
 
 	// Fancy font APIs -- TODO.
-	"cairo_glyph_t":        "needs work",
 	"cairo_text_cluster_t": "needs work",
 
 	// Raster sources -- TODO.
@@ -78,11 +80,7 @@ var typeTodoList = map[string]string{
 	"cairo_raster_source_finish_func_t":   "callbacks",
 }
 
-var manualImpl = map[string]string{
-	"cairo_set_dash": `func (cr *Context) SetDash(dashes []float64, offset float64) {
-C.cairo_set_dash(cr.Ptr, (*C.double)(sliceBytes(unsafe.Pointer(&dashes))), C.int(len(dashes)), C.double(offset))
-}`,
-}
+var manualImpl = map[string]string{}
 
 // outParams maps a function name to a per-parameter bool of whether it's
 // an output-only param.
@@ -102,6 +100,15 @@ var outParams = map[string][]bool{
 	// "cairo_pattern_get_rgba":            {false, true, true, true, true},
 	// "cairo_pattern_get_color_stop_rgba": {false, false, true, true, true, true, true},
 	// "cairo_pattern_get_color_stop_count": {false, true},
+}
+
+var arrayParams = map[string]int{
+	"cairo_set_dash": 1,
+
+	"cairo_show_glyphs":               1,
+	"cairo_glyph_path":                1,
+	"cairo_glyph_extents":             1,
+	"cairo_scaled_font_glyph_extents": 1,
 }
 
 // sharedTypes has the Go type for C types where we just cast a
@@ -445,6 +452,10 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 			panic(f.Name + ": outParams and return type")
 		}
 	}
+	arrayParam := -1
+	if n, ok := arrayParams[f.Name]; ok {
+		arrayParam = n
+	}
 
 	var inArgs []string
 	var inArgTypes []string
@@ -453,7 +464,8 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 	var methodSig string
 	var preCall string
 
-	for i, d := range f.Type.Decls {
+	for i := 0; i < len(f.Type.Decls); i++ {
+		d := f.Type.Decls[i]
 		if i == 0 && d.Type.Kind == cc.Void {
 			// This is a function that accepts (void).
 			continue
@@ -497,6 +509,14 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 			preCall += fmt.Sprintf("var %s C.%s\n", argName, d.Type.Base)
 			retTypeSigs = append(retTypeSigs, fmt.Sprintf(argType.goType))
 			retVals = append(retVals, argType.cToGo(cNameToGoLower(d.Name)))
+		} else if i == arrayParam {
+			baseType := cTypeToMap(d.Type.Base)
+			inArgs = append(inArgs, argName)
+			inArgTypes = append(inArgTypes, "[]"+baseType.goType)
+			callArgs = append(callArgs, fmt.Sprintf("(*C.%s)(sliceBytes(unsafe.Pointer(&%s)))", d.Type.Base.String(), argName))
+			callArgs = append(callArgs, fmt.Sprintf("C.int(len(%s))", argName))
+			i++
+			continue
 		} else {
 			inArgs = append(inArgs, argName)
 			inArgTypes = append(inArgTypes, argType.goType)
