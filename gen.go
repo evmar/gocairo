@@ -29,10 +29,11 @@ import (
 // intentionalSkip maps C names to the reason why they're left out
 // when we intentionally don't generate bindings for them.
 var intentionalSkip = map[string]string{
-	"cairo_bool_t":                      "mapped to bool",
-	"cairo_user_data_key_t":             "type only used as a placeholder in C",
-	"cairo_matrix_init":                 "just the same thing as creating the struct yourself",
-	"cairo_status_to_string":            "mapped to the error interface, use .Error()",
+	"cairo_bool_t":           "mapped to bool",
+	"cairo_user_data_key_t":  "type only used as a placeholder in C",
+	"cairo_matrix_init":      "just the same thing as creating the struct yourself",
+	"cairo_status_to_string": "mapped to the error interface, use .Error()",
+
 	"cairo_surface_write_to_png":        "specially implemented to work with io.Writer",
 	"cairo_surface_write_to_png_stream": "specially implemented to work with io.Writer",
 
