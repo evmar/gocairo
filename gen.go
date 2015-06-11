@@ -26,59 +26,56 @@ import (
 	"rsc.io/c2go/cc"
 )
 
-// intentionalSkip maps C names to true when we intentionally don't generate
-// bindings for them.  See the comments for reasoning.
-var intentionalSkip = map[string]bool{
-	// Mapped to bool.
-	"cairo_bool_t": true,
-
-	// Type only used as a placeholder in C.
-	"cairo_user_data_key_t": true,
-
-	// Just the same thing as creating the struct yourself.
-	"cairo_matrix_init": true,
-
-	// Fancy font APIs -- TODO.
-	"cairo_scaled_font_text_to_glyphs": true,
-
-	// Mime functions -- TODO.
-	"cairo_surface_get_mime_data": true,
-	"cairo_surface_set_mime_data": true,
-
-	// Need to figure out refcounting -- TODO.
-	"cairo_pattern_get_surface": true,
-
-	// Use status.String() instead.
-	"cairo_status_to_string": true,
-
-	// Manually implemented to use an io.Writer.
-	"cairo_surface_write_to_png":        true,
-	"cairo_surface_write_to_png_stream": true,
+// intentionalSkip maps C names to the reason why they're left out
+// when we intentionally don't generate bindings for them.
+var intentionalSkip = map[string]string{
+	"cairo_bool_t":                      "mapped to bool",
+	"cairo_user_data_key_t":             "type only used as a placeholder in C",
+	"cairo_matrix_init":                 "just the same thing as creating the struct yourself",
+	"cairo_status_to_string":            "mapped to the error interface, use .Error()",
+	"cairo_surface_write_to_png":        "specially implemented to work with io.Writer",
+	"cairo_surface_write_to_png_stream": "specially implemented to work with io.Writer",
 
 	// These are fake types defined in fake-xlib.h.
-	"Drawable": true,
-	"Pixmap":   true,
-	"Display":  true,
-	"Visual":   true,
-	"Screen":   true,
+	"Drawable": "",
+	"Pixmap":   "",
+	"Display":  "",
+	"Visual":   "",
+	"Screen":   "",
 }
 
-var typeBlacklist = map[string]bool{
-	// Data structures with a hard-to-wrap API -- TODO.
-	"cairo_path_t":           true,
-	"cairo_path_data_t":      true,
-	"cairo_rectangle_int_t":  true,
-	"cairo_rectangle_list_t": true,
+// skipUnhandled maps C names to the excuse why we haven't wrapped them yet.
+var skipUnhandled = map[string]string{
+	"cairo_pattern_get_rgba":                   "mix of out params and status",
+	"cairo_pattern_get_color_stop_rgba":        "mix of out params and status",
+	"cairo_pattern_get_color_stop_count":       "mix of out params and status",
+	"cairo_pattern_get_linear_points":          "mix of out params and status",
+	"cairo_pattern_get_radial_circles":         "mix of out params and status",
+	"cairo_mesh_pattern_get_patch_count":       "mix of out params and status",
+	"cairo_mesh_pattern_get_corner_color_rgba": "mix of out params and status",
+	"cairo_mesh_pattern_get_control_point":     "mix of out params and status",
+
+	"cairo_scaled_font_text_to_glyphs": "fancy font APIs",
+	"cairo_surface_get_mime_data":      "mime functions",
+	"cairo_surface_set_mime_data":      "mime functions",
+	"cairo_pattern_get_surface":        "need to figure out refcounting",
+}
+
+var typeTodoList = map[string]string{
+	"cairo_path_t":           "hard to wrap API",
+	"cairo_path_data_t":      "hard to wrap API",
+	"cairo_rectangle_int_t":  "hard to wrap API",
+	"cairo_rectangle_list_t": "hard to wrap API",
 
 	// Fancy font APIs -- TODO.
-	"cairo_glyph_t":        true,
-	"cairo_text_cluster_t": true,
+	"cairo_glyph_t":        "needs work",
+	"cairo_text_cluster_t": "needs work",
 
 	// Raster sources -- TODO.
-	"cairo_raster_source_acquire_func_t":  true,
-	"cairo_raster_source_snapshot_func_t": true,
-	"cairo_raster_source_copy_func_t":     true,
-	"cairo_raster_source_finish_func_t":   true,
+	"cairo_raster_source_acquire_func_t":  "callbacks",
+	"cairo_raster_source_snapshot_func_t": "callbacks",
+	"cairo_raster_source_copy_func_t":     "callbacks",
+	"cairo_raster_source_finish_func_t":   "callbacks",
 }
 
 var manualImpl = map[string]string{
@@ -241,6 +238,7 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 				},
 			}
 		case "uchar", "void":
+			log.Printf("TODO %s: in type blacklist (TODO: add reasoning)", str)
 			return nil
 		}
 
@@ -271,7 +269,8 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 		}
 
 		goName := cNameToGoUpper(str)
-		if typeBlacklist[str] {
+		if reason, ok := typeTodoList[str]; ok {
+			log.Printf("TODO %s: %s", str, reason)
 			return nil
 		}
 		return &typeMap{
@@ -294,7 +293,8 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 
 	// Otherwise, it's a basic non-pointer type.
 	cName := typ.String()
-	if typeBlacklist[cName] {
+	if reason, ok := typeTodoList[cName]; ok {
+		log.Printf("TODO %s: %s", cName, reason)
 		return nil
 	}
 
@@ -407,7 +407,6 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 
 	retType := cTypeToMap(f.Type.Base)
 	if retType == nil {
-		log.Printf("skipped %s due to %s", f.Name, f.Type.Base)
 		return false
 	}
 	var retTypeSigs []string
@@ -465,7 +464,6 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 		argName := cNameToGoLower(d.Name)
 		argType := cTypeToMap(d.Type)
 		if argType == nil {
-			log.Printf("skipped %s due to %s", f.Name, d.Type)
 			return false
 		}
 
@@ -559,16 +557,6 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 }
 
 func (w *Writer) process(decls []*cc.Decl) {
-	skipUnhandled := map[string]string{
-		"cairo_pattern_get_rgba":                   "mix of out params and status",
-		"cairo_pattern_get_color_stop_rgba":        "mix of out params and status",
-		"cairo_pattern_get_color_stop_count":       "mix of out params and status",
-		"cairo_pattern_get_linear_points":          "mix of out params and status",
-		"cairo_pattern_get_radial_circles":         "mix of out params and status",
-		"cairo_mesh_pattern_get_patch_count":       "mix of out params and status",
-		"cairo_mesh_pattern_get_corner_color_rgba": "mix of out params and status",
-		"cairo_mesh_pattern_get_control_point":     "mix of out params and status",
-	}
 	w.Print(`// Copyright 2015 Google Inc. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -635,40 +623,48 @@ func (surface *Surface) WriteToPNG(w io.Writer) error {
 	intentionalSkips := 0
 	todoSkips := 0
 	for _, d := range decls {
-		if intentionalSkip[d.Name] || typeBlacklist[d.Name] {
+		if reason, ok := intentionalSkip[d.Name]; ok {
+			if reason != "" {
+				log.Printf("skipped %s: %s", d.Name, reason)
+			}
 			intentionalSkips++
 			continue
 		}
+		if reason, ok := typeTodoList[d.Name]; ok {
+			log.Printf("TODO %s: %s", d.Name, reason)
+			todoSkips++
+			continue
+		}
+		if reason, ok := skipUnhandled[d.Name]; ok {
+			log.Printf("TODO %s: %s", d.Name, reason)
+			todoSkips++
+			continue
+		}
+
 		if strings.HasSuffix(d.Name, "_func") ||
 			strings.HasSuffix(d.Name, "_func_t") ||
 			strings.HasSuffix(d.Name, "_callback") ||
 			strings.HasSuffix(d.Name, "_callback_data") ||
 			strings.HasSuffix(d.Name, "_callback_t") {
-			// We don't expose callbacks back into Go.
-			intentionalSkips++
+			log.Printf("TODO %s: callbacks back into Go", d.Name)
+			todoSkips++
 			continue
 		}
 		if strings.HasSuffix(d.Name, "_user_data") {
-			// Go datatypes like closures make user data less useful.
+			log.Printf("skipped %s: closures mean you don't need user data(?)", d.Name)
 			intentionalSkips++
 			continue
 		}
 		if strings.HasSuffix(d.Name, "_reference") ||
 			strings.HasSuffix(d.Name, "_destroy") ||
 			strings.HasSuffix(d.Name, "_get_reference_count") {
-			// We don't need refcounting when we have GC.
+			log.Printf("skipped %s: Go uses GC instead of refcounting", d.Name)
 			intentionalSkips++
 			continue
 		}
 		if d.Name == "" {
-			log.Printf("skipping %s (anonymous)", d)
+			log.Printf("skipped %s: anonymous type", d)
 			intentionalSkips++
-			continue
-		}
-
-		if reason, ok := skipUnhandled[d.Name]; ok {
-			log.Printf("TODO: %s unhandled -- %s", d.Name, reason)
-			todoSkips++
 			continue
 		}
 
@@ -689,7 +685,7 @@ func (surface *Surface) WriteToPNG(w io.Writer) error {
 		}
 		w.Print("")
 	}
-	log.Printf("%d decls total, %d skipped intentionally", len(decls), intentionalSkips)
+	log.Printf("%d decls total, %d skipped intentionally / %d TODO", len(decls), intentionalSkips, todoSkips)
 }
 
 func main() {
