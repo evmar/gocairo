@@ -379,9 +379,20 @@ func (w *Writer) genTypeDef(d *cc.Decl) {
 			w.Print(`type %s struct {
 Ptr *C.%s
 }`, goName, d.Name)
+
+			cFinalizer := d.Name
+			if strings.HasSuffix(cFinalizer, "_t") {
+				cFinalizer = cFinalizer[:len(cFinalizer)-2]
+			}
+			cFinalizer += "_destroy"
+			w.Print("func free%s(obj *%s) {", goName, goName)
+			w.Print("C.%s(obj.Ptr)", cFinalizer)
+			w.Print("}")
+
 			w.Print("func wrap%s(p *C.%s) *%s {", goName, d.Name, goName)
-			w.Print("// TODO: finalizer")
-			w.Print("return &%s{p}", goName)
+			w.Print("ret := &%s{p}", goName)
+			w.Print("runtime.SetFinalizer(ret, free%s)", goName)
+			w.Print("return ret")
 			w.Print("}")
 		} else {
 			sharedTypes[d.Name] = goName
@@ -632,6 +643,7 @@ package cairo
 import (
 	"fmt"
 	"io"
+	"runtime"
 	"unsafe"
 )
 

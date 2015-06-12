@@ -19,6 +19,7 @@ package cairo
 import (
 	"fmt"
 	"io"
+	"runtime"
 	"unsafe"
 )
 
@@ -124,9 +125,13 @@ type Context struct {
 	Ptr *C.cairo_t
 }
 
+func freeContext(obj *Context) {
+	C.cairo_destroy(obj.Ptr)
+}
 func wrapContext(p *C.cairo_t) *Context {
-	// TODO: finalizer
-	return &Context{p}
+	ret := &Context{p}
+	runtime.SetFinalizer(ret, freeContext)
+	return ret
 }
 
 // See cairo_surface_t.
@@ -136,9 +141,13 @@ type Surface struct {
 	Ptr *C.cairo_surface_t
 }
 
+func freeSurface(obj *Surface) {
+	C.cairo_surface_destroy(obj.Ptr)
+}
 func wrapSurface(p *C.cairo_surface_t) *Surface {
-	// TODO: finalizer
-	return &Surface{p}
+	ret := &Surface{p}
+	runtime.SetFinalizer(ret, freeSurface)
+	return ret
 }
 
 // See cairo_device_t.
@@ -148,9 +157,13 @@ type Device struct {
 	Ptr *C.cairo_device_t
 }
 
+func freeDevice(obj *Device) {
+	C.cairo_device_destroy(obj.Ptr)
+}
 func wrapDevice(p *C.cairo_device_t) *Device {
-	// TODO: finalizer
-	return &Device{p}
+	ret := &Device{p}
+	runtime.SetFinalizer(ret, freeDevice)
+	return ret
 }
 
 // See cairo_matrix_t.
@@ -172,9 +185,13 @@ type Pattern struct {
 	Ptr *C.cairo_pattern_t
 }
 
+func freePattern(obj *Pattern) {
+	C.cairo_pattern_destroy(obj.Ptr)
+}
 func wrapPattern(p *C.cairo_pattern_t) *Pattern {
-	// TODO: finalizer
-	return &Pattern{p}
+	ret := &Pattern{p}
+	runtime.SetFinalizer(ret, freePattern)
+	return ret
 }
 
 // See cairo_status_t.
@@ -1158,9 +1175,13 @@ type ScaledFont struct {
 	Ptr *C.cairo_scaled_font_t
 }
 
+func freeScaledFont(obj *ScaledFont) {
+	C.cairo_scaled_font_destroy(obj.Ptr)
+}
 func wrapScaledFont(p *C.cairo_scaled_font_t) *ScaledFont {
-	// TODO: finalizer
-	return &ScaledFont{p}
+	ret := &ScaledFont{p}
+	runtime.SetFinalizer(ret, freeScaledFont)
+	return ret
 }
 
 // See cairo_font_face_t.
@@ -1170,9 +1191,13 @@ type FontFace struct {
 	Ptr *C.cairo_font_face_t
 }
 
+func freeFontFace(obj *FontFace) {
+	C.cairo_font_face_destroy(obj.Ptr)
+}
 func wrapFontFace(p *C.cairo_font_face_t) *FontFace {
-	// TODO: finalizer
-	return &FontFace{p}
+	ret := &FontFace{p}
+	runtime.SetFinalizer(ret, freeFontFace)
+	return ret
 }
 
 // See cairo_glyph_t.
@@ -1361,9 +1386,13 @@ type FontOptions struct {
 	Ptr *C.cairo_font_options_t
 }
 
+func freeFontOptions(obj *FontOptions) {
+	C.cairo_font_options_destroy(obj.Ptr)
+}
 func wrapFontOptions(p *C.cairo_font_options_t) *FontOptions {
-	// TODO: finalizer
-	return &FontOptions{p}
+	ret := &FontOptions{p}
+	runtime.SetFinalizer(ret, freeFontOptions)
+	return ret
 }
 
 // See cairo_font_options_create().
@@ -2122,9 +2151,13 @@ type Path struct {
 	Ptr *C.cairo_path_t
 }
 
+func freePath(obj *Path) {
+	C.cairo_path_destroy(obj.Ptr)
+}
 func wrapPath(p *C.cairo_path_t) *Path {
-	// TODO: finalizer
-	return &Path{p}
+	ret := &Path{p}
+	runtime.SetFinalizer(ret, freePath)
+	return ret
 }
 
 // See cairo_copy_path().
@@ -3246,9 +3279,13 @@ type Region struct {
 	Ptr *C.cairo_region_t
 }
 
+func freeRegion(obj *Region) {
+	C.cairo_region_destroy(obj.Ptr)
+}
 func wrapRegion(p *C.cairo_region_t) *Region {
-	// TODO: finalizer
-	return &Region{p}
+	ret := &Region{p}
+	runtime.SetFinalizer(ret, freeRegion)
+	return ret
 }
 
 // See cairo_region_overlap_t.
