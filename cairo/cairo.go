@@ -3403,13 +3403,6 @@ func (dst *Region) XOR(other *Region) error {
 	return ret
 }
 
-// See cairo_debug_reset_static_data().
-//
-// C API documentation: http://cairographics.org/manual/cairo-Error-handling.html#cairo-debug-reset-static-data
-func DebugResetStaticData() {
-	C.cairo_debug_reset_static_data()
-}
-
 // See cairo_xlib_surface_create().
 //
 // C API documentation: http://cairographics.org/manual/cairo-XLib-Surfaces.html#cairo-xlib-surface-create

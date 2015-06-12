@@ -45,6 +45,8 @@ var intentionalSkip = map[string]string{
 
 	"cairo_path_data_t": "used internally in path iteration",
 
+	"cairo_debug_reset_static_data": "intended for use with valgrind, requires deterministic object destruction",
+
 	// These are fake types defined in fake-xlib.h.
 	"Drawable": "",
 	"Pixmap":   "",
