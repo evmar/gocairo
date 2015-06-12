@@ -40,6 +40,8 @@ var intentionalSkip = map[string]string{
 	"cairo_glyph_allocate": "manage memory on the Go side",
 	"cairo_glyph_free":     "manage memory on the Go side",
 
+	"cairo_path_data_t": "used internally in path iteration",
+
 	// These are fake types defined in fake-xlib.h.
 	"Drawable": "",
 	"Pixmap":   "",
@@ -66,8 +68,6 @@ var skipUnhandled = map[string]string{
 }
 
 var typeTodoList = map[string]string{
-	"cairo_path_t":           "hard to wrap API",
-	"cairo_path_data_t":      "hard to wrap API",
 	"cairo_rectangle_int_t":  "hard to wrap API",
 	"cairo_rectangle_list_t": "hard to wrap API",
 
@@ -360,7 +360,7 @@ func (w *Writer) genTypeDef(d *cc.Decl) {
 
 	switch d.Type.Kind {
 	case cc.Struct:
-		if d.Type.Decls == nil {
+		if d.Type.Decls == nil || goName == "Path" {
 			// Opaque typedef.
 			w.Print(`type %s struct {
 Ptr *C.%s
@@ -634,6 +634,29 @@ func (surface *Surface) WriteToPNG(w io.Writer) error {
 	return Status(status).toError()
 }
 
+// PathIter creates an iterator over the segments within the path.
+func (p *Path) Iter() *PathIter {
+	return &PathIter{path:p, i:0}
+}
+
+// PathIter iterates a Path.
+type PathIter struct {
+	path *Path
+	i    C.int
+}
+
+// Next returns the next PathSegment, or returns nil at the end of the path.
+func (pi *PathIter) Next() *PathSegment {
+	if pi.i >= pi.path.Ptr.num_data {
+		return nil
+	}
+	// path.data is an array of cairo_path_data_t, but the union makes
+	// things complicated.
+	dataArray := (*[1<<30]C.cairo_path_data_t)(unsafe.Pointer(pi.path.Ptr.data))
+	seg, ofs := decodePathSegment(unsafe.Pointer(&dataArray[pi.i]))
+	pi.i += C.int(ofs)
+	return seg
+}
 `)
 	for _, t := range subTypes {
 		w.Print(`type %s struct {

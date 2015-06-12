@@ -54,6 +54,30 @@ func (surface *Surface) WriteToPNG(w io.Writer) error {
 	return Status(status).toError()
 }
 
+// PathIter creates an iterator over the segments within the path.
+func (p *Path) Iter() *PathIter {
+	return &PathIter{path: p, i: 0}
+}
+
+// PathIter iterates a Path.
+type PathIter struct {
+	path *Path
+	i    C.int
+}
+
+// Next returns the next PathSegment, or returns nil at the end of the path.
+func (pi *PathIter) Next() *PathSegment {
+	if pi.i >= pi.path.Ptr.num_data {
+		return nil
+	}
+	// path.data is an array of cairo_path_data_t, but the union makes
+	// things complicated.
+	dataArray := (*[1 << 30]C.cairo_path_data_t)(unsafe.Pointer(pi.path.Ptr.data))
+	seg, ofs := decodePathSegment(unsafe.Pointer(&dataArray[pi.i]))
+	pi.i += C.int(ofs)
+	return seg
+}
+
 type ImageSurface struct {
 	*Surface
 }
@@ -1507,6 +1531,42 @@ const (
 	PathClosePath PathDataType = C.CAIRO_PATH_CLOSE_PATH
 )
 
+// See cairo_path_t.
+type Path struct {
+	Ptr *C.cairo_path_t
+}
+
+func wrapPath(p *C.cairo_path_t) *Path {
+	// TODO: finalizer
+	return &Path{p}
+}
+
+// See cairo_copy_path().
+func (cr *Context) CopyPath() *Path {
+	ret := wrapPath(C.cairo_copy_path(cr.Ptr))
+	if err := cr.status(); err != nil {
+		panic(err)
+	}
+	return ret
+}
+
+// See cairo_copy_path_flat().
+func (cr *Context) CopyPathFlat() *Path {
+	ret := wrapPath(C.cairo_copy_path_flat(cr.Ptr))
+	if err := cr.status(); err != nil {
+		panic(err)
+	}
+	return ret
+}
+
+// See cairo_append_path().
+func (cr *Context) AppendPath(path *Path) {
+	C.cairo_append_path(cr.Ptr, path.Ptr)
+	if err := cr.status(); err != nil {
+		panic(err)
+	}
+}
+
 // See cairo_status().
 func (cr *Context) status() error {
 	ret := Status(C.cairo_status(cr.Ptr)).toError()
@@ -2212,6 +2272,15 @@ func (pattern *Pattern) SetFilter(filter Filter) {
 // See cairo_pattern_get_filter().
 func (pattern *Pattern) GetFilter() Filter {
 	ret := Filter(C.cairo_pattern_get_filter(pattern.Ptr))
+	if err := pattern.status(); err != nil {
+		panic(err)
+	}
+	return ret
+}
+
+// See cairo_mesh_pattern_get_path().
+func (pattern *MeshPattern) GetPath(patchNum int) *Path {
+	ret := wrapPath(C.cairo_mesh_pattern_get_path(pattern.Ptr, C.uint(patchNum)))
 	if err := pattern.status(); err != nil {
 		panic(err)
 	}

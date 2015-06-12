@@ -9,6 +9,7 @@ example: cairo example/*
 	go run example/basic.go
 	go run example/error.go
 	go run example/lines.go
+	go run example/path.go
 
 cairo-preprocessed.h:
 	sed -e 's/<X11\/Xlib\.h>/"fake-xlib.h"/' /usr/include/cairo/cairo-xlib.h | \
