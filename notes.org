@@ -10,6 +10,3 @@ e.g. func (fontFace *ToyFontFace) GetWeight() FontWeight
 ** other things to fix
 *** CreateFromPng(filename string)
 eliminate, and instead provide an interface that works with io.Reader
-*** link to C documentation
-hard because URLs for C docs include a section name; might be able to
-extract this from the devhelp format docs (?).

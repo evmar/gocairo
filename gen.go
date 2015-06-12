@@ -358,11 +358,16 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 	return m
 }
 
-func (w *Writer) genTypeDef(d *cc.Decl) {
-	w.Print("// See %s.", d.Name)
-	if link, ok := w.links[d.Name]; ok {
-		w.Print("// %s%s", cDocUrl, link)
+func (w *Writer) writeDocString(name, extra string) {
+	w.Print("// See %s%s.", name, extra)
+	if link, ok := w.links[name]; ok {
+		w.Print("//")
+		w.Print("// C API documentation: %s%s", cDocUrl, link)
 	}
+}
+
+func (w *Writer) genTypeDef(d *cc.Decl) {
+	w.writeDocString(d.Name, "")
 	goName := cNameToGoUpper(d.Name)
 
 	switch d.Type.Kind {
@@ -572,10 +577,7 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 		retTypeSig = "(" + retTypeSig + ")"
 	}
 
-	w.Print("// See %s().", f.Name)
-	if link, ok := w.links[f.Name]; ok {
-		w.Print("// %s%s", cDocUrl, link)
-	}
+	w.writeDocString(f.Name, "()")
 	w.Print("func %s %s(%s) %s {", methodSig, name, argSig, retTypeSig)
 	if preCall != "" {
 		w.Print("%s", preCall)
@@ -743,10 +745,7 @@ func (pi *PathIter) Next() *PathSegment {
 		}
 
 		if impl, ok := manualImpl[d.Name]; ok {
-			w.Print("// See %s().", d.Name)
-			if link, ok := w.links[d.Name]; ok {
-				w.Print("// %s%s", cDocUrl, link)
-			}
+			w.writeDocString(d.Name, "")
 			w.Print("%s", impl)
 		} else if d.Storage == cc.Typedef {
 			w.genTypeDef(d)
