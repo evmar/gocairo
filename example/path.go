@@ -29,6 +29,6 @@ func main() {
 	path := cr.CopyPath()
 	iter := path.Iter()
 	for seg := iter.Next(); seg != nil; seg = iter.Next() {
-		log.Printf("seg %#v", seg)
+		log.Printf("seg %s %#v", seg.Type, seg)
 	}
 }

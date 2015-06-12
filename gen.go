@@ -379,17 +379,36 @@ Ptr *C.%s
 			w.Print("}")
 		}
 	case cc.Enum:
-		w.Print("type %s int", goName)
-		w.Print("const (")
+		type constEntry struct {
+			goName, cName string
+		}
+		consts := make([]constEntry, 0, len(d.Type.Decls))
 		for _, d := range d.Type.Decls {
 			constName := d.Name
 			if strings.HasPrefix(constName, "CAIRO_") {
 				constName = constName[len("CAIRO_"):]
 			}
 			constName = cNameToGoUpper(strings.ToLower(d.Name))
-			w.Print("%s %s = C.%s", constName, goName, d.Name)
+			consts = append(consts, constEntry{constName, d.Name})
+		}
+
+		w.Print("type %s int", goName)
+		w.Print("const (")
+		for _, c := range consts {
+			w.Print("%s %s = C.%s", c.goName, goName, c.cName)
 		}
 		w.Print(")")
+
+		if goName != "Status" {
+			w.Print("func (i %s) String() string {", goName)
+			w.Print("switch i {")
+			for _, c := range consts {
+				w.Print("case %s: return \"%s\"", c.goName, c.goName)
+			}
+			w.Print("default: return fmt.Sprintf(\"%s(%%d)\", i)", goName)
+			w.Print("}")
+			w.Print("}")
+		}
 	default:
 		panic("unhandled decl " + d.String())
 	}
@@ -597,6 +616,7 @@ func (w *Writer) process(decls []*cc.Decl) {
 package cairo
 
 import (
+	"fmt"
 	"io"
 	"unsafe"
 )
@@ -629,14 +649,14 @@ func (surface *Surface) WriteToPNG(w io.Writer) error {
 	status := C.cairo_surface_write_to_png_stream((*C.cairo_surface_t)(surface.Ptr),
 		(C.cairo_write_func_t)(unsafe.Pointer(C.gocairo_write_func)),
 		unsafe.Pointer(&data))
-    // TODO: which should we prefer between writeClosure.err and status?
-    // Perhaps test against CAIRO_STATUS_WRITE_ERROR?  Needs a test case.
+	// TODO: which should we prefer between writeClosure.err and status?
+	// Perhaps test against CAIRO_STATUS_WRITE_ERROR?  Needs a test case.
 	return Status(status).toError()
 }
 
 // PathIter creates an iterator over the segments within the path.
 func (p *Path) Iter() *PathIter {
-	return &PathIter{path:p, i:0}
+	return &PathIter{path: p, i: 0}
 }
 
 // PathIter iterates a Path.
@@ -652,7 +672,7 @@ func (pi *PathIter) Next() *PathSegment {
 	}
 	// path.data is an array of cairo_path_data_t, but the union makes
 	// things complicated.
-	dataArray := (*[1<<30]C.cairo_path_data_t)(unsafe.Pointer(pi.path.Ptr.data))
+	dataArray := (*[1 << 30]C.cairo_path_data_t)(unsafe.Pointer(pi.path.Ptr.data))
 	seg, ofs := decodePathSegment(unsafe.Pointer(&dataArray[pi.i]))
 	pi.i += C.int(ofs)
 	return seg

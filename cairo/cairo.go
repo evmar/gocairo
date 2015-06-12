@@ -17,6 +17,7 @@
 package cairo
 
 import (
+	"fmt"
 	"io"
 	"unsafe"
 )
@@ -217,6 +218,19 @@ const (
 	ContentColorAlpha Content = C.CAIRO_CONTENT_COLOR_ALPHA
 )
 
+func (i Content) String() string {
+	switch i {
+	case ContentColor:
+		return "ContentColor"
+	case ContentAlpha:
+		return "ContentAlpha"
+	case ContentColorAlpha:
+		return "ContentColorAlpha"
+	default:
+		return fmt.Sprintf("Content(%d)", i)
+	}
+}
+
 // See cairo_format_t.
 type Format int
 
@@ -229,6 +243,27 @@ const (
 	FormatRGB16565 Format = C.CAIRO_FORMAT_RGB16_565
 	FormatRGB30    Format = C.CAIRO_FORMAT_RGB30
 )
+
+func (i Format) String() string {
+	switch i {
+	case FormatInvalid:
+		return "FormatInvalid"
+	case FormatARGB32:
+		return "FormatARGB32"
+	case FormatRGB24:
+		return "FormatRGB24"
+	case FormatA8:
+		return "FormatA8"
+	case FormatA1:
+		return "FormatA1"
+	case FormatRGB16565:
+		return "FormatRGB16565"
+	case FormatRGB30:
+		return "FormatRGB30"
+	default:
+		return fmt.Sprintf("Format(%d)", i)
+	}
+}
 
 // See cairo_create().
 func Create(target *Surface) *Context {
@@ -323,6 +358,71 @@ const (
 	OperatorHslLuminosity Operator = C.CAIRO_OPERATOR_HSL_LUMINOSITY
 )
 
+func (i Operator) String() string {
+	switch i {
+	case OperatorClear:
+		return "OperatorClear"
+	case OperatorSource:
+		return "OperatorSource"
+	case OperatorOver:
+		return "OperatorOver"
+	case OperatorIn:
+		return "OperatorIn"
+	case OperatorOut:
+		return "OperatorOut"
+	case OperatorAtop:
+		return "OperatorAtop"
+	case OperatorDest:
+		return "OperatorDest"
+	case OperatorDestOver:
+		return "OperatorDestOver"
+	case OperatorDestIn:
+		return "OperatorDestIn"
+	case OperatorDestOut:
+		return "OperatorDestOut"
+	case OperatorDestAtop:
+		return "OperatorDestAtop"
+	case OperatorXOR:
+		return "OperatorXOR"
+	case OperatorAdd:
+		return "OperatorAdd"
+	case OperatorSaturate:
+		return "OperatorSaturate"
+	case OperatorMultiply:
+		return "OperatorMultiply"
+	case OperatorScreen:
+		return "OperatorScreen"
+	case OperatorOverlay:
+		return "OperatorOverlay"
+	case OperatorDarken:
+		return "OperatorDarken"
+	case OperatorLighten:
+		return "OperatorLighten"
+	case OperatorColorDodge:
+		return "OperatorColorDodge"
+	case OperatorColorBurn:
+		return "OperatorColorBurn"
+	case OperatorHardLight:
+		return "OperatorHardLight"
+	case OperatorSoftLight:
+		return "OperatorSoftLight"
+	case OperatorDifference:
+		return "OperatorDifference"
+	case OperatorExclusion:
+		return "OperatorExclusion"
+	case OperatorHslHue:
+		return "OperatorHslHue"
+	case OperatorHslSaturation:
+		return "OperatorHslSaturation"
+	case OperatorHslColor:
+		return "OperatorHslColor"
+	case OperatorHslLuminosity:
+		return "OperatorHslLuminosity"
+	default:
+		return fmt.Sprintf("Operator(%d)", i)
+	}
+}
+
 // See cairo_set_operator().
 func (cr *Context) SetOperator(op Operator) {
 	C.cairo_set_operator(cr.Ptr, C.cairo_operator_t(op))
@@ -384,6 +484,27 @@ const (
 	AntialiasBest     Antialias = C.CAIRO_ANTIALIAS_BEST
 )
 
+func (i Antialias) String() string {
+	switch i {
+	case AntialiasDefault:
+		return "AntialiasDefault"
+	case AntialiasNone:
+		return "AntialiasNone"
+	case AntialiasGray:
+		return "AntialiasGray"
+	case AntialiasSubpixel:
+		return "AntialiasSubpixel"
+	case AntialiasFast:
+		return "AntialiasFast"
+	case AntialiasGood:
+		return "AntialiasGood"
+	case AntialiasBest:
+		return "AntialiasBest"
+	default:
+		return fmt.Sprintf("Antialias(%d)", i)
+	}
+}
+
 // See cairo_set_antialias().
 func (cr *Context) SetAntialias(antialias Antialias) {
 	C.cairo_set_antialias(cr.Ptr, C.cairo_antialias_t(antialias))
@@ -399,6 +520,17 @@ const (
 	FillRuleWinding FillRule = C.CAIRO_FILL_RULE_WINDING
 	FillRuleEvenOdd FillRule = C.CAIRO_FILL_RULE_EVEN_ODD
 )
+
+func (i FillRule) String() string {
+	switch i {
+	case FillRuleWinding:
+		return "FillRuleWinding"
+	case FillRuleEvenOdd:
+		return "FillRuleEvenOdd"
+	default:
+		return fmt.Sprintf("FillRule(%d)", i)
+	}
+}
 
 // See cairo_set_fill_rule().
 func (cr *Context) SetFillRule(fillRule FillRule) {
@@ -425,6 +557,19 @@ const (
 	LineCapSquare LineCap = C.CAIRO_LINE_CAP_SQUARE
 )
 
+func (i LineCap) String() string {
+	switch i {
+	case LineCapButt:
+		return "LineCapButt"
+	case LineCapRound:
+		return "LineCapRound"
+	case LineCapSquare:
+		return "LineCapSquare"
+	default:
+		return fmt.Sprintf("LineCap(%d)", i)
+	}
+}
+
 // See cairo_set_line_cap().
 func (cr *Context) SetLineCap(lineCap LineCap) {
 	C.cairo_set_line_cap(cr.Ptr, C.cairo_line_cap_t(lineCap))
@@ -441,6 +586,19 @@ const (
 	LineJoinRound LineJoin = C.CAIRO_LINE_JOIN_ROUND
 	LineJoinBevel LineJoin = C.CAIRO_LINE_JOIN_BEVEL
 )
+
+func (i LineJoin) String() string {
+	switch i {
+	case LineJoinMiter:
+		return "LineJoinMiter"
+	case LineJoinRound:
+		return "LineJoinRound"
+	case LineJoinBevel:
+		return "LineJoinBevel"
+	default:
+		return fmt.Sprintf("LineJoin(%d)", i)
+	}
+}
 
 // See cairo_set_line_join().
 func (cr *Context) SetLineJoin(lineJoin LineJoin) {
@@ -871,6 +1029,15 @@ const (
 	TextClusterFlagBackward TextClusterFlags = C.CAIRO_TEXT_CLUSTER_FLAG_BACKWARD
 )
 
+func (i TextClusterFlags) String() string {
+	switch i {
+	case TextClusterFlagBackward:
+		return "TextClusterFlagBackward"
+	default:
+		return fmt.Sprintf("TextClusterFlags(%d)", i)
+	}
+}
+
 // See cairo_text_extents_t.
 type TextExtents struct {
 	XBearing float64
@@ -899,6 +1066,19 @@ const (
 	FontSlantOblique FontSlant = C.CAIRO_FONT_SLANT_OBLIQUE
 )
 
+func (i FontSlant) String() string {
+	switch i {
+	case FontSlantNormal:
+		return "FontSlantNormal"
+	case FontSlantItalic:
+		return "FontSlantItalic"
+	case FontSlantOblique:
+		return "FontSlantOblique"
+	default:
+		return fmt.Sprintf("FontSlant(%d)", i)
+	}
+}
+
 // See cairo_font_weight_t.
 type FontWeight int
 
@@ -906,6 +1086,17 @@ const (
 	FontWeightNormal FontWeight = C.CAIRO_FONT_WEIGHT_NORMAL
 	FontWeightBold   FontWeight = C.CAIRO_FONT_WEIGHT_BOLD
 )
+
+func (i FontWeight) String() string {
+	switch i {
+	case FontWeightNormal:
+		return "FontWeightNormal"
+	case FontWeightBold:
+		return "FontWeightBold"
+	default:
+		return fmt.Sprintf("FontWeight(%d)", i)
+	}
+}
 
 // See cairo_subpixel_order_t.
 type SubpixelOrder int
@@ -918,6 +1109,23 @@ const (
 	SubpixelOrderVBGR    SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_VBGR
 )
 
+func (i SubpixelOrder) String() string {
+	switch i {
+	case SubpixelOrderDefault:
+		return "SubpixelOrderDefault"
+	case SubpixelOrderRGB:
+		return "SubpixelOrderRGB"
+	case SubpixelOrderBGR:
+		return "SubpixelOrderBGR"
+	case SubpixelOrderVRGB:
+		return "SubpixelOrderVRGB"
+	case SubpixelOrderVBGR:
+		return "SubpixelOrderVBGR"
+	default:
+		return fmt.Sprintf("SubpixelOrder(%d)", i)
+	}
+}
+
 // See cairo_hint_style_t.
 type HintStyle int
 
@@ -929,6 +1137,23 @@ const (
 	HintStyleFull    HintStyle = C.CAIRO_HINT_STYLE_FULL
 )
 
+func (i HintStyle) String() string {
+	switch i {
+	case HintStyleDefault:
+		return "HintStyleDefault"
+	case HintStyleNone:
+		return "HintStyleNone"
+	case HintStyleSlight:
+		return "HintStyleSlight"
+	case HintStyleMedium:
+		return "HintStyleMedium"
+	case HintStyleFull:
+		return "HintStyleFull"
+	default:
+		return fmt.Sprintf("HintStyle(%d)", i)
+	}
+}
+
 // See cairo_hint_metrics_t.
 type HintMetrics int
 
@@ -937,6 +1162,19 @@ const (
 	HintMetricsOff     HintMetrics = C.CAIRO_HINT_METRICS_OFF
 	HintMetricsOn      HintMetrics = C.CAIRO_HINT_METRICS_ON
 )
+
+func (i HintMetrics) String() string {
+	switch i {
+	case HintMetricsDefault:
+		return "HintMetricsDefault"
+	case HintMetricsOff:
+		return "HintMetricsOff"
+	case HintMetricsOn:
+		return "HintMetricsOn"
+	default:
+		return fmt.Sprintf("HintMetrics(%d)", i)
+	}
+}
 
 // See cairo_font_options_t.
 type FontOptions struct {
@@ -1228,6 +1466,23 @@ const (
 	FontTypeQuartz FontType = C.CAIRO_FONT_TYPE_QUARTZ
 	FontTypeUser   FontType = C.CAIRO_FONT_TYPE_USER
 )
+
+func (i FontType) String() string {
+	switch i {
+	case FontTypeToy:
+		return "FontTypeToy"
+	case FontTypeFt:
+		return "FontTypeFt"
+	case FontTypeWin32:
+		return "FontTypeWin32"
+	case FontTypeQuartz:
+		return "FontTypeQuartz"
+	case FontTypeUser:
+		return "FontTypeUser"
+	default:
+		return fmt.Sprintf("FontType(%d)", i)
+	}
+}
 
 // See cairo_font_face_get_type().
 func (fontFace *FontFace) GetType() FontType {
@@ -1531,6 +1786,21 @@ const (
 	PathClosePath PathDataType = C.CAIRO_PATH_CLOSE_PATH
 )
 
+func (i PathDataType) String() string {
+	switch i {
+	case PathMoveTo:
+		return "PathMoveTo"
+	case PathLineTo:
+		return "PathLineTo"
+	case PathCurveTo:
+		return "PathCurveTo"
+	case PathClosePath:
+		return "PathClosePath"
+	default:
+		return fmt.Sprintf("PathDataType(%d)", i)
+	}
+}
+
 // See cairo_path_t.
 type Path struct {
 	Ptr *C.cairo_path_t
@@ -1587,6 +1857,31 @@ const (
 	DeviceTypeWin32   DeviceType = C.CAIRO_DEVICE_TYPE_WIN32
 	DeviceTypeInvalid DeviceType = C.CAIRO_DEVICE_TYPE_INVALID
 )
+
+func (i DeviceType) String() string {
+	switch i {
+	case DeviceTypeDRM:
+		return "DeviceTypeDRM"
+	case DeviceTypeGl:
+		return "DeviceTypeGl"
+	case DeviceTypeScript:
+		return "DeviceTypeScript"
+	case DeviceTypeXCB:
+		return "DeviceTypeXCB"
+	case DeviceTypeXlib:
+		return "DeviceTypeXlib"
+	case DeviceTypeXML:
+		return "DeviceTypeXML"
+	case DeviceTypeCOGL:
+		return "DeviceTypeCOGL"
+	case DeviceTypeWin32:
+		return "DeviceTypeWin32"
+	case DeviceTypeInvalid:
+		return "DeviceTypeInvalid"
+	default:
+		return fmt.Sprintf("DeviceType(%d)", i)
+	}
+}
 
 // See cairo_device_get_type().
 func (device *Device) GetType() DeviceType {
@@ -1678,6 +1973,17 @@ const (
 	SurfaceObserverNormal           SurfaceObserverMode = C.CAIRO_SURFACE_OBSERVER_NORMAL
 	SurfaceObserverRecordOperations SurfaceObserverMode = C.CAIRO_SURFACE_OBSERVER_RECORD_OPERATIONS
 )
+
+func (i SurfaceObserverMode) String() string {
+	switch i {
+	case SurfaceObserverNormal:
+		return "SurfaceObserverNormal"
+	case SurfaceObserverRecordOperations:
+		return "SurfaceObserverRecordOperations"
+	default:
+		return fmt.Sprintf("SurfaceObserverMode(%d)", i)
+	}
+}
 
 // See cairo_surface_create_observer().
 func (target *Surface) CreateObserver(mode SurfaceObserverMode) *SurfaceObserver {
@@ -1804,6 +2110,63 @@ const (
 	SurfaceTypeSubsurface    SurfaceType = C.CAIRO_SURFACE_TYPE_SUBSURFACE
 	SurfaceTypeCOGL          SurfaceType = C.CAIRO_SURFACE_TYPE_COGL
 )
+
+func (i SurfaceType) String() string {
+	switch i {
+	case SurfaceTypeImage:
+		return "SurfaceTypeImage"
+	case SurfaceTypePdf:
+		return "SurfaceTypePdf"
+	case SurfaceTypePs:
+		return "SurfaceTypePs"
+	case SurfaceTypeXlib:
+		return "SurfaceTypeXlib"
+	case SurfaceTypeXCB:
+		return "SurfaceTypeXCB"
+	case SurfaceTypeGlitz:
+		return "SurfaceTypeGlitz"
+	case SurfaceTypeQuartz:
+		return "SurfaceTypeQuartz"
+	case SurfaceTypeWin32:
+		return "SurfaceTypeWin32"
+	case SurfaceTypeBeos:
+		return "SurfaceTypeBeos"
+	case SurfaceTypeDirectfb:
+		return "SurfaceTypeDirectfb"
+	case SurfaceTypeSvg:
+		return "SurfaceTypeSvg"
+	case SurfaceTypeOs2:
+		return "SurfaceTypeOs2"
+	case SurfaceTypeWin32Printing:
+		return "SurfaceTypeWin32Printing"
+	case SurfaceTypeQuartzImage:
+		return "SurfaceTypeQuartzImage"
+	case SurfaceTypeScript:
+		return "SurfaceTypeScript"
+	case SurfaceTypeQt:
+		return "SurfaceTypeQt"
+	case SurfaceTypeRecording:
+		return "SurfaceTypeRecording"
+	case SurfaceTypeVg:
+		return "SurfaceTypeVg"
+	case SurfaceTypeGl:
+		return "SurfaceTypeGl"
+	case SurfaceTypeDRM:
+		return "SurfaceTypeDRM"
+	case SurfaceTypeTee:
+		return "SurfaceTypeTee"
+	case SurfaceTypeXML:
+		return "SurfaceTypeXML"
+	case SurfaceTypeSkia:
+		return "SurfaceTypeSkia"
+	case SurfaceTypeSubsurface:
+		return "SurfaceTypeSubsurface"
+	case SurfaceTypeCOGL:
+		return "SurfaceTypeCOGL"
+	default:
+		return fmt.Sprintf("SurfaceType(%d)", i)
+	}
+}
 
 // See cairo_surface_get_type().
 func (surface *Surface) GetType() SurfaceType {
@@ -2117,6 +2480,25 @@ const (
 	PatternTypeRasterSource PatternType = C.CAIRO_PATTERN_TYPE_RASTER_SOURCE
 )
 
+func (i PatternType) String() string {
+	switch i {
+	case PatternTypeSolid:
+		return "PatternTypeSolid"
+	case PatternTypeSurface:
+		return "PatternTypeSurface"
+	case PatternTypeLinear:
+		return "PatternTypeLinear"
+	case PatternTypeRadial:
+		return "PatternTypeRadial"
+	case PatternTypeMesh:
+		return "PatternTypeMesh"
+	case PatternTypeRasterSource:
+		return "PatternTypeRasterSource"
+	default:
+		return fmt.Sprintf("PatternType(%d)", i)
+	}
+}
+
 // See cairo_pattern_get_type().
 func (pattern *Pattern) GetType() PatternType {
 	ret := PatternType(C.cairo_pattern_get_type(pattern.Ptr))
@@ -2232,6 +2614,21 @@ const (
 	ExtendPad     Extend = C.CAIRO_EXTEND_PAD
 )
 
+func (i Extend) String() string {
+	switch i {
+	case ExtendNone:
+		return "ExtendNone"
+	case ExtendRepeat:
+		return "ExtendRepeat"
+	case ExtendReflect:
+		return "ExtendReflect"
+	case ExtendPad:
+		return "ExtendPad"
+	default:
+		return fmt.Sprintf("Extend(%d)", i)
+	}
+}
+
 // See cairo_pattern_set_extend().
 func (pattern *Pattern) SetExtend(extend Extend) {
 	C.cairo_pattern_set_extend(pattern.Ptr, C.cairo_extend_t(extend))
@@ -2260,6 +2657,25 @@ const (
 	FilterBilinear Filter = C.CAIRO_FILTER_BILINEAR
 	FilterGaussian Filter = C.CAIRO_FILTER_GAUSSIAN
 )
+
+func (i Filter) String() string {
+	switch i {
+	case FilterFast:
+		return "FilterFast"
+	case FilterGood:
+		return "FilterGood"
+	case FilterBest:
+		return "FilterBest"
+	case FilterNearest:
+		return "FilterNearest"
+	case FilterBilinear:
+		return "FilterBilinear"
+	case FilterGaussian:
+		return "FilterGaussian"
+	default:
+		return fmt.Sprintf("Filter(%d)", i)
+	}
+}
 
 // See cairo_pattern_set_filter().
 func (pattern *Pattern) SetFilter(filter Filter) {
@@ -2361,6 +2777,19 @@ const (
 	RegionOverlapOut  RegionOverlap = C.CAIRO_REGION_OVERLAP_OUT
 	RegionOverlapPart RegionOverlap = C.CAIRO_REGION_OVERLAP_PART
 )
+
+func (i RegionOverlap) String() string {
+	switch i {
+	case RegionOverlapIn:
+		return "RegionOverlapIn"
+	case RegionOverlapOut:
+		return "RegionOverlapOut"
+	case RegionOverlapPart:
+		return "RegionOverlapPart"
+	default:
+		return fmt.Sprintf("RegionOverlap(%d)", i)
+	}
+}
 
 // See cairo_region_create().
 func RegionCreate() *Region {
