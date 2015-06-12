@@ -16,6 +16,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/xml"
 	"fmt"
 	"go/format"
 	"io"
@@ -25,6 +26,8 @@ import (
 
 	"rsc.io/c2go/cc"
 )
+
+const cDocUrl = "http://cairographics.org/manual/"
 
 // intentionalSkip maps C names to the reason why they're left out
 // when we intentionally don't generate bindings for them.
@@ -162,6 +165,7 @@ var acronyms = map[string]bool{
 
 type Writer struct {
 	bytes.Buffer
+	links map[string]string
 }
 
 func (w *Writer) Print(format string, a ...interface{}) {
@@ -356,6 +360,9 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 
 func (w *Writer) genTypeDef(d *cc.Decl) {
 	w.Print("// See %s.", d.Name)
+	if link, ok := w.links[d.Name]; ok {
+		w.Print("// %s%s", cDocUrl, link)
+	}
 	goName := cNameToGoUpper(d.Name)
 
 	switch d.Type.Kind {
@@ -566,6 +573,9 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 	}
 
 	w.Print("// See %s().", f.Name)
+	if link, ok := w.links[f.Name]; ok {
+		w.Print("// %s%s", cDocUrl, link)
+	}
 	w.Print("func %s %s(%s) %s {", methodSig, name, argSig, retTypeSig)
 	if preCall != "" {
 		w.Print("%s", preCall)
@@ -734,6 +744,9 @@ func (pi *PathIter) Next() *PathSegment {
 
 		if impl, ok := manualImpl[d.Name]; ok {
 			w.Print("// See %s().", d.Name)
+			if link, ok := w.links[d.Name]; ok {
+				w.Print("// %s%s", cDocUrl, link)
+			}
 			w.Print("%s", impl)
 		} else if d.Storage == cc.Typedef {
 			w.genTypeDef(d)
@@ -752,6 +765,39 @@ func (pi *PathIter) Next() *PathSegment {
 	log.Printf("%d decls total, %d skipped intentionally / %d TODO", len(decls), intentionalSkips, todoSkips)
 }
 
+func loadDevHelp(path string) (map[string]string, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	type Keyword struct {
+		Type string `xml:"type,attr"`
+		Name string `xml:"name,attr"`
+		Link string `xml:"link,attr"`
+	}
+	type Book struct {
+		Functions []*Keyword `xml:"functions>keyword"`
+	}
+
+	var book Book
+	err = xml.NewDecoder(f).Decode(&book)
+	if err != nil {
+		return nil, err
+	}
+	links := map[string]string{}
+	for _, f := range book.Functions {
+		name := f.Name
+		if strings.HasPrefix(name, "enum ") {
+			name = name[5:]
+		}
+		if strings.HasSuffix(name, " ()") {
+			name = name[:len(name)-3]
+		}
+		links[name] = f.Link
+	}
+	return links, nil
+}
+
 func main() {
 	if len(os.Args) < 3 {
 		log.Printf("need two paths")
@@ -759,6 +805,15 @@ func main() {
 	}
 	inpath := os.Args[1]
 	outpath := os.Args[2]
+
+	links, err := loadDevHelp("/usr/share/gtk-doc/html/cairo/cairo.devhelp2")
+	if err != nil {
+		log.Printf("%s", err)
+		os.Exit(1)
+	}
+	for k, v := range links {
+		log.Printf("%s %s", k, v)
+	}
 
 	f, err := os.Open(inpath)
 	if err != nil {
@@ -772,7 +827,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	w := &Writer{}
+	w := &Writer{links: links}
 	w.process(prog.Decls)
 
 	var outf io.Writer
