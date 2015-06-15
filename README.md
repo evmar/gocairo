@@ -9,7 +9,14 @@ API.  This ensures the wrapper is consistent and complete.
 
 ## Install
 
+If you're lucky this will work:
+
     go get github.com/martine/gocairo/cairo
+
+but Cairo can be built many different configurations (e.g. it can be
+built with or without Xlib or PNG etc. support), so it's likely you'll
+need to `git clone` this repository instead and run `make` to have the
+build process autodetect your system's configuration.
 
 ## Docs
 

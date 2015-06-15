@@ -15,9 +15,12 @@
 
 /*
   This file contains fake definitions of xlib types.  This is used to
-  keep the C parser happy is parsing cairo-xlib.h; we don't want to
+  keep the C parser happy when parsing cairo-xlib.h; we don't want to
   bring in all the Xlib types into the binding!
 */
+
+/* Set the #define so that Cairo's include of Xlib.h doesn't do anything. */
+#define _X11_XLIB_H_
 
 typedef struct _XDisplay Display;
 typedef struct _XVisual Visual;
