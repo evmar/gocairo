@@ -145,6 +145,7 @@ var rawCTypes = map[string]bool{
 	"Screen":   true,
 }
 
+// acronyms are substrings that should be all caps or all lowercase.
 var acronyms = map[string]bool{
 	"argb":   true,
 	"argb32": true,
@@ -152,13 +153,17 @@ var acronyms = map[string]bool{
 	"cogl":   true,
 	"ctm":    true,
 	"drm":    true,
+	"gl":     true,
+	"pdf":    true,
 	"png":    true,
+	"ps":     true,
 	"rgb":    true,
 	"rgb16":  true,
 	"rgb24":  true,
 	"rgb30":  true,
 	"rgba":   true,
 	"vbgr":   true,
+	"vg":     true,
 	"vrgb":   true,
 	"xcb":    true,
 	"xml":    true,

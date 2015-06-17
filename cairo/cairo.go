@@ -2207,7 +2207,7 @@ type DeviceType int
 
 const (
 	DeviceTypeDRM     DeviceType = C.CAIRO_DEVICE_TYPE_DRM
-	DeviceTypeGl      DeviceType = C.CAIRO_DEVICE_TYPE_GL
+	DeviceTypeGL      DeviceType = C.CAIRO_DEVICE_TYPE_GL
 	DeviceTypeScript  DeviceType = C.CAIRO_DEVICE_TYPE_SCRIPT
 	DeviceTypeXCB     DeviceType = C.CAIRO_DEVICE_TYPE_XCB
 	DeviceTypeXlib    DeviceType = C.CAIRO_DEVICE_TYPE_XLIB
@@ -2221,8 +2221,8 @@ func (i DeviceType) String() string {
 	switch i {
 	case DeviceTypeDRM:
 		return "DeviceTypeDRM"
-	case DeviceTypeGl:
-		return "DeviceTypeGl"
+	case DeviceTypeGL:
+		return "DeviceTypeGL"
 	case DeviceTypeScript:
 		return "DeviceTypeScript"
 	case DeviceTypeXCB:
@@ -2472,8 +2472,8 @@ type SurfaceType int
 
 const (
 	SurfaceTypeImage         SurfaceType = C.CAIRO_SURFACE_TYPE_IMAGE
-	SurfaceTypePdf           SurfaceType = C.CAIRO_SURFACE_TYPE_PDF
-	SurfaceTypePs            SurfaceType = C.CAIRO_SURFACE_TYPE_PS
+	SurfaceTypePDF           SurfaceType = C.CAIRO_SURFACE_TYPE_PDF
+	SurfaceTypePS            SurfaceType = C.CAIRO_SURFACE_TYPE_PS
 	SurfaceTypeXlib          SurfaceType = C.CAIRO_SURFACE_TYPE_XLIB
 	SurfaceTypeXCB           SurfaceType = C.CAIRO_SURFACE_TYPE_XCB
 	SurfaceTypeGlitz         SurfaceType = C.CAIRO_SURFACE_TYPE_GLITZ
@@ -2488,8 +2488,8 @@ const (
 	SurfaceTypeScript        SurfaceType = C.CAIRO_SURFACE_TYPE_SCRIPT
 	SurfaceTypeQt            SurfaceType = C.CAIRO_SURFACE_TYPE_QT
 	SurfaceTypeRecording     SurfaceType = C.CAIRO_SURFACE_TYPE_RECORDING
-	SurfaceTypeVg            SurfaceType = C.CAIRO_SURFACE_TYPE_VG
-	SurfaceTypeGl            SurfaceType = C.CAIRO_SURFACE_TYPE_GL
+	SurfaceTypeVG            SurfaceType = C.CAIRO_SURFACE_TYPE_VG
+	SurfaceTypeGL            SurfaceType = C.CAIRO_SURFACE_TYPE_GL
 	SurfaceTypeDRM           SurfaceType = C.CAIRO_SURFACE_TYPE_DRM
 	SurfaceTypeTee           SurfaceType = C.CAIRO_SURFACE_TYPE_TEE
 	SurfaceTypeXML           SurfaceType = C.CAIRO_SURFACE_TYPE_XML
@@ -2502,10 +2502,10 @@ func (i SurfaceType) String() string {
 	switch i {
 	case SurfaceTypeImage:
 		return "SurfaceTypeImage"
-	case SurfaceTypePdf:
-		return "SurfaceTypePdf"
-	case SurfaceTypePs:
-		return "SurfaceTypePs"
+	case SurfaceTypePDF:
+		return "SurfaceTypePDF"
+	case SurfaceTypePS:
+		return "SurfaceTypePS"
 	case SurfaceTypeXlib:
 		return "SurfaceTypeXlib"
 	case SurfaceTypeXCB:
@@ -2534,10 +2534,10 @@ func (i SurfaceType) String() string {
 		return "SurfaceTypeQt"
 	case SurfaceTypeRecording:
 		return "SurfaceTypeRecording"
-	case SurfaceTypeVg:
-		return "SurfaceTypeVg"
-	case SurfaceTypeGl:
-		return "SurfaceTypeGl"
+	case SurfaceTypeVG:
+		return "SurfaceTypeVG"
+	case SurfaceTypeGL:
+		return "SurfaceTypeGL"
 	case SurfaceTypeDRM:
 		return "SurfaceTypeDRM"
 	case SurfaceTypeTee:
