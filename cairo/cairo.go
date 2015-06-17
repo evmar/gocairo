@@ -2481,8 +2481,8 @@ const (
 	SurfaceTypeWin32         SurfaceType = C.CAIRO_SURFACE_TYPE_WIN32
 	SurfaceTypeBeos          SurfaceType = C.CAIRO_SURFACE_TYPE_BEOS
 	SurfaceTypeDirectfb      SurfaceType = C.CAIRO_SURFACE_TYPE_DIRECTFB
-	SurfaceTypeSvg           SurfaceType = C.CAIRO_SURFACE_TYPE_SVG
-	SurfaceTypeOs2           SurfaceType = C.CAIRO_SURFACE_TYPE_OS2
+	SurfaceTypeSVG           SurfaceType = C.CAIRO_SURFACE_TYPE_SVG
+	SurfaceTypeOS2           SurfaceType = C.CAIRO_SURFACE_TYPE_OS2
 	SurfaceTypeWin32Printing SurfaceType = C.CAIRO_SURFACE_TYPE_WIN32_PRINTING
 	SurfaceTypeQuartzImage   SurfaceType = C.CAIRO_SURFACE_TYPE_QUARTZ_IMAGE
 	SurfaceTypeScript        SurfaceType = C.CAIRO_SURFACE_TYPE_SCRIPT
@@ -2520,10 +2520,10 @@ func (i SurfaceType) String() string {
 		return "SurfaceTypeBeos"
 	case SurfaceTypeDirectfb:
 		return "SurfaceTypeDirectfb"
-	case SurfaceTypeSvg:
-		return "SurfaceTypeSvg"
-	case SurfaceTypeOs2:
-		return "SurfaceTypeOs2"
+	case SurfaceTypeSVG:
+		return "SurfaceTypeSVG"
+	case SurfaceTypeOS2:
+		return "SurfaceTypeOS2"
 	case SurfaceTypeWin32Printing:
 		return "SurfaceTypeWin32Printing"
 	case SurfaceTypeQuartzImage:
