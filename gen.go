@@ -906,7 +906,7 @@ func main() {
 
 	links, err := loadDevHelp("/usr/share/gtk-doc/html/cairo/cairo.devhelp2")
 	if err != nil {
-		log.Printf("loading %s: %s", err)
+		log.Printf("%s", err)
 		log.Printf("ignoring missing devhelp; generated docs will lack links to C API")
 		links = map[string]string{}
 	}
@@ -922,7 +922,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	log.Printf("x")
 	w := &Writer{links: links}
 	w.process(prog.Decls)
 
