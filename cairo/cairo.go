@@ -2383,6 +2383,8 @@ func (surface *SurfaceObserver) Elapsed() float64 {
 }
 
 // See cairo_device_observer_elapsed().
+//
+// C API documentation: http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-observer-elapsed
 func (device *Device) ObserverElapsed() float64 {
 	ret := float64(C.cairo_device_observer_elapsed(device.Ptr))
 	if err := device.status(); err != nil {
@@ -2392,6 +2394,8 @@ func (device *Device) ObserverElapsed() float64 {
 }
 
 // See cairo_device_observer_paint_elapsed().
+//
+// C API documentation: http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-observer-paint-elapsed
 func (device *Device) ObserverPaintElapsed() float64 {
 	ret := float64(C.cairo_device_observer_paint_elapsed(device.Ptr))
 	if err := device.status(); err != nil {
@@ -2401,6 +2405,8 @@ func (device *Device) ObserverPaintElapsed() float64 {
 }
 
 // See cairo_device_observer_mask_elapsed().
+//
+// C API documentation: http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-observer-mask-elapsed
 func (device *Device) ObserverMaskElapsed() float64 {
 	ret := float64(C.cairo_device_observer_mask_elapsed(device.Ptr))
 	if err := device.status(); err != nil {
@@ -2410,6 +2416,8 @@ func (device *Device) ObserverMaskElapsed() float64 {
 }
 
 // See cairo_device_observer_fill_elapsed().
+//
+// C API documentation: http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-observer-fill-elapsed
 func (device *Device) ObserverFillElapsed() float64 {
 	ret := float64(C.cairo_device_observer_fill_elapsed(device.Ptr))
 	if err := device.status(); err != nil {
@@ -2419,6 +2427,8 @@ func (device *Device) ObserverFillElapsed() float64 {
 }
 
 // See cairo_device_observer_stroke_elapsed().
+//
+// C API documentation: http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-observer-stroke-elapsed
 func (device *Device) ObserverStrokeElapsed() float64 {
 	ret := float64(C.cairo_device_observer_stroke_elapsed(device.Ptr))
 	if err := device.status(); err != nil {
@@ -2428,6 +2438,8 @@ func (device *Device) ObserverStrokeElapsed() float64 {
 }
 
 // See cairo_device_observer_glyphs_elapsed().
+//
+// C API documentation: http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-observer-glyphs-elapsed
 func (device *Device) ObserverGlyphsElapsed() float64 {
 	ret := float64(C.cairo_device_observer_glyphs_elapsed(device.Ptr))
 	if err := device.status(); err != nil {
@@ -2631,6 +2643,8 @@ func (surface *Surface) MarkDirtyRectangle(x, y, width, height int) {
 }
 
 // See cairo_surface_set_device_scale().
+//
+// C API documentation: http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-device-scale
 func (surface *Surface) SetDeviceScale(xScale, yScale float64) {
 	C.cairo_surface_set_device_scale(surface.Ptr, C.double(xScale), C.double(yScale))
 	if err := surface.status(); err != nil {
@@ -2639,6 +2653,8 @@ func (surface *Surface) SetDeviceScale(xScale, yScale float64) {
 }
 
 // See cairo_surface_get_device_scale().
+//
+// C API documentation: http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-device-scale
 func (surface *Surface) GetDeviceScale() (float64, float64) {
 	var xScale C.double
 	var yScale C.double

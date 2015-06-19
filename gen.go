@@ -813,6 +813,9 @@ func loadDevHelp(path string) (map[string]string, error) {
 		if strings.HasSuffix(name, " ()") {
 			name = name[:len(name)-3]
 		}
+		if strings.HasSuffix(name, "\xc2\xa0()") {
+			name = name[:len(name)-4]
+		}
 		links[name] = f.Link
 	}
 	return links, nil
