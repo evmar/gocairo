@@ -49,3 +49,17 @@ func gocairoWriteFunc(closure unsafe.Pointer, data unsafe.Pointer, clength C.uin
 	_, writeClosure.err = writeClosure.w.Write(slice)
 	return writeClosure.err == nil
 }
+
+type readClosure struct {
+	r   io.Reader
+	err error
+}
+
+//export gocairoReadFunc
+func gocairoReadFunc(closure unsafe.Pointer, data unsafe.Pointer, clength C.uint) bool {
+	readClosure := (*readClosure)(closure)
+	length := uint(clength)
+	buf := ((*[1 << 30]byte)(data))[:length:length]
+	_, readClosure.err = io.ReadFull(readClosure.r, buf)
+	return readClosure.err == nil
+}

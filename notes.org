@@ -7,6 +7,3 @@ should be (m *Matrix)
 options -> opts
 *** GetFoo() -> Foo()
 e.g. func (fontFace *ToyFontFace) GetWeight() FontWeight
-** other things to fix
-*** CreateFromPng(filename string)
-eliminate, and instead provide an interface that works with io.Reader

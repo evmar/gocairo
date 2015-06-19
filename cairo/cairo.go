@@ -29,11 +29,23 @@ import (
 #include <cairo-xlib.h>
 #include <stdlib.h>
 
+int gocairoWriteFunc(void* closure, const unsigned char* data, unsigned int length);
+int gocairoReadFunc(void* closure, const unsigned char* data, unsigned int length);
+
 // A cairo_write_func_t for use in cairo_surface_write_to_png.
 cairo_status_t gocairo_write_func(void *closure,
                                   const unsigned char *data,
                                   unsigned int length) {
   return gocairoWriteFunc(closure, data, length)
+    ? CAIRO_STATUS_SUCCESS
+    : CAIRO_STATUS_WRITE_ERROR;
+}
+
+// A cairo_read_func_t for use in cairo_image_surface_create_from_png_stream.
+cairo_status_t gocairo_read_func(void *closure,
+                                 const unsigned char *data,
+                                 unsigned int length) {
+  return gocairoReadFunc(closure, data, length)
     ? CAIRO_STATUS_SUCCESS
     : CAIRO_STATUS_WRITE_ERROR;
 }
@@ -54,6 +66,18 @@ func (surface *Surface) WriteToPNG(w io.Writer) error {
 	// TODO: which should we prefer between writeClosure.err and status?
 	// Perhaps test against CAIRO_STATUS_WRITE_ERROR?  Needs a test case.
 	return Status(status).toError()
+}
+
+// ImageSurfaceCreateFromPNGStream creates an ImageSurface from a stream of
+// PNG data.
+func ImageSurfaceCreateFromPNGStream(r io.Reader) (*ImageSurface, error) {
+	data := readClosure{r: r}
+	surf := &ImageSurface{wrapSurface(C.cairo_image_surface_create_from_png_stream(
+		(C.cairo_read_func_t)(unsafe.Pointer(C.gocairo_read_func)),
+		unsafe.Pointer(&data)))}
+	// TODO: which should we prefer between readClosure.err and status?
+	// Perhaps test against CAIRO_STATUS_WRITE_ERROR?  Needs a test case.
+	return surf, surf.status()
 }
 
 // PathIter creates an iterator over the segments within the path.
@@ -2803,19 +2827,6 @@ func (surface *ImageSurface) GetHeight() int {
 func (surface *ImageSurface) GetStride() int {
 	ret := int(C.cairo_image_surface_get_stride(surface.Ptr))
 	if err := surface.status(); err != nil {
-		panic(err)
-	}
-	return ret
-}
-
-// See cairo_image_surface_create_from_png().
-//
-// C API documentation: http://cairographics.org/manual/cairo-PNG-Support.html#cairo-image-surface-create-from-png
-func ImageSurfaceCreateFromPNG(filename string) *ImageSurface {
-	c_filename := C.CString(filename)
-	defer C.free(unsafe.Pointer(c_filename))
-	ret := &ImageSurface{wrapSurface(C.cairo_image_surface_create_from_png(c_filename))}
-	if err := ret.status(); err != nil {
 		panic(err)
 	}
 	return ret
