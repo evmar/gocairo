@@ -89,7 +89,12 @@ var typeTodoList = map[string]string{
 	"cairo_raster_source_finish_func_t":   "callbacks",
 }
 
-var manualImpl = map[string]string{}
+var manualImpl = map[string]string{
+	"cairo_image_surface_get_data": `func (i *ImageSurface) Data() []byte {
+	buf := C.cairo_image_surface_get_data(i.Ptr)
+	return C.GoBytes(unsafe.Pointer(buf), C.int(i.GetStride()*i.GetHeight()))
+}`,
+}
 
 // outParams maps a function name to a per-parameter bool of whether it's
 // an output-only param.
@@ -793,7 +798,7 @@ func (pi *PathIter) Next() *PathSegment {
 		}
 
 		if impl, ok := manualImpl[d.Name]; ok {
-			w.writeDocString(d.Name, "")
+			w.writeDocString(d.Name, "()")
 			w.Print("%s", impl)
 		} else if d.Storage == cc.Typedef {
 			w.genTypeDef(d)

@@ -2788,6 +2788,14 @@ func (format Format) StrideForWidth(width int) int {
 	return ret
 }
 
+// See cairo_image_surface_get_data().
+//
+// C API documentation: http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-get-data
+func (i *ImageSurface) Data() []byte {
+	buf := C.cairo_image_surface_get_data(i.Ptr)
+	return C.GoBytes(unsafe.Pointer(buf), C.int(i.GetStride()*i.GetHeight()))
+}
+
 // See cairo_image_surface_get_format().
 //
 // C API documentation: http://cairographics.org/manual/cairo-Image-Surfaces.html#cairo-image-surface-get-format
