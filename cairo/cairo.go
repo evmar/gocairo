@@ -158,7 +158,7 @@ func wrapContext(p *C.cairo_t) *Context {
 	return ret
 }
 
-// Construct a Context from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+// Construct a Context from a C cairo_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
 func BorrowContext(p unsafe.Pointer) *Context {
 	return &Context{(*C.cairo_t)(p)}
 }
@@ -179,7 +179,7 @@ func wrapSurface(p *C.cairo_surface_t) *Surface {
 	return ret
 }
 
-// Construct a Surface from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+// Construct a Surface from a C cairo_surface_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
 func BorrowSurface(p unsafe.Pointer) *Surface {
 	return &Surface{(*C.cairo_surface_t)(p)}
 }
@@ -200,7 +200,7 @@ func wrapDevice(p *C.cairo_device_t) *Device {
 	return ret
 }
 
-// Construct a Device from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+// Construct a Device from a C cairo_device_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
 func BorrowDevice(p unsafe.Pointer) *Device {
 	return &Device{(*C.cairo_device_t)(p)}
 }
@@ -233,7 +233,7 @@ func wrapPattern(p *C.cairo_pattern_t) *Pattern {
 	return ret
 }
 
-// Construct a Pattern from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+// Construct a Pattern from a C cairo_pattern_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
 func BorrowPattern(p unsafe.Pointer) *Pattern {
 	return &Pattern{(*C.cairo_pattern_t)(p)}
 }
@@ -1228,7 +1228,7 @@ func wrapScaledFont(p *C.cairo_scaled_font_t) *ScaledFont {
 	return ret
 }
 
-// Construct a ScaledFont from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+// Construct a ScaledFont from a C cairo_scaled_font_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
 func BorrowScaledFont(p unsafe.Pointer) *ScaledFont {
 	return &ScaledFont{(*C.cairo_scaled_font_t)(p)}
 }
@@ -1249,7 +1249,7 @@ func wrapFontFace(p *C.cairo_font_face_t) *FontFace {
 	return ret
 }
 
-// Construct a FontFace from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+// Construct a FontFace from a C cairo_font_face_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
 func BorrowFontFace(p unsafe.Pointer) *FontFace {
 	return &FontFace{(*C.cairo_font_face_t)(p)}
 }
@@ -1449,7 +1449,7 @@ func wrapFontOptions(p *C.cairo_font_options_t) *FontOptions {
 	return ret
 }
 
-// Construct a FontOptions from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+// Construct a FontOptions from a C cairo_font_options_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
 func BorrowFontOptions(p unsafe.Pointer) *FontOptions {
 	return &FontOptions{(*C.cairo_font_options_t)(p)}
 }
@@ -2219,7 +2219,7 @@ func wrapPath(p *C.cairo_path_t) *Path {
 	return ret
 }
 
-// Construct a Path from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+// Construct a Path from a C cairo_path_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
 func BorrowPath(p unsafe.Pointer) *Path {
 	return &Path{(*C.cairo_path_t)(p)}
 }
@@ -3363,7 +3363,7 @@ func wrapRegion(p *C.cairo_region_t) *Region {
 	return ret
 }
 
-// Construct a Region from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+// Construct a Region from a C cairo_region_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
 func BorrowRegion(p unsafe.Pointer) *Region {
 	return &Region{(*C.cairo_region_t)(p)}
 }
