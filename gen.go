@@ -409,6 +409,11 @@ Ptr *C.%s
 			w.Print("runtime.SetFinalizer(ret, free%s)", goName)
 			w.Print("return ret")
 			w.Print("}")
+
+			w.Print("// Construct a %s from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.", goName)
+			w.Print("func Borrow%s(p unsafe.Pointer) *%s {", goName, goName)
+			w.Print("return &%s{(*C.%s)(p)}", goName, d.Name)
+			w.Print("}")
 		} else {
 			sharedTypes[d.Name] = goName
 			w.Print("type %s struct {", goName)

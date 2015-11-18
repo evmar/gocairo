@@ -158,6 +158,11 @@ func wrapContext(p *C.cairo_t) *Context {
 	return ret
 }
 
+// Construct a Context from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+func BorrowContext(p unsafe.Pointer) *Context {
+	return &Context{(*C.cairo_t)(p)}
+}
+
 // See cairo_surface_t.
 //
 // C API documentation: http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-t
@@ -174,6 +179,11 @@ func wrapSurface(p *C.cairo_surface_t) *Surface {
 	return ret
 }
 
+// Construct a Surface from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+func BorrowSurface(p unsafe.Pointer) *Surface {
+	return &Surface{(*C.cairo_surface_t)(p)}
+}
+
 // See cairo_device_t.
 //
 // C API documentation: http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-t
@@ -188,6 +198,11 @@ func wrapDevice(p *C.cairo_device_t) *Device {
 	ret := &Device{p}
 	runtime.SetFinalizer(ret, freeDevice)
 	return ret
+}
+
+// Construct a Device from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+func BorrowDevice(p unsafe.Pointer) *Device {
+	return &Device{(*C.cairo_device_t)(p)}
 }
 
 // See cairo_matrix_t.
@@ -216,6 +231,11 @@ func wrapPattern(p *C.cairo_pattern_t) *Pattern {
 	ret := &Pattern{p}
 	runtime.SetFinalizer(ret, freePattern)
 	return ret
+}
+
+// Construct a Pattern from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+func BorrowPattern(p unsafe.Pointer) *Pattern {
+	return &Pattern{(*C.cairo_pattern_t)(p)}
 }
 
 // See cairo_status_t.
@@ -1208,6 +1228,11 @@ func wrapScaledFont(p *C.cairo_scaled_font_t) *ScaledFont {
 	return ret
 }
 
+// Construct a ScaledFont from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+func BorrowScaledFont(p unsafe.Pointer) *ScaledFont {
+	return &ScaledFont{(*C.cairo_scaled_font_t)(p)}
+}
+
 // See cairo_font_face_t.
 //
 // C API documentation: http://cairographics.org/manual/cairo-cairo-font-face-t.html#cairo-font-face-t
@@ -1222,6 +1247,11 @@ func wrapFontFace(p *C.cairo_font_face_t) *FontFace {
 	ret := &FontFace{p}
 	runtime.SetFinalizer(ret, freeFontFace)
 	return ret
+}
+
+// Construct a FontFace from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+func BorrowFontFace(p unsafe.Pointer) *FontFace {
+	return &FontFace{(*C.cairo_font_face_t)(p)}
 }
 
 // See cairo_glyph_t.
@@ -1417,6 +1447,11 @@ func wrapFontOptions(p *C.cairo_font_options_t) *FontOptions {
 	ret := &FontOptions{p}
 	runtime.SetFinalizer(ret, freeFontOptions)
 	return ret
+}
+
+// Construct a FontOptions from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+func BorrowFontOptions(p unsafe.Pointer) *FontOptions {
+	return &FontOptions{(*C.cairo_font_options_t)(p)}
 }
 
 // See cairo_font_options_create().
@@ -2182,6 +2217,11 @@ func wrapPath(p *C.cairo_path_t) *Path {
 	ret := &Path{p}
 	runtime.SetFinalizer(ret, freePath)
 	return ret
+}
+
+// Construct a Path from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+func BorrowPath(p unsafe.Pointer) *Path {
+	return &Path{(*C.cairo_path_t)(p)}
 }
 
 // See cairo_copy_path().
@@ -3321,6 +3361,11 @@ func wrapRegion(p *C.cairo_region_t) *Region {
 	ret := &Region{p}
 	runtime.SetFinalizer(ret, freeRegion)
 	return ret
+}
+
+// Construct a Region from a C pointer found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
+func BorrowRegion(p unsafe.Pointer) *Region {
+	return &Region{(*C.cairo_region_t)(p)}
 }
 
 // See cairo_region_overlap_t.
