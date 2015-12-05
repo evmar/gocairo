@@ -410,6 +410,11 @@ Ptr *C.%s
 			w.Print("return ret")
 			w.Print("}")
 
+			w.Print("// Wrap a C %s* found from some external source as a *%s.  The Go side will destroy the reference when it's no longer used.", d.Name, goName)
+			w.Print("func Wrap%s(p unsafe.Pointer) *%s {", goName, goName)
+			w.Print("return wrap%s((*C.%s)(p))", goName, d.Name)
+			w.Print("}")
+
 			w.Print("// Construct a %s from a C %s* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.", goName, d.Name)
 			w.Print("func Borrow%s(p unsafe.Pointer) *%s {", goName, goName)
 			w.Print("return &%s{(*C.%s)(p)}", goName, d.Name)

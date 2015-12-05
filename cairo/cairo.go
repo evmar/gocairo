@@ -158,6 +158,11 @@ func wrapContext(p *C.cairo_t) *Context {
 	return ret
 }
 
+// Wrap a C cairo_t* found from some external source as a *Context.  The Go side will destroy the reference when it's no longer used.
+func WrapContext(p unsafe.Pointer) *Context {
+	return wrapContext((*C.cairo_t)(p))
+}
+
 // Construct a Context from a C cairo_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
 func BorrowContext(p unsafe.Pointer) *Context {
 	return &Context{(*C.cairo_t)(p)}
@@ -179,6 +184,11 @@ func wrapSurface(p *C.cairo_surface_t) *Surface {
 	return ret
 }
 
+// Wrap a C cairo_surface_t* found from some external source as a *Surface.  The Go side will destroy the reference when it's no longer used.
+func WrapSurface(p unsafe.Pointer) *Surface {
+	return wrapSurface((*C.cairo_surface_t)(p))
+}
+
 // Construct a Surface from a C cairo_surface_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
 func BorrowSurface(p unsafe.Pointer) *Surface {
 	return &Surface{(*C.cairo_surface_t)(p)}
@@ -198,6 +208,11 @@ func wrapDevice(p *C.cairo_device_t) *Device {
 	ret := &Device{p}
 	runtime.SetFinalizer(ret, freeDevice)
 	return ret
+}
+
+// Wrap a C cairo_device_t* found from some external source as a *Device.  The Go side will destroy the reference when it's no longer used.
+func WrapDevice(p unsafe.Pointer) *Device {
+	return wrapDevice((*C.cairo_device_t)(p))
 }
 
 // Construct a Device from a C cairo_device_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
@@ -231,6 +246,11 @@ func wrapPattern(p *C.cairo_pattern_t) *Pattern {
 	ret := &Pattern{p}
 	runtime.SetFinalizer(ret, freePattern)
 	return ret
+}
+
+// Wrap a C cairo_pattern_t* found from some external source as a *Pattern.  The Go side will destroy the reference when it's no longer used.
+func WrapPattern(p unsafe.Pointer) *Pattern {
+	return wrapPattern((*C.cairo_pattern_t)(p))
 }
 
 // Construct a Pattern from a C cairo_pattern_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
@@ -1228,6 +1248,11 @@ func wrapScaledFont(p *C.cairo_scaled_font_t) *ScaledFont {
 	return ret
 }
 
+// Wrap a C cairo_scaled_font_t* found from some external source as a *ScaledFont.  The Go side will destroy the reference when it's no longer used.
+func WrapScaledFont(p unsafe.Pointer) *ScaledFont {
+	return wrapScaledFont((*C.cairo_scaled_font_t)(p))
+}
+
 // Construct a ScaledFont from a C cairo_scaled_font_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
 func BorrowScaledFont(p unsafe.Pointer) *ScaledFont {
 	return &ScaledFont{(*C.cairo_scaled_font_t)(p)}
@@ -1247,6 +1272,11 @@ func wrapFontFace(p *C.cairo_font_face_t) *FontFace {
 	ret := &FontFace{p}
 	runtime.SetFinalizer(ret, freeFontFace)
 	return ret
+}
+
+// Wrap a C cairo_font_face_t* found from some external source as a *FontFace.  The Go side will destroy the reference when it's no longer used.
+func WrapFontFace(p unsafe.Pointer) *FontFace {
+	return wrapFontFace((*C.cairo_font_face_t)(p))
 }
 
 // Construct a FontFace from a C cairo_font_face_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
@@ -1447,6 +1477,11 @@ func wrapFontOptions(p *C.cairo_font_options_t) *FontOptions {
 	ret := &FontOptions{p}
 	runtime.SetFinalizer(ret, freeFontOptions)
 	return ret
+}
+
+// Wrap a C cairo_font_options_t* found from some external source as a *FontOptions.  The Go side will destroy the reference when it's no longer used.
+func WrapFontOptions(p unsafe.Pointer) *FontOptions {
+	return wrapFontOptions((*C.cairo_font_options_t)(p))
 }
 
 // Construct a FontOptions from a C cairo_font_options_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
@@ -2219,6 +2254,11 @@ func wrapPath(p *C.cairo_path_t) *Path {
 	return ret
 }
 
+// Wrap a C cairo_path_t* found from some external source as a *Path.  The Go side will destroy the reference when it's no longer used.
+func WrapPath(p unsafe.Pointer) *Path {
+	return wrapPath((*C.cairo_path_t)(p))
+}
+
 // Construct a Path from a C cairo_path_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
 func BorrowPath(p unsafe.Pointer) *Path {
 	return &Path{(*C.cairo_path_t)(p)}
@@ -2447,8 +2487,6 @@ func (surface *SurfaceObserver) Elapsed() float64 {
 }
 
 // See cairo_device_observer_elapsed().
-//
-// C API documentation: http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-observer-elapsed
 func (device *Device) ObserverElapsed() float64 {
 	ret := float64(C.cairo_device_observer_elapsed(device.Ptr))
 	if err := device.status(); err != nil {
@@ -2458,8 +2496,6 @@ func (device *Device) ObserverElapsed() float64 {
 }
 
 // See cairo_device_observer_paint_elapsed().
-//
-// C API documentation: http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-observer-paint-elapsed
 func (device *Device) ObserverPaintElapsed() float64 {
 	ret := float64(C.cairo_device_observer_paint_elapsed(device.Ptr))
 	if err := device.status(); err != nil {
@@ -2469,8 +2505,6 @@ func (device *Device) ObserverPaintElapsed() float64 {
 }
 
 // See cairo_device_observer_mask_elapsed().
-//
-// C API documentation: http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-observer-mask-elapsed
 func (device *Device) ObserverMaskElapsed() float64 {
 	ret := float64(C.cairo_device_observer_mask_elapsed(device.Ptr))
 	if err := device.status(); err != nil {
@@ -2480,8 +2514,6 @@ func (device *Device) ObserverMaskElapsed() float64 {
 }
 
 // See cairo_device_observer_fill_elapsed().
-//
-// C API documentation: http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-observer-fill-elapsed
 func (device *Device) ObserverFillElapsed() float64 {
 	ret := float64(C.cairo_device_observer_fill_elapsed(device.Ptr))
 	if err := device.status(); err != nil {
@@ -2491,8 +2523,6 @@ func (device *Device) ObserverFillElapsed() float64 {
 }
 
 // See cairo_device_observer_stroke_elapsed().
-//
-// C API documentation: http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-observer-stroke-elapsed
 func (device *Device) ObserverStrokeElapsed() float64 {
 	ret := float64(C.cairo_device_observer_stroke_elapsed(device.Ptr))
 	if err := device.status(); err != nil {
@@ -2502,8 +2532,6 @@ func (device *Device) ObserverStrokeElapsed() float64 {
 }
 
 // See cairo_device_observer_glyphs_elapsed().
-//
-// C API documentation: http://cairographics.org/manual/cairo-cairo-device-t.html#cairo-device-observer-glyphs-elapsed
 func (device *Device) ObserverGlyphsElapsed() float64 {
 	ret := float64(C.cairo_device_observer_glyphs_elapsed(device.Ptr))
 	if err := device.status(); err != nil {
@@ -2707,8 +2735,6 @@ func (surface *Surface) MarkDirtyRectangle(x, y, width, height int) {
 }
 
 // See cairo_surface_set_device_scale().
-//
-// C API documentation: http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-set-device-scale
 func (surface *Surface) SetDeviceScale(xScale, yScale float64) {
 	C.cairo_surface_set_device_scale(surface.Ptr, C.double(xScale), C.double(yScale))
 	if err := surface.status(); err != nil {
@@ -2717,8 +2743,6 @@ func (surface *Surface) SetDeviceScale(xScale, yScale float64) {
 }
 
 // See cairo_surface_get_device_scale().
-//
-// C API documentation: http://cairographics.org/manual/cairo-cairo-surface-t.html#cairo-surface-get-device-scale
 func (surface *Surface) GetDeviceScale() (float64, float64) {
 	var xScale C.double
 	var yScale C.double
@@ -3361,6 +3385,11 @@ func wrapRegion(p *C.cairo_region_t) *Region {
 	ret := &Region{p}
 	runtime.SetFinalizer(ret, freeRegion)
 	return ret
+}
+
+// Wrap a C cairo_region_t* found from some external source as a *Region.  The Go side will destroy the reference when it's no longer used.
+func WrapRegion(p unsafe.Pointer) *Region {
+	return wrapRegion((*C.cairo_region_t)(p))
 }
 
 // Construct a Region from a C cairo_region_t* found from some exernal source.  It is the caller's responsibility to ensure the pointer lives.
