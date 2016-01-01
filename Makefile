@@ -1,9 +1,9 @@
 .PHONY: all cairo example
 
-all: cairo example
-
 cairo: cairo/cairo.go cairo/*.go
 	go install github.com/martine/gocairo/cairo
+
+all: cairo example
 
 example: cairo example/*
 	go run example/basic.go
