@@ -17,6 +17,7 @@ package cairo
 import (
 	"io"
 	"reflect"
+	"sync"
 	"unsafe"
 )
 
@@ -36,14 +37,49 @@ func (s Status) toError() error {
 	return s
 }
 
+// In Go 1.6, you're not allowed to pass Go pointers through C.
+// To work around this, use a map keyed by integers for stashing
+// arbitrary Go data.
+type goPointerStash struct {
+	sync.Mutex
+	data    map[C.int]interface{}
+	nextKey C.int
+}
+
+var goPointers = &goPointerStash{}
+
+func (gp *goPointerStash) put(data interface{}) C.int {
+	gp.Lock()
+	defer gp.Unlock()
+	if gp.data == nil {
+		gp.data = make(map[C.int]interface{})
+	}
+	key := gp.nextKey
+	gp.nextKey++
+	gp.data[key] = data
+	return key
+}
+
+func (gp *goPointerStash) get(key C.int) interface{} {
+	gp.Lock()
+	defer gp.Unlock()
+	return gp.data[key]
+}
+
+func (gp *goPointerStash) clear(key C.int) {
+	gp.Lock()
+	defer gp.Unlock()
+	delete(gp.data, key)
+}
+
 type writeClosure struct {
 	w   io.Writer
 	err error
 }
 
 //export gocairoWriteFunc
-func gocairoWriteFunc(closure unsafe.Pointer, data unsafe.Pointer, clength C.uint) bool {
-	writeClosure := (*writeClosure)(closure)
+func gocairoWriteFunc(key C.int, data unsafe.Pointer, clength C.uint) bool {
+	writeClosure := goPointers.get(key).(writeClosure)
 	length := uint(clength)
 	slice := ((*[1 << 30]byte)(data))[:length:length]
 	_, writeClosure.err = writeClosure.w.Write(slice)
@@ -56,8 +92,8 @@ type readClosure struct {
 }
 
 //export gocairoReadFunc
-func gocairoReadFunc(closure unsafe.Pointer, data unsafe.Pointer, clength C.uint) bool {
-	readClosure := (*readClosure)(closure)
+func gocairoReadFunc(key C.int, data unsafe.Pointer, clength C.uint) bool {
+	readClosure := goPointers.get(key).(readClosure)
 	length := uint(clength)
 	buf := ((*[1 << 30]byte)(data))[:length:length]
 	_, readClosure.err = io.ReadFull(readClosure.r, buf)

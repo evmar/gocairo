@@ -29,14 +29,14 @@ import (
 #include <cairo-xlib.h>
 #include <stdlib.h>
 
-int gocairoWriteFunc(void* closure, const unsigned char* data, unsigned int length);
-int gocairoReadFunc(void* closure, const unsigned char* data, unsigned int length);
+int gocairoWriteFunc(int key, const unsigned char* data, unsigned int length);
+int gocairoReadFunc(int key, const unsigned char* data, unsigned int length);
 
 // A cairo_write_func_t for use in cairo_surface_write_to_png.
 cairo_status_t gocairo_write_func(void *closure,
                                   const unsigned char *data,
                                   unsigned int length) {
-  return gocairoWriteFunc(closure, data, length)
+  return gocairoWriteFunc(*(int*)closure, data, length)
     ? CAIRO_STATUS_SUCCESS
     : CAIRO_STATUS_WRITE_ERROR;
 }
@@ -45,7 +45,7 @@ cairo_status_t gocairo_write_func(void *closure,
 cairo_status_t gocairo_read_func(void *closure,
                                  const unsigned char *data,
                                  unsigned int length) {
-  return gocairoReadFunc(closure, data, length)
+  return gocairoReadFunc(*(int*)closure, data, length)
     ? CAIRO_STATUS_SUCCESS
     : CAIRO_STATUS_WRITE_ERROR;
 }
@@ -60,9 +60,11 @@ func (s Status) Error() string {
 // WriteToPNG encodes a Surface to an io.Writer as a PNG file.
 func (surface *Surface) WriteToPNG(w io.Writer) error {
 	data := writeClosure{w: w}
+	key := goPointers.put(data)
 	status := C.cairo_surface_write_to_png_stream((*C.cairo_surface_t)(surface.Ptr),
 		(C.cairo_write_func_t)(unsafe.Pointer(C.gocairo_write_func)),
-		unsafe.Pointer(&data))
+		unsafe.Pointer(&key))
+	goPointers.clear(key)
 	// TODO: which should we prefer between writeClosure.err and status?
 	// Perhaps test against CAIRO_STATUS_WRITE_ERROR?  Needs a test case.
 	return Status(status).toError()
@@ -72,9 +74,11 @@ func (surface *Surface) WriteToPNG(w io.Writer) error {
 // PNG data.
 func ImageSurfaceCreateFromPNGStream(r io.Reader) (*ImageSurface, error) {
 	data := readClosure{r: r}
+	key := goPointers.put(data)
 	surf := &ImageSurface{wrapSurface(C.cairo_image_surface_create_from_png_stream(
 		(C.cairo_read_func_t)(unsafe.Pointer(C.gocairo_read_func)),
-		unsafe.Pointer(&data)))}
+		unsafe.Pointer(&key)))}
+	goPointers.clear(key)
 	// TODO: which should we prefer between readClosure.err and status?
 	// Perhaps test against CAIRO_STATUS_WRITE_ERROR?  Needs a test case.
 	return surf, surf.status()
