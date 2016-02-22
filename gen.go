@@ -94,6 +94,18 @@ var manualImpl = map[string]string{
 	buf := C.cairo_image_surface_get_data(i.Ptr)
 	return C.GoBytes(unsafe.Pointer(buf), C.int(i.GetStride()*i.GetHeight()))
 }`,
+
+	"cairo_svg_get_versions": `func SVGGetVersions() []SVGVersion {
+var cVersionsPtr *C.cairo_svg_version_t
+var cNumVersions C.int
+C.cairo_svg_get_versions(&cVersionsPtr, &cNumVersions)
+slice := (*[1<<30]C.cairo_svg_version_t)(unsafe.Pointer(cVersionsPtr))[:cNumVersions:cNumVersions]
+versions := make([]SVGVersion, cNumVersions)
+for i := 0; i < int(cNumVersions); i++ {
+versions[i] = SVGVersion(slice[i])
+}
+return versions
+}`,
 }
 
 // outParams maps a function name to a per-parameter bool of whether it's
@@ -140,6 +152,8 @@ var subTypes = []struct {
 	{"SurfaceObserver", "Surface"},
 	{"ToyFontFace", "FontFace"},
 	{"MeshPattern", "Pattern"},
+
+	{"SVGSurface", "Surface"},
 
 	{"XlibSurface", "Surface"},
 	{"XlibDevice", "Device"},
@@ -372,6 +386,9 @@ func cTypeToMap(typ *cc.Type) *typeMap {
 		// Attempt to put methods on our "Format" type.
 		m.method = goName
 	}
+	if goName == "SVGVersion" {
+		m.method = goName
+	}
 	return m
 }
 
@@ -559,7 +576,7 @@ func (w *Writer) genFunc(f *cc.Decl) bool {
 				methType = argType.goType
 			}
 			methodSig = fmt.Sprintf("(%s %s)", argName, methType)
-			if name != "status" && methType != "Format" && methType != "*Matrix" {
+			if name != "status" && methType != "Format" && methType != "SVGVersion" && methType != "*Matrix" {
 				getErrorCall = fmt.Sprintf("%s.status()", argName)
 			}
 		} else if outParam {
@@ -675,7 +692,12 @@ import (
 /*
 #cgo pkg-config: cairo
 #include <cairo.h>
+#if CAIRO_HAS_SVG_SURFACE
+#include <cairo-svg.h>
+#endif
+#if CAIRO_HAS_XLIB_SURFACE
 #include <cairo-xlib.h>
+#endif
 #include <stdlib.h>
 
 int gocairoWriteFunc(int key, const unsigned char* data, unsigned int length);
@@ -947,7 +969,7 @@ func main() {
 	// features is a map from pkg-config name to whether the cairo
 	// install has that feature.  It is filled in by probing
 	// pkg-config.
-	features := checkCairoFeatures("cairo-xlib")
+	features := checkCairoFeatures("cairo-svg", "cairo-xlib")
 	log.Printf("cairo features: %v", features)
 
 	headerPath := "cairo-preprocessed.h"

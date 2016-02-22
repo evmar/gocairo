@@ -26,7 +26,12 @@ import (
 /*
 #cgo pkg-config: cairo
 #include <cairo.h>
+#if CAIRO_HAS_SVG_SURFACE
+#include <cairo-svg.h>
+#endif
+#if CAIRO_HAS_XLIB_SURFACE
 #include <cairo-xlib.h>
+#endif
 #include <stdlib.h>
 
 int gocairoWriteFunc(int key, const unsigned char* data, unsigned int length);
@@ -122,6 +127,9 @@ type ToyFontFace struct {
 }
 type MeshPattern struct {
 	*Pattern
+}
+type SVGSurface struct {
+	*Surface
 }
 type XlibSurface struct {
 	*Surface
@@ -3566,6 +3574,73 @@ func (dst *Region) XOR(other *Region) error {
 	if err := dst.status(); err != nil {
 		panic(err)
 	}
+	return ret
+}
+
+// See cairo_svg_version_t.
+//
+// C API documentation: http://cairographics.org/manual/cairo-SVG-Surfaces.html#cairo-svg-version-t
+type SVGVersion int
+
+const (
+	SVGVersion11 SVGVersion = C.CAIRO_SVG_VERSION_1_1
+	SVGVersion12 SVGVersion = C.CAIRO_SVG_VERSION_1_2
+)
+
+func (i SVGVersion) String() string {
+	switch i {
+	case SVGVersion11:
+		return "SVGVersion11"
+	case SVGVersion12:
+		return "SVGVersion12"
+	default:
+		return fmt.Sprintf("SVGVersion(%d)", i)
+	}
+}
+
+// See cairo_svg_surface_create().
+//
+// C API documentation: http://cairographics.org/manual/cairo-SVG-Surfaces.html#cairo-svg-surface-create
+func SVGSurfaceCreate(filename string, widthInPoints, heightInPoints float64) *SVGSurface {
+	c_filename := C.CString(filename)
+	defer C.free(unsafe.Pointer(c_filename))
+	ret := &SVGSurface{wrapSurface(C.cairo_svg_surface_create(c_filename, C.double(widthInPoints), C.double(heightInPoints)))}
+	if err := ret.status(); err != nil {
+		panic(err)
+	}
+	return ret
+}
+
+// See cairo_svg_surface_restrict_to_version().
+//
+// C API documentation: http://cairographics.org/manual/cairo-SVG-Surfaces.html#cairo-svg-surface-restrict-to-version
+func (surface *SVGSurface) RestrictToVersion(version SVGVersion) {
+	C.cairo_svg_surface_restrict_to_version(surface.Ptr, C.cairo_svg_version_t(version))
+	if err := surface.status(); err != nil {
+		panic(err)
+	}
+}
+
+// See cairo_svg_get_versions().
+//
+// C API documentation: http://cairographics.org/manual/cairo-SVG-Surfaces.html#cairo-svg-get-versions
+func SVGGetVersions() []SVGVersion {
+	var cVersionsPtr *C.cairo_svg_version_t
+	var cNumVersions C.int
+	C.cairo_svg_get_versions(&cVersionsPtr, &cNumVersions)
+	slice := (*[1 << 30]C.cairo_svg_version_t)(unsafe.Pointer(cVersionsPtr))[:cNumVersions:cNumVersions]
+	versions := make([]SVGVersion, cNumVersions)
+	for i := 0; i < int(cNumVersions); i++ {
+		versions[i] = SVGVersion(slice[i])
+	}
+	return versions
+}
+
+// See cairo_svg_version_to_string().
+//
+// C API documentation: http://cairographics.org/manual/cairo-SVG-Surfaces.html#cairo-svg-version-to-string
+func (version SVGVersion) ToString() string {
+	ret := C.GoString(C.cairo_svg_version_to_string(C.cairo_svg_version_t(version)))
 	return ret
 }
 
