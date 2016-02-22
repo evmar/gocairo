@@ -467,6 +467,7 @@ Ptr *C.%s
 		w.Print(")")
 
 		if goName != "Status" {
+			w.Print("// String implements the Stringer interface, which is used in places like fmt's %%q.  For all enums like this it returns the Go name of the constant.")
 			w.Print("func (i %s) String() string {", goName)
 			w.Print("switch i {")
 			for _, c := range consts {

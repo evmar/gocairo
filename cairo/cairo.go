@@ -329,6 +329,7 @@ const (
 	ContentColorAlpha Content = C.CAIRO_CONTENT_COLOR_ALPHA
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i Content) String() string {
 	switch i {
 	case ContentColor:
@@ -357,6 +358,7 @@ const (
 	FormatRGB30    Format = C.CAIRO_FORMAT_RGB30
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i Format) String() string {
 	switch i {
 	case FormatInvalid:
@@ -487,6 +489,7 @@ const (
 	OperatorHslLuminosity Operator = C.CAIRO_OPERATOR_HSL_LUMINOSITY
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i Operator) String() string {
 	switch i {
 	case OperatorClear:
@@ -627,6 +630,7 @@ const (
 	AntialiasBest     Antialias = C.CAIRO_ANTIALIAS_BEST
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i Antialias) String() string {
 	switch i {
 	case AntialiasDefault:
@@ -668,6 +672,7 @@ const (
 	FillRuleEvenOdd FillRule = C.CAIRO_FILL_RULE_EVEN_ODD
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i FillRule) String() string {
 	switch i {
 	case FillRuleWinding:
@@ -710,6 +715,7 @@ const (
 	LineCapSquare LineCap = C.CAIRO_LINE_CAP_SQUARE
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i LineCap) String() string {
 	switch i {
 	case LineCapButt:
@@ -744,6 +750,7 @@ const (
 	LineJoinBevel LineJoin = C.CAIRO_LINE_JOIN_BEVEL
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i LineJoin) String() string {
 	switch i {
 	case LineJoinMiter:
@@ -1314,6 +1321,7 @@ const (
 	TextClusterFlagBackward TextClusterFlags = C.CAIRO_TEXT_CLUSTER_FLAG_BACKWARD
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i TextClusterFlags) String() string {
 	switch i {
 	case TextClusterFlagBackward:
@@ -1357,6 +1365,7 @@ const (
 	FontSlantOblique FontSlant = C.CAIRO_FONT_SLANT_OBLIQUE
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i FontSlant) String() string {
 	switch i {
 	case FontSlantNormal:
@@ -1380,6 +1389,7 @@ const (
 	FontWeightBold   FontWeight = C.CAIRO_FONT_WEIGHT_BOLD
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i FontWeight) String() string {
 	switch i {
 	case FontWeightNormal:
@@ -1404,6 +1414,7 @@ const (
 	SubpixelOrderVBGR    SubpixelOrder = C.CAIRO_SUBPIXEL_ORDER_VBGR
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i SubpixelOrder) String() string {
 	switch i {
 	case SubpixelOrderDefault:
@@ -1434,6 +1445,7 @@ const (
 	HintStyleFull    HintStyle = C.CAIRO_HINT_STYLE_FULL
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i HintStyle) String() string {
 	switch i {
 	case HintStyleDefault:
@@ -1462,6 +1474,7 @@ const (
 	HintMetricsOn      HintMetrics = C.CAIRO_HINT_METRICS_ON
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i HintMetrics) String() string {
 	switch i {
 	case HintMetricsDefault:
@@ -1848,6 +1861,7 @@ const (
 	FontTypeUser   FontType = C.CAIRO_FONT_TYPE_USER
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i FontType) String() string {
 	switch i {
 	case FontTypeToy:
@@ -2235,6 +2249,7 @@ const (
 	PathClosePath PathDataType = C.CAIRO_PATH_CLOSE_PATH
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i PathDataType) String() string {
 	switch i {
 	case PathMoveTo:
@@ -2333,6 +2348,7 @@ const (
 	DeviceTypeInvalid DeviceType = C.CAIRO_DEVICE_TYPE_INVALID
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i DeviceType) String() string {
 	switch i {
 	case DeviceTypeDRM:
@@ -2469,6 +2485,7 @@ const (
 	SurfaceObserverRecordOperations SurfaceObserverMode = C.CAIRO_SURFACE_OBSERVER_RECORD_OPERATIONS
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i SurfaceObserverMode) String() string {
 	switch i {
 	case SurfaceObserverNormal:
@@ -2626,6 +2643,7 @@ const (
 	SurfaceTypeCOGL          SurfaceType = C.CAIRO_SURFACE_TYPE_COGL
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i SurfaceType) String() string {
 	switch i {
 	case SurfaceTypeImage:
@@ -3058,6 +3076,7 @@ const (
 	PatternTypeRasterSource PatternType = C.CAIRO_PATTERN_TYPE_RASTER_SOURCE
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i PatternType) String() string {
 	switch i {
 	case PatternTypeSolid:
@@ -3220,6 +3239,7 @@ const (
 	ExtendPad     Extend = C.CAIRO_EXTEND_PAD
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i Extend) String() string {
 	switch i {
 	case ExtendNone:
@@ -3270,6 +3290,7 @@ const (
 	FilterGaussian Filter = C.CAIRO_FILTER_GAUSSIAN
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i Filter) String() string {
 	switch i {
 	case FilterFast:
@@ -3436,6 +3457,7 @@ const (
 	RegionOverlapPart RegionOverlap = C.CAIRO_REGION_OVERLAP_PART
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i RegionOverlap) String() string {
 	switch i {
 	case RegionOverlapIn:
@@ -3587,6 +3609,7 @@ const (
 	SVGVersion12 SVGVersion = C.CAIRO_SVG_VERSION_1_2
 )
 
+// String implements the Stringer interface, which is used in places like fmt's %q.  For all enums like this it returns the Go name of the constant.
 func (i SVGVersion) String() string {
 	switch i {
 	case SVGVersion11:
